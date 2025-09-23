@@ -35,7 +35,6 @@ class Helper
 
         if ($menu) {
 ?>
-
             <li>
                 <a href="javascript:void(0);">Danh mục<i class="ti-angle-down"></i></a>
                 <ul class="dropdown border-0 shadow">

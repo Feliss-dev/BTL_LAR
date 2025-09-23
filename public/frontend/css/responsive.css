@@ -42,7 +42,7 @@ Version:1.0
 	float: none;
 	margin-top: 8px;
 }
-.header.shop .right-bar .sinlge-bar .single-icon {
+.header.shop .right-bar .single-bar .single-icon {
 	font-size: 18px;
 }
 .header .shopping .shopping-item {
@@ -215,7 +215,7 @@ Version:1.0
 	padding: 10px 20px;
 }
 .small-banner {
-	padding: 18px 0;	
+	padding: 18px 0;
 }
 .small-banner .single-banner.tab-height{
 	height:300px;
@@ -523,7 +523,7 @@ Version:1.0
 	display: none;
 }
 .header .header-inner{
-	display:none 
+	display:none
 }
 .hero-slider {
 	height: 350px;
@@ -640,7 +640,7 @@ Version:1.0
 }
 .small-banner {
 	padding: 18px 0;
-	
+
 }
 .small-banner .single-banner{
 	margin-bottom: 18px;
@@ -1255,7 +1255,7 @@ Version:1.0
 	display: none;
 }
 .header .header-inner{
-	display:none 
+	display:none
 }
 .header.shop .nav li .new {
 	display:none !important;
@@ -1298,7 +1298,7 @@ Version:1.0
 }
 .small-banner {
 	padding: 18px 0;
-	
+
 }
 .small-banner .single-banner{
 	margin-bottom: 18px;
@@ -1473,7 +1473,6 @@ Version:1.0
 	width: 100%;
 	display: block;
 	display: inline-block;
-	display: ;
 }
 .shop .view-mode li a {
 	width: 80px;
