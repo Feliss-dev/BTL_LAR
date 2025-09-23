@@ -31,7 +31,7 @@
                         <div class="col-lg-8 col-12">
                             <div class="checkout-form">
                                 <h2>Make Your Checkout Here</h2>
-                                <p>Please register in order to checkout more quickly</p>
+                                <p>Hãy đăng ký để có thể cùng mua hàng nhanh chóng</p>
                                 <!-- Form -->
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-12">
