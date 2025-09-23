@@ -1,0 +1,16 @@
+{
+    "Title": "Tiêu đề",
+    "Summary": "Tóm tắt",
+    "Description": "Mô tả",
+    "Tag": "Thẻ",
+    "Author": "Tác giả",
+    "Photo": "Ảnh",
+    "Category": "Danh mục",
+    "Status": "Trạng thái",
+    "Active": "Kích hoạt",
+    "Inactive": "Không kích hoạt",
+    "Reset": "Làm mới",
+    "Submit": "Lưu",
+
+    "Add Post": "Thêm bài viết",
+}

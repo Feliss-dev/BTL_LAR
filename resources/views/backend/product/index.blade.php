@@ -17,41 +17,40 @@
         @if(count($products)>0)
         <table class="table table-bordered" id="product-dataTable" width="100%" cellspacing="0">
           <thead>
-            <tr>
-              <th>S.N.</th>
-              <th>Title</th>
-              <th>Category</th>
-              <th>Is Featured</th>
-              <th>Price</th>
-              <th>Discount</th>
-              <th>Size</th>
-              <th>Condition</th>
-              <th>Brand</th>
-              <th>Stock</th>
-              <th>Photo</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
+          <tr>
+              <th>ID</th>
+              <th>Tên</th>
+              <th>Danh mục</th>
+              <th>Đề xuất</th>
+              <th>Giá</th>
+              <th>Giảm giá</th>
+              <th>Kích cỡ</th>
+              <th>Tình trạng</th>
+              <th>Hãng</th>
+              <th>Tồn kho</th>
+              <th>Ảnh</th>
+              <th>Trạng thái</th>
+              <th>Hành động</th>
+          </tr>
           </thead>
           <tfoot>
             <tr>
-              <th>S.N.</th>
-              <th>Title</th>
-              <th>Category</th>
-              <th>Is Featured</th>
-              <th>Price</th>
-              <th>Discount</th>
-              <th>Size</th>
-              <th>Condition</th>
-              <th>Brand</th>
-              <th>Stock</th>
-              <th>Photo</th>
-              <th>Status</th>
-              <th>Action</th>
+              <th>ID</th>
+              <th>Tên</th>
+              <th>Danh mục</th>
+              <th>Đề xuất</th>
+              <th>Giá</th>
+              <th>Giảm giá</th>
+              <th>Kích cỡ</th>
+              <th>Tình trạng</th>
+              <th>Hãng</th>
+              <th>Tồn kho</th>
+              <th>Ảnh</th>
+              <th>Trạng thái</th>
+              <th>Hành động</th>
             </tr>
           </tfoot>
           <tbody>
-
             @foreach($products as $product)
               @php
               $sub_cat_info=DB::table('categories')->select('title')->where('id',$product->child_cat_id)->get();
@@ -67,10 +66,28 @@
                       </sub>
                     </td>
                     <td>{{(($product->is_featured==1)? 'Yes': 'No')}}</td>
-                    <td>Rs. {{$product->price}} /-</td>
+                    <td>{{number_format($product->price, 0, ',', '.')}} đ</td>
                     <td>  {{$product->discount}}% OFF</td>
                     <td>{{$product->size}}</td>
-                    <td>{{$product->condition}}</td>
+                    <td>
+                        @switch ($product->condition)
+                            @case('default')
+                                Mặc định
+                                @break
+
+                            @case('new')
+                                Mới
+                                @break
+
+                            @case('hot')
+                                Nổi bật
+                                @break
+
+                            @default
+                                ???
+                                @break
+                        @endswitch
+                    </td>
                     <td> {{ucfirst($product->brand->title)}}</td>
                     <td>
                       @if($product->stock>0)

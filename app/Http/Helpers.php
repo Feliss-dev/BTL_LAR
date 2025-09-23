@@ -158,18 +158,18 @@ class Helper
     }
 
     // Total price with shipping and coupon
-    public static function grandPrice($id, $user_id)
-    {
-        $order = Order::find($id);
-        dd($id);
-        if ($order) {
-            $shipping_price = (float)$order->shipping->price;
-            $order_price = self::orderPrice($id, $user_id);
-            return number_format((float)($order_price + $shipping_price), 2, '.', '');
-        } else {
-            return 0;
-        }
-    }
+//    public static function grandPrice($id, $user_id)
+//    {
+//        $order = Order::find($id);
+//
+//        if ($order) {
+//            $shipping_price = (float)$order->shipping->price;
+//            $order_price = self::orderPrice($id, $user_id);
+//            return number_format((float)($order_price + $shipping_price), 2, '.', '');
+//        } else {
+//            return 0;
+//        }
+//    }
 
 
     // Admin home
@@ -181,7 +181,7 @@ class Helper
         foreach ($month_data as $data) {
             $price = $data->cart_info->sum('price');
         }
-        return number_format((float)($price), 2, '.', '');
+        return number_format((float)($price), 0, ',', '.');
     }
 
     public static function shipping()
