@@ -86,7 +86,7 @@
                         <div class="search-bar">
                             <select>
                                 <option>Danh mục</option>
-                                @foreach (Helper::getAllCategory() as $cat)
+                                @foreach (\App\Http\Helper::getAllCategory() as $cat)
                                     <option>{{ $cat->title }}</option>
                                 @endforeach
                             </select>
@@ -115,17 +115,17 @@
                                 @endforeach
                             @endif
                             <a href="{{ route('wishlist') }}" class="single-icon"><i class="fa fa-heart-o"></i> <span
-                                    class="total-count">{{ Helper::wishlistCount() }}</span></a>
+                                    class="total-count">{{ \App\Http\Helper::wishlistCount() }}</span></a>
                             <!-- Shopping Item -->
                             @auth
                                 <div class="shopping-item">
                                     <div class="dropdown-cart-header">
-                                        <span>{{ count(Helper::getAllProductFromWishlist()) }} Sản phẩm</span>
+                                        <span>{{ count(\App\Http\Helper::getAllProductFromWishlist()) }} Sản phẩm</span>
                                         <a href="{{ route('wishlist') }}">Xem danh mục yêu thích</a>
                                     </div>
                                     <ul class="shopping-list">
                                         {{-- {{Helper::getAllProductFromCart()}} --}}
-                                        @foreach (Helper::getAllProductFromWishlist() as $data)
+                                        @foreach (\App\Http\Helper::getAllProductFromWishlist() as $data)
                                             @php
                                                 $photo = explode(',', $data->product['photo']);
                                             @endphp
@@ -158,17 +158,17 @@
                         </div> --}}
                         <div class="sinlge-bar shopping">
                             <a href="{{ route('cart') }}" class="single-icon"><i class="ti-bag"></i> <span
-                                    class="total-count">{{ Helper::cartCount() }}</span></a>
+                                    class="total-count">{{ App\Http\Helper::cartCount() }}</span></a>
                             <!-- Shopping Item -->
                             @auth
                                 <div class="shopping-item">
                                     <div class="dropdown-cart-header">
-                                        <span>{{ count(Helper::getAllProductFromCart()) }} Sản phẩm</span>
+                                        <span>{{ count(\App\Http\Helper::getAllProductFromCart()) }} Sản phẩm</span>
                                         <a href="{{ route('cart') }}">Xem giỏ hàng</a>
                                     </div>
                                     <ul class="shopping-list">
                                         {{-- {{Helper::getAllProductFromCart()}} --}}
-                                        @foreach (Helper::getAllProductFromCart() as $data)
+                                        @foreach (\App\Http\Helper::getAllProductFromCart() as $data)
                                             @php
                                                 $photo = explode(',', $data->product['photo']);
                                             @endphp
@@ -220,7 +220,7 @@
                                             <li class="@if (Request::path() == 'product-grids' || Request::path() == 'product-lists') active @endif"><a
                                                     href="{{ route('product-grids') }}">Sản phẩm</a><span
                                                     class="new">Mới</span></li>
-                                            {{ Helper::getHeaderCategory() }}
+                                            {{ \App\Http\Helper::getHeaderCategory() }}
                                             <li class="{{ Request::path() == 'blog' ? 'active' : '' }}"><a
                                                     href="{{ route('blog') }}">Blog</li>
 

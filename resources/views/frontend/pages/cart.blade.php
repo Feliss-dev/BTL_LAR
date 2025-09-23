@@ -38,8 +38,8 @@
 						<tbody id="cart_item_list">
 							<form action="{{route('cart.update')}}" method="POST">
 								@csrf
-								@if(Helper::getAllProductFromCart())
-									@foreach(Helper::getAllProductFromCart() as $key=>$cart)
+								@if(\App\Http\Helper::getAllProductFromCart())
+									@foreach(\App\Http\Helper::getAllProductFromCart() as $key=>$cart)
 										<tr>
 											@php
 											$photo=explode(',',$cart->product['photo']);

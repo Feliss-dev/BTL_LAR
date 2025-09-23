@@ -35,8 +35,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if (Helper::getAllProductFromWishlist())
-                                @foreach (Helper::getAllProductFromWishlist() as $key => $wishlist)
+                            @if (\App\Http\Helper::getAllProductFromWishlist())
+                                @foreach (\App\Http\Helper::getAllProductFromWishlist() as $key => $wishlist)
                                     <tr>
                                         @php
                                             $photo = explode(',', $wishlist->product['photo']);
