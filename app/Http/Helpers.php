@@ -188,19 +188,8 @@ class Helper
     {
         return Shipping::orderBy('id', 'DESC')->get();
     }
-}
 
-
-
-if (!function_exists('generateUniqueSlug')) {
-    /**
-     * Generate a unique slug for a given title and model.
-     *
-     * @param string $title
-     * @param string $modelClass
-     * @return string
-     */
-    function generateUniqueSlug($title, $modelClass)
+    public static function generateUniqueSlug($title, $modelClass)
     {
         $slug = Str::slug($title);
         $count = $modelClass::where('slug', $slug)->count();
@@ -212,5 +201,4 @@ if (!function_exists('generateUniqueSlug')) {
         return $slug;
     }
 }
-
 ?>

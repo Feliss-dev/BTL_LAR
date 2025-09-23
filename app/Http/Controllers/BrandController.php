@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Helper;
 use Illuminate\Http\Request;
 use App\Models\Brand;
 use Illuminate\Support\Str;
@@ -42,7 +43,7 @@ class BrandController extends Controller
             'status' => 'required|in:active,inactive',
         ]);
 
-        $slug = generateUniqueSlug($request->title, Brand::class);
+        $slug = Helper::generateUniqueSlug($request->title, Brand::class);
 
         $validatedData['slug'] = $slug;
 

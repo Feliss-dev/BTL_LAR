@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Helper;
 use Illuminate\Http\Request;
 use App\Models\Category;
 
@@ -46,7 +47,7 @@ class CategoryController extends Controller
             'parent_id' => 'nullable|exists:categories,id',
         ]);
 
-        $slug = generateUniqueSlug($request->title, Category::class);
+        $slug = Helper::generateUniqueSlug($request->title, Category::class);
         $validatedData['slug'] = $slug;
         $validatedData['is_parent'] = $request->input('is_parent', 0);
 
