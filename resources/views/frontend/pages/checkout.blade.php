@@ -361,7 +361,7 @@
                                     <h2>CART  TOTALS</h2>
                                     <div class="content">
                                         <ul>
-										    <li class="order_subtotal" data-price="{{App\Http\Helper::totalCartPrice()}}">Cart Subtotal<span>${{number_format(Helper::totalCartPrice(),2)}}</span></li>
+										    <li class="order_subtotal" data-price="{{App\Http\Helper::totalCartPrice()}}">Cart Subtotal<span>${{number_format(\App\Http\Helper::totalCartPrice(),2)}}</span></li>
                                             <li class="shipping">
                                                 Shipping Cost
                                                 @if(count(App\Http\Helper::shipping())>0 && App\Http\Helper::cartCount()>0)

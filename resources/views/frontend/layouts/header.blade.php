@@ -145,7 +145,7 @@
                                         <div class="total">
                                             <span>Total</span>
                                             <span
-                                                class="total-amount">${{ number_format(Helper::totalWishlistPrice(), 2) }}</span>
+                                                class="total-amount">${{ number_format(\App\Http\Helper::totalWishlistPrice(), 2) }}</span>
                                         </div>
                                         <a href="{{ route('cart') }}" class="btn animate">Giỏ hàng</a>
                                     </div>
@@ -188,7 +188,7 @@
                                         <div class="total">
                                             <span>Total</span>
                                             <span
-                                                class="total-amount">${{ number_format(Helper::totalCartPrice(), 2) }}</span>
+                                                class="total-amount">${{ number_format(\App\Http\Helper::totalCartPrice(), 2) }}</span>
                                         </div>
                                         <a href="{{ route('checkout') }}" class="btn animate">Thanh toán</a>
                                     </div>
