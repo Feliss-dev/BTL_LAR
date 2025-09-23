@@ -122,13 +122,13 @@
 							<div class="col-lg-4 col-md-7 col-12">
 								<div class="right">
 									<ul>
-										<li class="order_subtotal" data-price="{{\App\Http\Helper::totalCartPrice()}}">Cart Subtotal<span>${{number_format(Helper::totalCartPrice(),2)}}</span></li>
+										<li class="order_subtotal" data-price="{{\App\Http\Helper::totalCartPrice()}}">Cart Subtotal<span>${{number_format(\App\Http\Helper::totalCartPrice(),2)}}</span></li>
 
 										@if(session()->has('coupon'))
 										<li class="coupon_price" data-price="{{Session::get('coupon')['value']}}">You Save<span>${{number_format(Session::get('coupon')['value'],2)}}</span></li>
 										@endif
 										@php
-											$total_amount=Helper::totalCartPrice();
+											$total_amount=\App\Http\Helper::totalCartPrice();
 											if(session()->has('coupon')){
 												$total_amount=$total_amount-Session::get('coupon')['value'];
 											}

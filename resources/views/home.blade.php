@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
+                    Đăng nhập thành công
                 </div>
             </div>
         </div>

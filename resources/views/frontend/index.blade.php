@@ -6,12 +6,12 @@
     <section id="Gslider" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
             @foreach($banners as $key=>$banner)
-        <li data-target="#Gslider" data-slide-to="{{$key}}" class="{{(($key==0)? 'active' : '')}}"></li>
+                <li data-target="#Gslider" data-slide-to="{{$key}}" class="{{(($key==0)? 'active' : '')}}"></li>
             @endforeach
-
         </ol>
+
         <div class="carousel-inner" role="listbox">
-                @foreach($banners as $key=>$banner)
+            @foreach($banners as $key=>$banner)
                 <div class="carousel-item {{(($key==0)? 'active' : '')}}">
                     <img class="first-slide" src="{{$banner->photo}}" alt="First slide">
                     <div class="carousel-caption d-none d-md-block text-left">
@@ -42,27 +42,25 @@
             @php
             $category_lists=DB::table('categories')->where('status','active')->limit(3)->get();
             @endphp
-            @if($category_lists)
-                @foreach($category_lists as $cat)
-                    @if($cat->is_parent==1)
-                        <!-- Single Banner  -->
-                        <div class="col-lg-4 col-md-6 col-12">
-                            <div class="single-banner">
-                                @if($cat->photo)
-                                    <img src="{{$cat->photo}}" alt="{{$cat->photo}}">
-                                @else
-                                    <img src="https://via.placeholder.com/600x370" alt="#">
-                                @endif
-                                <div class="content">
-                                    <h3>{{$cat->title}}</h3>
-                                        <a href="{{route('product-cat',$cat->slug)}}">Discover Now</a>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-                    <!-- /End Single Banner  -->
-                @endforeach
-            @endif
+
+{{--            @if($category_lists)--}}
+{{--                @foreach($category_lists as $cat)--}}
+{{--                    @if($cat->is_parent==1)--}}
+{{--                        <!-- Single Banner  -->--}}
+{{--                        <div class="col-lg-4 col-md-6 col-12">--}}
+{{--                            <div class="single-banner">--}}
+{{--                                <img src="{{$cat->photo}}" alt="{{$cat->photo}}" class="object-fit-cover">--}}
+
+{{--                                <div class="content">--}}
+{{--                                    <h3>{{$cat->title}}</h3>--}}
+{{--                                        <a href="{{route('product-cat',$cat->slug)}}">Discover Now</a>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    @endif--}}
+{{--                    <!-- /End Single Banner  -->--}}
+{{--                @endforeach--}}
+{{--            @endif--}}
         </div>
     </div>
 </section>
@@ -74,7 +72,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="section-title">
-                        <h2>Trending Item</h2>
+                        <h2>Sản phẩm nổi bật</h2>
                     </div>
                 </div>
             </div>
@@ -90,7 +88,7 @@
                                 @endphp
                                 @if($categories)
                                 <button class="btn" style="background:black"data-filter="*">
-                                    All Products
+                                    Tất cả
                                 </button>
                                     @foreach($categories as $key=>$cat)
 
