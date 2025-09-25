@@ -16,8 +16,8 @@ class CreateShippingsTable extends Migration
         Schema::create('shippings', function (Blueprint $table) {
             $table->id();
             $table->string('type');
-            $table->decimal('price');
-            $table->enum('status',['active','inactive'])->default('active');
+            $table->decimal('price', 12, 0);
+            $table->enum('status', ['active','inactive'])->default('active');
             $table->timestamps();
         });
     }

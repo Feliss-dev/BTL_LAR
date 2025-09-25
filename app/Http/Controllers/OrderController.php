@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Order;
@@ -15,36 +16,20 @@ use App\Notifications\StatusNotification;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $orders=Order::orderBy('id','DESC')->paginate(10);
         return view('backend.order.index')->with('orders',$orders);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'first_name'=>'string|required',
             'last_name'=>'string|required',
             'address1'=>'string|required',
@@ -54,9 +39,8 @@ class OrderController extends Controller
             'post_code'=>'string|nullable',
             'email'=>'string|required'
         ]);
-        // return $request->all();
 
-        if(empty(Cart::where('user_id',auth()->user()->id)->where('order_id',null)->first())){
+        if (empty(Cart::where('user_id',auth()->user()->id)->where('order_id',null)->first())){
             request()->session()->flash('error','Cart is Empty !');
             return back();
         }
@@ -88,11 +72,11 @@ class OrderController extends Controller
         //         }
         // }
 
-        $order=new Order();
-        $order_data=$request->all();
-        $order_data['order_number']='ORD-'.strtoupper(Str::random(10));
-        $order_data['user_id']=$request->user()->id;
-        $order_data['shipping_id']=$request->shipping;
+        $order = new Order();
+        $order_data = $request->all();
+        $order_data['order_number'] = 'ORD-' . strtoupper(Str::random(10));
+        $order_data['user_id'] = $request->user()->id;
+        $order_data['shipping_id'] = $request->shipping;
         $shipping=Shipping::where('id',$order_data['shipping_id'])->pluck('price');
         // return session('coupon')['value'];
         $order_data['sub_total']=Helper::totalCartPrice();

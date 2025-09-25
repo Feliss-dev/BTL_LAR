@@ -11,8 +11,8 @@
                 <div class="col-12">
                     <div class="bread-inner">
                         <ul class="bread-list">
-                            <li><a href="{{route('home')}}">Home<i class="ti-arrow-right"></i></a></li>
-                            <li class="active"><a href="javascript:void(0)">Checkout</a></li>
+                            <li><a href="{{route('home')}}">Trang chủ<i class="ti-arrow-right"></i></a></li>
+                            <li class="active"><a href="javascript:void(0)">Thanh toán</a></li>
                         </ul>
                     </div>
                 </div>
@@ -30,7 +30,7 @@
 
                         <div class="col-lg-8 col-12">
                             <div class="checkout-form">
-                                <h2>Make Your Checkout Here</h2>
+                                <h2>Thanh toán tại đây</h2>
                                 <p>Hãy đăng ký để có thể cùng mua hàng nhanh chóng</p>
                                 <!-- Form -->
                                 <div class="row">
@@ -358,53 +358,46 @@
                             <div class="order-details">
                                 <!-- Order Widget -->
                                 <div class="single-widget">
-                                    <h2>CART  TOTALS</h2>
+                                    <h2>TỔNG GIỎ HÀNG</h2>
                                     <div class="content">
                                         <ul>
-										    <li class="order_subtotal" data-price="{{App\Http\Helper::totalCartPrice()}}">Cart Subtotal<span>${{number_format(\App\Http\Helper::totalCartPrice(),2)}}</span></li>
+										    <li class="order_subtotal" data-price="{{App\Http\Helper::totalCartPrice()}}">Thành tiền<span>{{number_format(\App\Http\Helper::totalCartPrice(), 0, ',', '.')}} đ</span></li>
                                             <li class="shipping">
-                                                Shipping Cost
+                                                Giao hàng
                                                 @if(count(App\Http\Helper::shipping())>0 && App\Http\Helper::cartCount()>0)
                                                     <select name="shipping" class="nice-select">
-                                                        <option value="">Select your address</option>
+                                                        <option value="">Chọn loại giao hàng</option>
                                                         @foreach(App\Http\Helper::shipping() as $shipping)
-                                                        <option value="{{$shipping->id}}" class="shippingOption" data-price="{{$shipping->price}}">{{$shipping->type}}: ${{$shipping->price}}</option>
+                                                            <option value="{{$shipping->id}}" class="shippingOption" data-price="{{$shipping->price}}">{{$shipping->type}}: {{number_format($shipping->price, 0, ',', '.')}} đ</option>
                                                         @endforeach
                                                     </select>
                                                 @else
-                                                    <span>Free</span>
+                                                    <span>Miễn phí</span>
                                                 @endif
                                             </li>
 
                                             @if(session('coupon'))
-                                            <li class="coupon_price" data-price="{{session('coupon')['value']}}">You Save<span>${{number_format(session('coupon')['value'],2)}}</span></li>
+                                                <li class="coupon_price" data-price="{{session('coupon')['value']}}">Tiết kiệm<span>{{number_format(session('coupon')['value'], 0, ',', '.')}} đ</span></li>
                                             @endif
                                             @php
                                                 $total_amount = App\Http\Helper::totalCartPrice();
                                                 if(session('coupon')){
-                                                    $total_amount=$total_amount-session('coupon')['value'];
+                                                    $total_amount = $total_amount-session('coupon')['value'];
                                                 }
                                             @endphp
-                                            @if(session('coupon'))
-                                                <li class="last"  id="order_total_price">Total<span>${{number_format($total_amount,2)}}</span></li>
-                                            @else
-                                                <li class="last"  id="order_total_price">Total<span>${{number_format($total_amount,2)}}</span></li>
-                                            @endif
+
+                                            <li class="last"  id="order_total_price">Tổng<span>{{number_format($total_amount, 0, ',', '.')}} đ</span></li>
                                         </ul>
                                     </div>
                                 </div>
                                 <!--/ End Order Widget -->
                                 <!-- Order Widget -->
                                 <div class="single-widget">
-                                    <h2>Payments</h2>
+                                    <h2>Thanh toán</h2>
                                     <div class="content">
                                         <div class="checkbox">
-                                            {{-- <label class="checkbox-inline" for="1"><input name="updates" id="1" type="checkbox"> Check Payments</label> --}}
-                                            <form-group>
-                                                <input name="payment_method"  type="radio" value="cod"> <label> Cash On Delivery</label><br>
-                                                <input name="payment_method"  type="radio" value="paypal"> <label> PayPal</label>
-                                            </form-group>
-
+                                            <input name="payment_method"  type="radio" value="cod"> <label>Trả khi nhận</label><br>
+                                            <input name="payment_method"  type="radio" value="paypal"> <label>Paypal</label>
                                         </div>
                                     </div>
                                 </div>
@@ -420,7 +413,7 @@
                                 <div class="single-widget get-button">
                                     <div class="content">
                                         <div class="button">
-                                            <button type="submit" class="btn">proceed to checkout</button>
+                                            <button type="submit" class="btn">Xác nhận thanh toán</button>
                                         </div>
                                     </div>
                                 </div>

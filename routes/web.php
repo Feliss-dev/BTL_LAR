@@ -49,7 +49,7 @@
 
     Route::get('user/register', [FrontendController::class, 'register'])->name('register.form');
     Route::post('user/register', [FrontendController::class, 'registerSubmit'])->name('register.submit');
-   
+
     // Reset password
     Route::get('password/reset', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
     Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
@@ -186,7 +186,7 @@
         Route::get('/profile', [HomeController::class, 'profile'])->name('user-profile');
         Route::post('/profile/{id}', [HomeController::class, 'profileUpdate'])->name('user-profile-update');
         //  Order
-        Route::get('/order', "HomeController@orderIndex")->name('user.order.index');
+        Route::get('/order', [HomeController::class, "orderIndex"])->name('user.order.index');
         Route::get('/order/show/{id}', "HomeController@orderShow")->name('user.order.show');
         Route::delete('/order/delete/{id}', [HomeController::class, 'userOrderDelete'])->name('user.order.delete');
         // Product Review

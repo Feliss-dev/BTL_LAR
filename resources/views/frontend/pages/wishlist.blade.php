@@ -28,9 +28,9 @@
                         <thead>
                             <tr class="main-hading">
                                 <th>SẢN PHẨM</th>
-                                <th>Tên</th>
-                                <th class="text-center">Số lượng</th>
-                                <th class="text-center">Thêm vào giỏ hàng</th>
+                                <th>TÊN</th>
+                                <th class="text-center">SỐ LƯỢNG</th>
+                                <th class="text-center">THÊM VÀO GIỎ HÀNG</th>
                                 <th class="text-center"><i class="ti-trash remove-icon"></i></th>
                             </tr>
                         </thead>
