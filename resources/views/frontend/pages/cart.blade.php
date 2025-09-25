@@ -42,7 +42,7 @@
 									@foreach(\App\Http\Helper::getAllProductFromCart() as $key=>$cart)
 										<tr>
 											@php
-											$photo=explode(',',$cart->product['photo']);
+											$photo = explode(',',$cart->product['photo']);
 											@endphp
 											<td class="image" data-title="No"><img src="{{$photo[0]}}" alt="{{$photo[0]}}"></td>
 											<td class="product-des" data-title="Description">
@@ -113,7 +113,7 @@
 									</div>
 									{{-- <div class="checkbox">`
 										@php
-											$shipping=DB::table('shippings')->where('status','active')->limit(1)->get();
+											$shipping = DB::table('shippings')->where('status','active')->limit(1)->get();
 										@endphp
 										<label class="checkbox-inline" for="2"><input name="news" id="2" type="checkbox" onchange="showMe('shipping');"> Shipping</label>
 									</div> --}}

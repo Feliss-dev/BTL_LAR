@@ -51,7 +51,7 @@
                                                 <h4>Tags:</h4>
                                                 <ul class="tag-inner">
                                                     @php
-                                                        $tags=explode(',',$post->tags);
+                                                        $tags = explode(',',$post->tags);
                                                     @endphp
                                                     @foreach($tags as $tag)
                                                     <li><a href="javascript:void(0);">{{$tag}}</a></li>

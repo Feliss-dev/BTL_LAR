@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Settings;
+use App\Models\Setting;
 use App\User;
 use App\Rules\MatchOldPassword;
 use Hash;
@@ -49,7 +49,7 @@ class AdminController extends Controller
     }
 
     public function settings(){
-        $data=Settings::first();
+        $data=Setting::first();
         return view('backend.setting')->with('data',$data);
     }
 
@@ -66,7 +66,7 @@ class AdminController extends Controller
         ]);
         $data=$request->all();
         // return $data;
-        $settings=Settings::first();
+        $settings=Setting::first();
         // return $settings;
         $status=$settings->fill($data)->save();
         if($status){

@@ -53,9 +53,9 @@
           <tbody>
             @foreach($products as $product)
               @php
-              $sub_cat_info=DB::table('categories')->select('title')->where('id',$product->child_cat_id)->get();
+              $sub_cat_info = DB::table('categories')->select('title')->where('id',$product->child_cat_id)->get();
               // dd($sub_cat_info);
-              $brands=DB::table('brands')->select('title')->where('id',$product->brand_id)->get();
+              $brands = DB::table('brands')->select('title')->where('id',$product->brand_id)->get();
               @endphp
                 <tr>
                     <td>{{$product->id}}</td>
@@ -99,7 +99,7 @@
                     <td>
                         @if($product->photo)
                             @php
-                              $photo=explode(',',$product->photo);
+                              $photo = explode(',',$product->photo);
                               // dd($photo);
                             @endphp
                             <img src="{{$photo[0]}}" class="img-fluid zoom" style="max-width:80px" alt="{{$product->photo}}">

@@ -46,7 +46,7 @@
           <label for="post_cat_id">Category <span class="text-danger">*</span></label>
           <select name="post_cat_id" class="form-control">
               <option value="">-- Chọn danh mục --</option>
-              @foreach($categories as $key=>$data)
+              @foreach($categories as $key => $data)
                   <option value='{{$data->id}}'>{{$data->title}}</option>
               @endforeach
           </select>
@@ -56,7 +56,7 @@
           <label for="tags">Thẻ</label>
           <select name="tags[]" multiple data-live-search="true" class="form-control selectpicker">
               <option value="" selected disabled>-- Chọn thẻ --</option>
-              @foreach($tags as $key=>$data)
+              @foreach($tags as $key => $data)
                   <option value='{{$data->title}}'>{{$data->title}}</option>
               @endforeach
           </select>
@@ -65,8 +65,8 @@
           <label for="added_by">Tác giả</label>
           <select name="added_by" class="form-control">
               <option value="" selected disabled>-- Chọn tác giả --</option>
-              @foreach($users as $key=>$data)
-                <option value='{{$data->id}}' {{($key==0) ? 'selected' : ''}}>{{$data->name}}</option>
+              @foreach($users as $key => $data)
+                <option value='{{$data->id}}' {{($key == 0) ? 'selected' : ''}}>{{$data->name}}</option>
             @endforeach
           </select>
         </div>

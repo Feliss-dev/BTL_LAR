@@ -119,8 +119,8 @@
       </thead>
       <tbody>
       @foreach($order->cart_info as $cart)
-      @php 
-        $product=DB::table('products')->select('title')->where('id',$cart->product_id)->get();
+      @php
+        $product = DB::table('products')->select('title')->where('id',$cart->product_id)->get();
       @endphp
         <tr>
           <td><span>

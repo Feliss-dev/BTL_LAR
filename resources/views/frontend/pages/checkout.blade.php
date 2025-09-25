@@ -380,7 +380,7 @@
                                             <li class="coupon_price" data-price="{{session('coupon')['value']}}">You Save<span>${{number_format(session('coupon')['value'],2)}}</span></li>
                                             @endif
                                             @php
-                                                $total_amount=App\Http\Helper::totalCartPrice();
+                                                $total_amount = App\Http\Helper::totalCartPrice();
                                                 if(session('coupon')){
                                                     $total_amount=$total_amount-session('coupon')['value'];
                                                 }

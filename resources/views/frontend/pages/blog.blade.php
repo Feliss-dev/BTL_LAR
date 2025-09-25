@@ -70,7 +70,7 @@
                             <ul class="categor-list">
                                 @if(!empty($_GET['category']))
                                     @php
-                                        $filter_cats=explode(',',$_GET['category']);
+                                        $filter_cats = explode(',',$_GET['category']);
                                     @endphp
                                 @endif
                             <form action="{{route('blog.filter')}}" method="POST">
@@ -117,7 +117,7 @@
                             <ul class="tag">
                                 @if(!empty($_GET['tag']))
                                     @php
-                                        $filter_tags=explode(',',$_GET['tag']);
+                                        $filter_tags = explode(',',$_GET['tag']);
                                     @endphp
                                 @endif
                                 <form action="{{route('blog.filter')}}" method="POST">

@@ -34,7 +34,7 @@
                                     <ul class="categor-list">
 										@php
 											// $category = new Category();
-											$menu=App\Models\Category::getAllParentWithChild();
+											$menu = App\Models\Category::getAllParentWithChild();
 										@endphp
 										@if($menu)
 										<li>
@@ -67,7 +67,7 @@
                                         <div class="price-filter">
                                             <div class="price-filter-inner">
                                                 @php
-                                                    $max=DB::table('products')->max('price');
+                                                    $max = DB::table('products')->max('price');
                                                     // dd($max);
                                                 @endphp
                                                 <div id="slider-range" data-min="0" data-max="{{$max}}"></div>
@@ -91,7 +91,7 @@
                                     @foreach($recent_products as $product)
                                         <!-- Single Post -->
                                         @php
-                                            $photo=explode(',',$product->photo);
+                                            $photo = explode(',',$product->photo);
                                         @endphp
                                         <div class="single-post first">
                                             <div class="image">
@@ -115,7 +115,7 @@
                                     <h3 class="title">Brands</h3>
                                     <ul class="categor-list">
                                         @php
-                                            $brands=DB::table('brands')->orderBy('title','ASC')->where('status','active')->get();
+                                            $brands = DB::table('brands')->orderBy('title','ASC')->where('status','active')->get();
                                         @endphp
                                         @foreach($brands as $brand)
                                             <li><a href="{{route('product-brand',$brand->slug)}}">{{$brand->title}}</a></li>
@@ -169,7 +169,7 @@
                                             <div class="product-img">
                                                 <a href="{{route('product-detail',$product->slug)}}">
                                                     @php
-                                                        $photo=explode(',',$product->photo);
+                                                        $photo = explode(',',$product->photo);
                                                     @endphp
                                                     <img class="default-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
                                                     <img class="hover-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
@@ -237,7 +237,7 @@
                                             <div class="product-gallery">
                                                 <div class="quickview-slider-active">
                                                     @php
-                                                        $photo=explode(',',$product->photo);
+                                                        $photo = explode(',',$product->photo);
                                                     // dd($photo);
                                                     @endphp
                                                     @foreach($photo as $data)
@@ -261,10 +261,10 @@
                                                         <i class="yellow fa fa-star"></i>
                                                         <i class="fa fa-star"></i> --}}
                                                         @php
-                                                            $rate=DB::table('product_reviews')->where('product_id',$product->id)->avg('rate');
-                                                            $rate_count=DB::table('product_reviews')->where('product_id',$product->id)->count();
+                                                            $rate = DB::table('product_reviews')->where('product_id',$product->id)->avg('rate');
+                                                            $rate_count = DB::table('product_reviews')->where('product_id',$product->id)->count();
                                                         @endphp
-                                                        @for($i=1; $i<=5; $i++)
+                                                        @for($i = 1; $i<=5; $i++)
                                                             @if($rate>=$i)
                                                                 <i class="yellow fa fa-star"></i>
                                                             @else
@@ -294,7 +294,7 @@
                                                     <h4>Size</h4>
                                                     <ul>
                                                         @php
-                                                            $sizes=explode(',',$product->size);
+                                                            $sizes = explode(',',$product->size);
                                                             // dd($sizes);
                                                         @endphp
                                                         @foreach($sizes as $size)
@@ -309,7 +309,7 @@
                                                         <h5 class="title">Size</h5>
                                                         <select>
                                                             @php
-                                                            $sizes=explode(',',$product->size);
+                                                            $sizes = explode(',',$product->size);
                                                             // dd($sizes);
                                                             @endphp
                                                             @foreach($sizes as $size)

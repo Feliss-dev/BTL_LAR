@@ -42,7 +42,7 @@
           <label for="cat_id">Danh mục<span class="text-danger">*</span></label>
           <select name="cat_id" id="cat_id" class="form-control">
               <option value="" selected disabled>-- Chọn danh mục --</option>
-              @foreach($categories as $key=>$cat_data)
+              @foreach($categories as $key => $cat_data)
                   <option value='{{$cat_data->id}}'>{{$cat_data->title}}</option>
               @endforeach
           </select>
@@ -52,7 +52,7 @@
           <label for="child_cat_id">Danh mục con</label>
           <select name="child_cat_id" id="child_cat_id" class="form-control">
               <option value="">-- Chọn danh mục --</option>
-              {{-- @foreach($parent_cats as $key=>$parent_cat)
+              {{-- @foreach($parent_cats as $key => $parent_cat)
                   <option value='{{$parent_cat->id}}'>{{$parent_cat->title}}</option>
               @endforeach --}}
           </select>

@@ -44,7 +44,7 @@
           <tbody>
             @foreach($orders as $order)
             @php
-                $shipping_charge=DB::table('shippings')->where('id',$order->shipping_id)->pluck('price');
+                $shipping_charge = DB::table('shippings')->where('id',$order->shipping_id)->pluck('price');
             @endphp
                 <tr>
                     <td>{{$order->id}}</td>

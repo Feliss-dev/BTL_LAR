@@ -44,7 +44,7 @@
 
             @foreach($posts as $post)
               @php
-              $author_info=DB::table('users')->select('name')->where('id',$post->added_by)->get();
+              $author_info = DB::table('users')->select('name')->where('id',$post->added_by)->get();
               // dd($sub_cat_info);
               // dd($author_info);
 

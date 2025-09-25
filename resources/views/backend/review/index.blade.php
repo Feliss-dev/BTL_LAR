@@ -48,7 +48,7 @@
                     <td>{{$review->review}}</td>
                     <td>
                      <ul style="list-style:none">
-                          @for($i=1; $i<=5;$i++)
+                          @for($i = 1; $i<=5;$i++)
                           @if($review->rate >=$i)
                             <li style="float:left;color:#F7941D;"><i class="fa fa-star"></i></li>
                           @else

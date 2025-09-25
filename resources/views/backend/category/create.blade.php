@@ -32,7 +32,7 @@
           <label for="parent_id">Mục cha</label>
           <select name="parent_id" class="form-control">
               <option value="" selected disabled>-- Chọn danh mục --</option>
-              @foreach($parent_cats as $key=>$parent_cat)
+              @foreach($parent_cats as $key => $parent_cat)
                   <option value='{{$parent_cat->id}}'>{{$parent_cat->title}}</option>
               @endforeach
           </select>

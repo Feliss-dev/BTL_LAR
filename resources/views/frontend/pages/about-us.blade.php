@@ -28,7 +28,7 @@
 					<div class="col-lg-6 col-12">
 						<div class="about-content">
 							@php
-								$settings=DB::table('settings')->get();
+								$settings = DB::table('settings')->get();
 							@endphp
 							<h3>Welcome To <span>Eshop</span></h3>
 							<p>@foreach($settings as $data) {{$data->description}} @endforeach</p>
