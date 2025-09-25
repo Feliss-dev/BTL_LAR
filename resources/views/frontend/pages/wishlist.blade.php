@@ -1,22 +1,14 @@
 @extends('frontend.layouts.master')
 @section('title', 'Mục yêu thích')
 @section('main-content')
-    <!-- Breadcrumbs -->
-    <div class="breadcrumbs">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="bread-inner">
-                        <ul class="bread-list">
-                            <li><a href="{{ 'home' }}">Trang chủ<i class="ti-arrow-right"></i></a></li>
-                            <li class="active"><a href="javascript:void(0);">Mục yêu thích</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Breadcrumbs -->
+    @php
+        $breadcrumbPath = [
+            new \App\View\Components\BreadcrumbElement('Trang chủ', route('home')),
+            new \App\View\Components\BreadcrumbElement('Mục yêu thích', null),
+        ];
+    @endphp
+
+    <x-breadcrumb :elements="$breadcrumbPath"/>
 
     <!-- Shopping Cart -->
     <div class="shopping-cart section">

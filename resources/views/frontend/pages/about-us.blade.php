@@ -3,23 +3,14 @@
 @section('title','E-SHOP || About Us')
 
 @section('main-content')
+    @php
+        $breadcrumbPath = [
+            new \App\View\Components\BreadcrumbElement('Trang chủ', route('home')),
+            new \App\View\Components\BreadcrumbElement('Giới thiệu', null),
+        ];
+    @endphp
 
-	<!-- Breadcrumbs -->
-	<div class="breadcrumbs">
-		<div class="container">
-			<div class="row">
-				<div class="col-12">
-					<div class="bread-inner">
-						<ul class="bread-list">
-							<li><a href="index1.html">Home<i class="ti-arrow-right"></i></a></li>
-							<li class="active"><a href="blog-single.html">About Us</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- End Breadcrumbs -->
+    <x-breadcrumb :elements="$breadcrumbPath"/>
 
 	<!-- About Us -->
 	<section class="about-us section">

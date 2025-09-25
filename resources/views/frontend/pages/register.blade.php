@@ -3,22 +3,14 @@
 @section('title', 'E-SHOP || Register Page')
 
 @section('main-content')
-    <!-- Breadcrumbs -->
-    <div class="breadcrumbs">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="bread-inner">
-                        <ul class="bread-list">
-                            <li><a href="{{ route('home') }}">Home<i class="ti-arrow-right"></i></a></li>
-                            <li class="active"><a href="javascript:void(0);">Register</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Breadcrumbs -->
+    @php
+        $breadcrumbPath = [
+            new \App\View\Components\BreadcrumbElement('Trang chủ', route('home')),
+            new \App\View\Components\BreadcrumbElement('Đăng ký', null),
+        ];
+    @endphp
+
+    <x-breadcrumb :elements="$breadcrumbPath"/>
 
     <!-- Shop Login -->
     <section class="shop login section">

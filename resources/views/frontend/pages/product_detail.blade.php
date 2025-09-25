@@ -14,25 +14,18 @@
 	<meta property="og:image" content="{{$product_detail->photo}}">
 	<meta property="og:description" content="{{$product_detail->description}}">
 @endsection
-@section('title','E-SHOP || PRODUCT DETAIL')
-@section('main-content')
 
-		<!-- Breadcrumbs -->
-		<div class="breadcrumbs">
-			<div class="container">
-				<div class="row">
-					<div class="col-12">
-						<div class="bread-inner">
-							<ul class="bread-list">
-								<li><a href="{{route('home')}}">Home<i class="ti-arrow-right"></i></a></li>
-								<li class="active"><a href="">Shop Details</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- End Breadcrumbs -->
+@section('title','E-SHOP || PRODUCT DETAIL')
+
+@section('main-content')
+    @php
+        $breadcrumbPath = [
+            new \App\View\Components\BreadcrumbElement('Trang chủ', route('home')),
+            new \App\View\Components\BreadcrumbElement('Thông tin hàng hóa', null),
+        ];
+    @endphp
+
+    <x-breadcrumb :elements="$breadcrumbPath"/>
 
 		<!-- Shop Single -->
 		<section class="shop single section">

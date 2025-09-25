@@ -200,7 +200,7 @@
                                 <li class="{{ Request::path() == 'home' ? 'active' : '' }}"><a
                                         href="{{ route('home') }}">Trang chủ</a></li>
                                 <li class="{{ Request::path() == 'about-us' ? 'active' : '' }}"><a
-                                        href="{{ route('about-us') }}">About us</a></li>
+                                        href="{{ route('about-us') }}">Giới thiệu</a></li>
                                 <li class="@if (Request::path() == 'product-grids' || Request::path() == 'product-lists') active @endif">
                                     <a href="{{ route('product-grids') }}">Sản phẩm</a><span class="new">Mới</span></li>
 

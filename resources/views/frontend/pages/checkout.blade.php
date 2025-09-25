@@ -3,23 +3,14 @@
 @section('title','Checkout page')
 
 @section('main-content')
+    @php
+        $breadcrumbPath = [
+            new \App\View\Components\BreadcrumbElement('Trang chủ', route('home')),
+            new \App\View\Components\BreadcrumbElement('Thanh toán', null),
+        ];
+    @endphp
 
-    <!-- Breadcrumbs -->
-    <div class="breadcrumbs">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="bread-inner">
-                        <ul class="bread-list">
-                            <li><a href="{{route('home')}}">Trang chủ<i class="ti-arrow-right"></i></a></li>
-                            <li class="active"><a href="javascript:void(0)">Thanh toán</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Breadcrumbs -->
+    <x-breadcrumb :elements="$breadcrumbPath"/>
 
     <!-- Start Checkout -->
     <section class="shop checkout section">

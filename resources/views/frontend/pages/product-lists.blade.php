@@ -3,24 +3,16 @@
 @section('title','E-SHOP || PRODUCT PAGE')
 
 @section('main-content')
+    @php
+        $breadcrumbPath = [
+            new \App\View\Components\BreadcrumbElement('Trang chủ', route('home')),
+            new \App\View\Components\BreadcrumbElement('Hàng hóa', null),
+        ];
+    @endphp
 
-		<!-- Breadcrumbs -->
-		<div class="breadcrumbs">
-			<div class="container">
-				<div class="row">
-					<div class="col-12">
-						<div class="bread-inner">
-							<ul class="bread-list">
-								<li><a href="{{route('home')}}">Home<i class="ti-arrow-right"></i></a></li>
-								<li class="active"><a href="javascript:void(0);">Shop List</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- End Breadcrumbs -->
-		<form action="{{route('shop.filter')}}" method="POST">
+    <x-breadcrumb :elements="$breadcrumbPath"/>
+
+    <form action="{{route('shop.filter')}}" method="POST">
 		@csrf
 			<!-- Product Style 1 -->
 			<section class="product-area shop-sidebar shop-list shop section">
