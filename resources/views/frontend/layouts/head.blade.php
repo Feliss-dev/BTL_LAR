@@ -9,6 +9,7 @@
 
 <!-- StyleSheet -->
 <link rel="manifest" href="/manifest.json">
+<link rel="stylesheet" href="{{asset('css/app.css')}}">
 <!-- Bootstrap -->
 <link rel="stylesheet" href="{{asset('frontend/css/bootstrap.css')}}">
 <!-- Magnific Popup -->

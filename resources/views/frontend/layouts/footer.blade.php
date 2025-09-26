@@ -149,12 +149,11 @@
 @stack('scripts')
 <script>
     setTimeout(function() {
-        // $('.alert').slideUp();
-        $('.alert').addClass('slide-upward');
+        $('.alert').css('top', '-100%');
 
-        // setTimeout(function() {
-        //     $('.alert').hide();
-        // }, 1000);
+        setTimeout(function() {
+            $('.alert').hide()
+        }, 750);
     }, 5000);
 
     $(function() {
