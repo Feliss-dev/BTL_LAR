@@ -2138,26 +2138,26 @@ Version:1.0
 	color:#666;
 }
 /* Category List */
-.shop-sidebar .categor-list {
+.shop-sidebar .category-list {
 	margin-top: 10px;
 }
-.shop-sidebar .categor-list li{
+.shop-sidebar .category-list li{
 
 }
-.shop-sidebar .categor-list li {
+.shop-sidebar .category-list li {
 	margin-bottom: 10px;
 }
-.shop-sidebar .categor-list li:last-child{
+.shop-sidebar .category-list li:last-child{
 	margin-bottom:0px;
 }
-.shop-sidebar .categor-list li a {
+.shop-sidebar .category-list li a {
 	display: inline-block;
 	color: #666;
 	font-weight: 400;
 	font-size: 14px;
 	text-transform: capitalize;
 }
-.shop-sidebar .categor-list li a:hover{
+.shop-sidebar .category-list li a:hover{
 	color:#F7941D;
 }
 /* Recent Post */
@@ -4144,28 +4144,28 @@ Version:1.0
 	color:#fff;
 }
 /* Category List */
-.main-sidebar .categor-list {
+.main-sidebar .category-list {
 	margin-top: 15px;
 }
-.main-sidebar .categor-list li{
+.main-sidebar .category-list li{
 
 }
-.main-sidebar .categor-list li {
+.main-sidebar .category-list li {
 	margin-bottom: 10px;
 }
-.main-sidebar .categor-list li:last-child{
+.main-sidebar .category-list li:last-child{
 	margin-bottom:0px;
 }
-.main-sidebar .categor-list li a {
+.main-sidebar .category-list li a {
 	display: inline-block;
 	color: #333;
 	font-size:14px;
 }
-.main-sidebar .categor-list li a:hover{
+.main-sidebar .category-list li a:hover{
 	color:#F7941D;
 	padding-left:7px;
 }
-.main-sidebar .categor-list li a i {
+.main-sidebar .category-list li a i {
 	display: inline-block;
 	margin-right:0px;
 	font-size: 9px;
@@ -4176,7 +4176,7 @@ Version:1.0
 	-moz-transition:all 0.4s ease;
 	transition:all 0.4s ease;
 }
-.main-sidebar .categor-list li a:hover i{
+.main-sidebar .category-list li a:hover i{
 	margin-right: 6px;
 	opacity:1;
 	visibility:visible;

@@ -1,6 +1,6 @@
 <div class="single-widget category">
     <h3 class="title">Danh mục</h3>
-    <ul class="categor-list">
+    <ul class="category-list">
         @php
             $parentCategories = App\Models\Category::getAllParentWithChild();
         @endphp

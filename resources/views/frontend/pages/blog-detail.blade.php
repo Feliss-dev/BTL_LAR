@@ -136,7 +136,7 @@
                         <!-- Single Widget -->
                         <div class="single-widget category">
                             <h3 class="title">Blog Categories</h3>
-                            <ul class="categor-list">
+                            <ul class="category-list">
                                 {{-- {{count(Helper::postCategoryList())}} --}}
                                 @foreach(\App\Http\Helper::postCategoryList('posts') as $cat)
                                 <li><a href="#">{{$cat->title}} </a></li>

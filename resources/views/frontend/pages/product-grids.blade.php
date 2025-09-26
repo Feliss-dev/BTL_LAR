@@ -21,70 +21,14 @@
                         <div class="shop-sidebar">
                             <x-category-panel/>
 
-                            <!-- Shop By Price -->
-                            <div class="single-widget range">
-                                <h3 class="title">Shop by Price</h3>
-                                <div class="price-filter">
-                                    <div class="price-filter-inner">
-                                        @php
-                                            $max = DB::table('products')->max('price');
-                                        @endphp
+                            <x-price-range-filter title="Shop by Price" min="0" max="{{\App\Models\Product::max('price')}}"/>
 
-                                        <div id="slider-range" data-min="0" data-max="{{$max}}"></div>
-                                        <div class="product_filter">
-                                        <button type="submit" class="filter_button">Filter</button>
-                                        <div class="label-input">
-                                            <span>Range:</span>
-                                            <input style="" type="text" id="amount" readonly/>
-                                            <input type="hidden" name="price_range" id="price_range" value="@if(!empty($_GET['price'])){{$_GET['price']}}@endif"/>
-                                        </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <x-recent-products/>
 
-                            </div>
-                                    <!--/ End Shop By Price -->
-                                <!-- Single Widget -->
-                                <div class="single-widget recent-post">
-                                    <h3 class="title">Recent post</h3>
-                                    {{-- {{dd($recent_products)}} --}}
-                                    @foreach($recent_products as $product)
-                                        <!-- Single Post -->
-                                        @php
-                                            $photo = explode(',',$product->photo);
-                                        @endphp
-                                        <div class="single-post first">
-                                            <div class="image">
-                                                <img src="{{$photo[0]}}" alt="{{$photo[0]}}">
-                                            </div>
-                                            <div class="content">
-                                                <h5><a href="{{route('product-detail',$product->slug)}}">{{$product->title}}</a></h5>
-                                                @php
-                                                    $org=($product->price-($product->price*$product->discount)/100);
-                                                @endphp
-                                                <p class="price"><del class="text-muted">{{number_format($product->price, 0, ',', '.')}} đ</del>   {{number_format($org, 0, ',', '.')}} đ</p>
-
-                                            </div>
-                                        </div>
-                                        <!-- End Single Post -->
-                                    @endforeach
-                                </div>
-                                <!--/ End Single Widget -->
-                                <!-- Single Widget -->
-                                <div class="single-widget category">
-                                    <h3 class="title">Brands</h3>
-                                    <ul class="categor-list">
-                                        @php
-                                            $brands = DB::table('brands')->orderBy('title','ASC')->where('status','active')->get();
-                                        @endphp
-                                        @foreach($brands as $brand)
-                                            <li><a href="{{route('product-brand',$brand->slug)}}">{{$brand->title}}</a></li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                                <!--/ End Single Widget -->
+                            <x-brands/>
                         </div>
                     </div>
+
                     <div class="col-lg-9 col-md-8 col-12">
                         <div class="row">
                             <div class="col-12">
@@ -92,7 +36,7 @@
                                 <div class="shop-top">
                                     <div class="shop-shorter">
                                         <div class="single-shorter">
-                                            <label>Show :</label>
+                                            <label>Show</label>
                                             <select class="show" name="show" onchange="this.form.submit();">
                                                 <option value="">Default</option>
                                                 <option value="9" @if(!empty($_GET['show']) && $_GET['show']=='9') selected @endif>09</option>
@@ -102,7 +46,7 @@
                                             </select>
                                         </div>
                                         <div class="single-shorter">
-                                            <label>Sort By :</label>
+                                            <label>Sort By</label>
                                             <select class='sortBy' name='sortBy' onchange="this.form.submit();">
                                                 <option value="">Default</option>
                                                 <option value="title" @if(!empty($_GET['sortBy']) && $_GET['sortBy']=='title') selected @endif>Name</option>

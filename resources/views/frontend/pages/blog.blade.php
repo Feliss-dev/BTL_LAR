@@ -67,7 +67,7 @@
                         <!-- Single Widget -->
                         <div class="single-widget category">
                             <h3 class="title">Blog Categories</h3>
-                            <ul class="categor-list">
+                            <ul class="category-list">
                                 @if(!empty($_GET['category']))
                                     @php
                                         $filter_cats = explode(',',$_GET['category']);
