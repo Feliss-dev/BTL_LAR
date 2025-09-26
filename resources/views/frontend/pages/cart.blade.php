@@ -46,7 +46,7 @@
 												<p class="product-des">{!!($cart['summary']) !!}</p>
 											</td>
 
-											<td class="price" data-title="Price"><span>{{number_format($cart->price, 2, ',', '.')}} đ</span></td>
+											<td class="price" data-title="Price"><span>{{number_format($cart->price, 0, ',', '.')}} đ</span></td>
 
 											<td class="qty" data-title="Qty"><!-- Input Order -->
 												<div class="input-group">

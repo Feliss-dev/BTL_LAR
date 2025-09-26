@@ -18,6 +18,9 @@
     use App\Http\Controllers\HomeController;
     use \UniSharp\LaravelFilemanager\Lfm;
     use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\MomoController;
+use App\Http\Controllers\PaymentController;
+
     /*
     |--------------------------------------------------------------------------
     | Web Routes
@@ -210,3 +213,19 @@
     Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
         Lfm::routes();
     });
+
+Route::get('payment', [PayPalController::class, 'payment'])->name('payment');
+Route::get('cancel', [PayPalController::class, 'cancel'])->name('payment.cancel');
+Route::get('payment/success', [PayPalController::class, 'success'])->name('payment.success');
+
+// MoMo payment routes
+Route::get('momo/payment', [MomoController::class, 'payment'])->name('momo.payment');
+Route::get('momo/callback', [MomoController::class, 'callback'])->name('momo.callback');
+Route::post('momo/ipn', [MomoController::class, 'ipn'])->name('momo.ipn');
+
+// Payment failed and retry routes
+Route::get('payment/failed', [PaymentController::class, 'failed'])->name('payment.failed');
+Route::get('payment/retry/{orderId}', [PaymentController::class, 'retry'])->name('payment.retry');
+Route::post('payment/retry', [PaymentController::class, 'processRetry'])->name('payment.process-retry');
+
+Route::post('/buy-now', [CartController::class, 'buyNow'])->name('buy-now')->middleware('user');
