@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
@@ -31,16 +32,11 @@ class Category extends Model
     public static function getAllParentWithChild(){
         return Category::with('child_cat')->where('is_parent',1)->where('status','active')->orderBy('title','ASC')->get();
     }
-    public function products(){
+    public function products() : HasMany {
         return $this->hasMany('App\Models\Product','cat_id','id')->where('status','active');
     }
     public function sub_products(){
         return $this->hasMany('App\Models\Product','child_cat_id','id')->where('status','active');
-    }
-    public static function getProductByCat($slug){
-        // dd($slug);
-        return Category::with('products')->where('slug',$slug)->first();
-        // return Product::where('cat_id',$id)->where('child_cat_id',null)->paginate(10);
     }
     public static function getProductBySubCat($slug){
         // return $slug;
