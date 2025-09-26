@@ -4,8 +4,8 @@
             $photo = explode(',', $product->photo);
         @endphp
 
-        <img class="default-img w-100 h-100" src="{{$photo[0]}}" alt="{{$photo[0]}}" style="object-fit: cover">
-        <img class="hover-img w-100 h-100" src="{{$photo[0]}}" alt="{{$photo[0]}}" style="object-fit: cover">
+        <img class="default-img w-100 h-100" src="{{asset($photo[0])}}" alt="{{$photo[0]}}" style="object-fit: cover">
+        <img class="hover-img w-100 h-100" src="{{asset($photo[0])}}" alt="{{$photo[0]}}" style="object-fit: cover">
 
         @if ($product->stock <= 0)
             <span class="out-of-stock">Sale out</span>
