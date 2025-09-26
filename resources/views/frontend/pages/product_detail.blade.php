@@ -313,27 +313,28 @@
                             @if($data->id !==$product_detail->id)
                                 <!-- Start Single Product -->
                                 <div class="single-product">
-                                    <div class="product-img">
-										<a href="{{route('product-detail',$data->slug)}}">
-											@php
-												$photo = explode(',',$data->photo);
-											@endphp
-                                            <img class="default-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
-                                            <img class="hover-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
-                                            <span class="price-dec">{{$data->discount}} % Off</span>
-                                                                    {{-- <span class="out-of-stock">Hot</span> --}}
-                                        </a>
-                                        <div class="button-head">
-                                            <div class="product-action">
-                                                <a data-toggle="modal" data-target="#modelExample" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
-                                                <a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
-                                                <a title="Compare" href="#"><i class="ti-bar-chart-alt"></i><span>Add to Compare</span></a>
-                                            </div>
-                                            <div class="product-action-2">
-                                                <a title="Add to cart" href="#">Add to cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <x-product-image :product="$data"/>
+{{--                                    <div class="product-img">--}}
+{{--										<a href="{{route('product-detail',$data->slug)}}">--}}
+{{--											@php--}}
+{{--												$photo = explode(',',$data->photo);--}}
+{{--											@endphp--}}
+{{--                                            <img class="default-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">--}}
+{{--                                            <img class="hover-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">--}}
+{{--                                            <span class="price-dec">{{$data->discount}} % Off</span>--}}
+{{--                                                                    --}}{{-- <span class="out-of-stock">Hot</span> --}}
+{{--                                        </a>--}}
+{{--                                        <div class="button-head">--}}
+{{--                                            <div class="product-action">--}}
+{{--                                                <a data-toggle="modal" data-target="#modelExample" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>--}}
+{{--                                                <a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>--}}
+{{--                                                <a title="Compare" href="#"><i class="ti-bar-chart-alt"></i><span>Add to Compare</span></a>--}}
+{{--                                            </div>--}}
+{{--                                            <div class="product-action-2">--}}
+{{--                                                <a title="Add to cart" href="#">Add to cart</a>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
                                     <div class="product-content">
                                         <h3><a href="{{route('product-detail',$data->slug)}}">{{$data->title}}</a></h3>
                                         <div class="product-price">
