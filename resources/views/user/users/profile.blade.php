@@ -5,11 +5,8 @@
 @section('main-content')
 
 <div class="card shadow mb-4">
-    <div class="row">
-        <div class="col-md-12">
-           @include('backend.layouts.notification')
-        </div>
-    </div>
+    <x-alert-container/>
+
    <div class="card-header py-3">
      <h4 class=" font-weight-bold">Profile</h4>
      <ul class="breadcrumbs">
@@ -24,7 +21,7 @@
                     <div class="image">
                         @if($profile->photo)
                         <img class="card-img-top img-fluid roundend-circle mt-4" style="border-radius:50%;height:80px;width:80px;margin:auto;" src="{{$profile->photo}}" alt="profile picture">
-                        @else 
+                        @else
                         <img class="card-img-top img-fluid roundend-circle mt-4" style="border-radius:50%;height:80px;width:80px;margin:auto;" src="{{asset('backend/img/avatar.png')}}" alt="profile picture">
                         @endif
                     </div>
@@ -45,7 +42,7 @@
                       <span class="text-danger">{{$message}}</span>
                       @enderror
                       </div>
-              
+
                       <div class="form-group">
                           <label for="inputEmail" class="col-form-label">Email</label>
                         <input id="inputEmail" disabled type="email" name="email" placeholder="Enter email"  value="{{$profile->email}}" class="form-control">
@@ -53,7 +50,7 @@
                         <span class="text-danger">{{$message}}</span>
                         @enderror
                       </div>
-              
+
                       <div class="form-group">
                       <label for="inputPhoto" class="col-form-label">Photo</label>
                       <div class="input-group">
@@ -123,7 +120,7 @@
         font-size: 14px;
         padding-right:8px;
     }
-  </style> 
+  </style>
 
 @push('scripts')
 <script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>

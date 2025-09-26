@@ -2,11 +2,8 @@
 @section('title','E-SHOP || All Notifications')
 @section('main-content')
 <div class="card">
-    <div class="row">
-        <div class="col-md-12">
-           @include('backend.layouts.notification')
-        </div>
-    </div>
+    <x-alert-container/>
+
   <h5 class="card-header">Notifications</h5>
   <div class="card-body">
     @if(count(Auth::user()->Notifications)>0)

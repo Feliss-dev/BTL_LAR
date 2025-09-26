@@ -3,11 +3,8 @@
 @section('main-content')
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
-        <div class="row">
-            <div class="col-md-12">
-                @include('backend.layouts.notification')
-            </div>
-        </div>
+        <x-alert-container/>
+
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary float-left">Danh sách thương hiệu</h6>
             <a href="{{ route('brand.create') }}" class="btn btn-primary btn-sm float-right" data-toggle="tooltip"
@@ -74,7 +71,7 @@
                             </div>
                             <div class="modal-body">
                               <form method="post" action="{{ route('banners.destroy',$user->id) }}">
-                                @csrf 
+                                @csrf
                                 @method('delete')
                                 <button type="submit" class="btn btn-danger" style="margin:auto; text-align:center">Parmanent delete user</button>
                               </form>
