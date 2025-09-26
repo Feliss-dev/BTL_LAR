@@ -62,7 +62,7 @@
                                                 @php
                                                     $org=($product->price-($product->price*$product->discount)/100);
                                                 @endphp
-                                                <p class="price"><del class="text-muted">${{number_format($product->price,2)}}</del>   ${{number_format($org,2)}}  </p>
+                                                <p class="price"><del class="text-muted">{{number_format($product->price, 0, ',', '.')}} đ</del>   {{number_format($org, 0, ',', '.')}} đ</p>
 
                                             </div>
                                         </div>
@@ -206,7 +206,7 @@
                                         @php
                                             $after_discount=($product->price-($product->price*$product->discount)/100);
                                         @endphp
-                                        <h3><small><del class="text-muted">${{number_format($product->price,2)}}</del></small>    ${{number_format($after_discount,2)}}  </h3>
+                                        <h3><small><del class="text-muted">{{number_format($product->price, 0, ',', '.')}} đ</del></small>    {{number_format($after_discount, 0, ',', '.')}} đ  </h3>
                                         <div class="quickview-peragraph">
                                             <p>{!! html_entity_decode($product->summary) !!}</p>
                                         </div>

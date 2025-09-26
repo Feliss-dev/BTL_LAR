@@ -41,7 +41,7 @@
                                             </p>
                                             <p class="product-des">{!! $wishlist['summary'] !!}</p>
                                         </td>
-                                        <td class="total-amount" data-title="Total"><span>${{ $wishlist['amount'] }}</span>
+                                        <td class="total-amount" data-title="Total"><span>{{ number_format($wishlist['amount'], 0, ',', '.') }} đ</span>
                                         </td>
                                         <td><a href="{{ route('add-to-cart', $wishlist->product['slug']) }}"
                                                 class='btn text-white'>Thêm vào giỏ hàng</a></td>

@@ -80,38 +80,35 @@
 											</div>
 										</div>
 									</div>
-									{{-- <ul class="check-box-list">
-										<li>
-											<label class="checkbox-inline" for="1"><input name="news" id="1" type="checkbox">$20 - $50<span class="count">(3)</span></label>
-										</li>
-										<li>
-											<label class="checkbox-inline" for="2"><input name="news" id="2" type="checkbox">$50 - $100<span class="count">(5)</span></label>
-										</li>
-										<li>
-											<label class="checkbox-inline" for="3"><input name="news" id="3" type="checkbox">$100 - $250<span class="count">(8)</span></label>
-										</li>
-									</ul> --}}
 								</div>
 								<!--/ End Shop By Price -->
+
                                 <!-- Single Widget -->
                                 <div class="single-widget recent-post">
                                     <h3 class="title">Recent post</h3>
-                                    {{-- {{dd($recent_products)}} --}}
+
                                     @foreach($recent_products as $product)
                                         <!-- Single Post -->
                                         @php
                                             $photo = explode(',',$product->photo);
                                         @endphp
+
                                         <div class="single-post first">
                                             <div class="image">
                                                 <img src="{{$photo[0]}}" alt="{{$photo[0]}}">
                                             </div>
                                             <div class="content">
                                                 <h5><a href="{{route('product-detail',$product->slug)}}">{{$product->title}}</a></h5>
-                                                @php
-                                                    $org=($product->price-($product->price*$product->discount)/100);
-                                                @endphp
-                                                <p class="price"><del class="text-muted">${{number_format($product->price,2)}}</del>   ${{number_format($org,2)}}  </p>
+
+                                                @if ($product->discount > 0)
+                                                    @php
+                                                        $org=($product->price-($product->price*$product->discount)/100);
+                                                    @endphp
+
+                                                    <p class="price"><del class="text-muted">{{number_format($product->price, 0, ',', '.')}} đ</del>   {{number_format($org, 0, ',', '.')}} đ</p>
+                                                @else
+                                                    <p class="price">{{number_format($product->price, 0, ',', '.')}} đ</p>
+                                                @endif
                                             </div>
                                         </div>
                                         <!-- End Single Post -->
@@ -204,8 +201,8 @@
 																@php
 																	$after_discount=($product->price-($product->price*$product->discount)/100);
 																@endphp
-																<span>${{number_format($after_discount,2)}}</span>
-																<del>${{number_format($product->price,2)}}</del>
+																<span>{{number_format($after_discount, 0, ',', '.')}} đ</span>
+																<del>{{number_format($product->price, 0, ',', '.')}} đ</del>
 															</div>
 															<h3 class="title"><a href="{{route('product-detail',$product->slug)}}">{{$product->title}}</a></h3>
 														{{-- <p>{!! html_entity_decode($product->summary) !!}</p> --}}
@@ -297,7 +294,7 @@
 												@php
 													$after_discount=($product->price-($product->price*$product->discount)/100);
 												@endphp
-												<h3><small><del class="text-muted">${{number_format($product->price,2)}}</del></small>    ${{number_format($after_discount,2)}}  </h3>
+												<h3><small><del class="text-muted">{{number_format($product->price, 0, ',', '.')}} đ</del></small>    {{number_format($after_discount, 0, ',', '.')}} đ</h3>
 												<div class="quickview-peragraph">
 													<p>{!! html_entity_decode($product->summary) !!}</p>
 												</div>
