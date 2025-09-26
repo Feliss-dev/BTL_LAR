@@ -18,7 +18,7 @@ class ProductSeeder extends Seeder
     {
         $productImages = Storage::disk('public')->files('photos/1/Products');
 
-        Product::factory()->count(125)->sequence(function ($sequence) use ($productImages, $parentCategoryIds, $childCategoryIds) {
+        Product::factory()->count(125)->sequence(function ($sequence) use ($productImages) {
             $image = $productImages[array_rand($productImages)];
 
             return [
