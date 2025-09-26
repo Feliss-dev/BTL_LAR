@@ -77,7 +77,7 @@
 
                         <div class="row">
                             <div class="col-md-12 justify-content-center d-flex">
-                                {{$products->appends($_GET)->links()}}
+                                {{$products->appends($_GET)->links('vendor.pagination.bootstrap-5')}}
                             </div>
                         </div>
                     </div>
