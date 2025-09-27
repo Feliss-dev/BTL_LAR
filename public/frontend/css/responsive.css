@@ -88,7 +88,8 @@ Version:1.0
 .header.shop .search-bar {
 	width: 445px;
 }
-.header.shop .search-bar input {
+
+.search-input {
 	padding: 0 52px 0 20px;
 	width: 264px;
 	height: auto;
@@ -515,7 +516,8 @@ Version:1.0
 .header.shop .search-bar {
 	width: 445px;
 }
-.header.shop .search-bar input {
+
+.search-input {
 	padding: 0 52px 0 20px;
 	width: 264px;
 }
@@ -1247,7 +1249,8 @@ Version:1.0
 .header.shop .search-bar {
 	width: 445px;
 }
-.header.shop .search-bar input {
+
+.search-input {
 	padding: 0 52px 0 20px;
 	width: 264px;
 }

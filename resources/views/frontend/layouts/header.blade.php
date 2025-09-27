@@ -35,20 +35,14 @@
                         <!--/ End Search Form -->
                         <div class="mobile-nav"></div>
                     </div>
-                    <div class="col-lg-8 col-md-7 col-12">
+                    <div class="col-12">
                         <div class="search-bar-top">
-                            <div class="search-bar">
-                                <select>
-                                    <option>Danh mục</option>
-                                    @foreach (Helper::getAllCategory() as $cat)
-                                        <option>{{ $cat->title }}</option>
-                                    @endforeach
-                                </select>
-
-                                <form method="POST" action="{{ route('products.search') }}">
+                            <div class="d-flex flex-row">
+                                <form method="POST" action="{{ route('products.search') }}" class="d-flex flex-row w-100">
                                     @csrf
-                                    <input name="search" placeholder="Search Products Here....." type="search">
-                                    <button class="btnn" type="submit"><i class="ti-search"></i></button>
+                                    <input name="search" placeholder="Nhập tên sản phẩm cần tìm" type="search" class="search-input flex-fill">
+
+                                    <button class="search-button flex-grow-0 flex-shrink-0" type="submit"><i class="ti-search"></i></button>
                                 </form>
                             </div>
                         </div>
