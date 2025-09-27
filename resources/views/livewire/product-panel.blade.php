@@ -2,7 +2,6 @@
     $('#price_range').val('0-{{$maxPrice}}').trigger('change');
 
     $('#price_range').change(function (e) {
-        console.log('Value changed');
         $wire.$set('priceRange', e.target.value);
     });
 ">
@@ -22,7 +21,7 @@
                                 <li>
                                     @foreach($parentCategories as $parentCategory)
                                         <label class="d-flex flex-row align-items-center gap-1">
-                                            <input type="checkbox" style="flex: none" value="{{ $parentCategory->id }}" wire:model.live="categoriesFilter">
+                                            <input type="checkbox" style="flex: none" value="{{ $parentCategory->slug }}" wire:model.live="categoriesFilter">
 
                                             {{$parentCategory->title}}
                                         </label>
@@ -31,7 +30,7 @@
                                             <ul>
                                                 @foreach ($parentCategory->child_cat as $childCategory)
                                                     <label class="d-flex flex-row align-items-center gap-3">
-                                                        <input type="checkbox" style="flex: none" value="{{ $childCategory->id }}" wire:model.live="categoriesFilter">
+                                                        <input type="checkbox" style="flex: none" value="{{ $childCategory->slug }}" wire:model.live="categoriesFilter">
 
                                                         {{$childCategory->title}}
                                                     </label>
@@ -48,7 +47,7 @@
                         <h3 class="title">Lọc theo giá cả</h3>
                         <div class="price-filter">
                             <div class="price-filter-inner">
-                                <div id="slider-range" data-min="0" data-max="{{ $maxPrice }}" onchange="console.log(e.target.value)"></div>
+                                <div id="slider-range" data-min="0" data-max="{{ $maxPrice }}"></div>
 
                                 <div class="product_filter">
                                     <div class="label-input">
@@ -67,7 +66,7 @@
                         <ul class="category-list">
                             @foreach(\App\Models\Brand::get() as $brand)
                                 <label class="d-flex flex-row align-items-center gap-1">
-                                    <input type="checkbox" style="flex: none" value="{{ $brand->id }}" wire:model.live="brandsFilter">
+                                    <input type="checkbox" style="flex: none" value="{{ $brand->slug }}" wire:model.live="brandsFilter">
 
                                     {{$brand->title}}
                                 </label>

@@ -44,7 +44,8 @@
                                         <option>{{ $cat->title }}</option>
                                     @endforeach
                                 </select>
-                                <form method="POST" action="{{ route('product.search') }}">
+
+                                <form method="POST" action="{{ route('products.search') }}">
                                     @csrf
                                     <input name="search" placeholder="Search Products Here....." type="search">
                                     <button class="btnn" type="submit"><i class="ti-search"></i></button>
@@ -201,10 +202,30 @@
                                         href="{{ route('home') }}">Trang chủ</a></li>
                                 <li class="{{ Request::path() == 'about-us' ? 'active' : '' }}"><a
                                         href="{{ route('about-us') }}">Giới thiệu</a></li>
-                                <li class="@if (Request::path() == 'product-grids' || Request::path() == 'product-lists') active @endif">
-                                    <a href="{{ route('product-grids') }}">Sản phẩm</a><span class="new">Mới</span></li>
+                                <li class="@if (Request::path() == 'products') active @endif">
+                                    <a href="{{ route('products') }}">Sản phẩm</a><span class="new">Mới</span></li>
 
-                                {{ Helper::getHeaderCategory() }}
+                                <li>
+                                    <a href="javascript:void(0);">Danh mục<i class="ti-angle-down"></i></a>
+
+                                    <ul class="dropdown border-0 shadow">
+                                        @foreach (\App\Models\Category::getAllParentWithChild() as $cat_info)
+                                            <li>
+                                                <a href="{{ route('products', [ 'categories' => $cat_info->slug ]) }}">{{ $cat_info->title }}</a>
+
+                                                @if ($cat_info->child_cat->count() > 0)
+                                                    <ul class="dropdown sub-dropdown border-0 shadow">
+                                                        @foreach ($cat_info->child_cat as $sub_menu)
+                                                            <li>
+                                                                <a href="{{ route('products', [ 'categories' => implode(',', [ $cat_info->slug, $sub_menu->slug ]) ]) }}">{{ $sub_menu->title }}</a>
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                               @endif
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </li>
 
                                 <li class="{{ Request::path() == 'blog' ? 'active' : '' }}"><a
                                         href="{{ route('blog') }}">Blog</a></li>

@@ -53,7 +53,7 @@
                             @else
                                 <tr>
                                     <td class="text-center">
-                                        Không còn danh mục ưa thích nào <a href="{{ route('product-grids') }}"
+                                        Không còn danh mục ưa thích nào <a href="{{ route('products') }}"
                                             style="color:blue;">Tiếp tục mua sắm</a>
                                     </td>
                                 </tr>

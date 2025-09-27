@@ -71,17 +71,17 @@
     Route::get('/contact', [FrontendController::class, 'contact'])->name('contact');
     Route::post('/contact/message', [MessageController::class, 'store'])->name('contact.store');
     Route::get('product-detail/{slug}', [FrontendController::class, 'productDetail'])->name('product-detail');
-    Route::post('/product/search', [FrontendController::class, 'productSearch'])->name('product.search');
-    Route::get('/product-cat/{slug}', [FrontendController::class, 'productCat'])->name('product-cat');
-    Route::get('/product-sub-cat/{slug}/{sub_slug}', [FrontendController::class, 'productSubCat'])->name('product-sub-cat');
-    Route::get('/product-brand/{slug}', [FrontendController::class, 'productBrand'])->name('product-brand');
-// Cart section
+
+    // Cart section
     Route::get('/add-to-cart/{slug}', [CartController::class, 'addToCart'])->name('add-to-cart')->middleware('user');
     Route::post('/add-to-cart', [CartController::class, 'singleAddToCart'])->name('single-add-to-cart')->middleware('user');
     Route::get('cart-delete/{id}', [CartController::class, 'cartDelete'])->name('cart-delete');
     Route::post('cart-update', [CartController::class, 'cartUpdate'])->name('cart.update');
 
     Route::get('/products', [FrontendController::class, 'products'])->name('products');
+    Route::post('/products/search', function (\Illuminate\Http\Request $request) {
+        return redirect()->route('products', [ 'search' => $request->search ]);
+    })->name('products.search');
 
     Route::get('/cart', function () {
         return view('frontend.pages.cart');
@@ -97,12 +97,10 @@
     Route::get('order/pdf/{id}', [OrderController::class, 'pdf'])->name('order.pdf');
     Route::get('/income', [OrderController::class, 'incomeChart'])->name('product.order.income');
 // Route::get('/user/chart',[AdminController::class, 'userPieChart'])->name('user.piechart');
-    Route::get('/product-grids', [FrontendController::class, 'productGrids'])->name('product-grids');
-    Route::get('/product-lists', [FrontendController::class, 'productLists'])->name('product-lists');
-    Route::match(['get', 'post'], '/filter', [FrontendController::class, 'productFilter'])->name('shop.filter');
+
 // Order Track
     Route::get('/product/track', [OrderController::class, 'orderTrack'])->name('order.track');
-    Route::post('product/track/order', [OrderController::class, 'productTrackOrder'])->name('product.track.order');
+    Route::post('/product/track/order', [OrderController::class, 'productTrackOrder'])->name('product.track.order');
 // Blog
     Route::get('/blog', [FrontendController::class, 'blog'])->name('blog');
     Route::get('/blog-detail/{slug}', [FrontendController::class, 'blogDetail'])->name('blog.detail');
