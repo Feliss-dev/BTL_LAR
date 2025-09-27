@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="All Blade templates" pattern="file:*.blade.php" />
+</component>

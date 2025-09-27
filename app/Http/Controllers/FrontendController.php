@@ -54,6 +54,12 @@ class FrontendController extends Controller
         return view('frontend.pages.product_detail')->with('product_detail',$product_detail);
     }
 
+    public function products() {
+        return view('frontend.pages.products', [
+            'recent_products' => Product::where('status','active')->orderBy('id','DESC')->limit(3)->get()
+        ]);
+    }
+
     public function productGrids(){
         $products=Product::query();
 
@@ -235,7 +241,7 @@ class FrontendController extends Controller
 
     public function productSubCat(Request $request){
         // $products = Category::getProductBySubCat($request->sub_slug);
-        $products = Category::where('slug', $request->slug)->first()->sub_products();
+        $products = Category::where('slug', $request->sub_slug)->first()->sub_products();
 
         // return $products;
         $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();

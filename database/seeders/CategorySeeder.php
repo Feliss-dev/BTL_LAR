@@ -107,7 +107,7 @@ class CategorySeeder extends Seeder
                 'title' => 'Đồng hồ điện tử',
                 'slug' => 'digital',
                 'summary' => 'Đồng hồ điện tử',
-                'photo' => '/storage/photos/1/Category/dong_ho_dien-tu.jpg',
+                'photo' => '/storage/photos/1/Category/dong_ho_dien_tu.jpg',
                 'is_parent' => false,
                 'status' => 'active',
                 'parent_id' => $parents[3]->id,

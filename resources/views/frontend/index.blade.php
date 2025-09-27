@@ -87,7 +87,7 @@
                             @endphp
 
                             @if($categories)
-                                <button class="btn" style="background:black"data-filter="*">
+                                <button class="btn" style="background:black" data-filter="*">
                                     Tất cả
                                 </button>
 

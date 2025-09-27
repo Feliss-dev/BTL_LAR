@@ -81,6 +81,8 @@
     Route::get('cart-delete/{id}', [CartController::class, 'cartDelete'])->name('cart-delete');
     Route::post('cart-update', [CartController::class, 'cartUpdate'])->name('cart.update');
 
+    Route::get('/products', [FrontendController::class, 'products'])->name('products');
+
     Route::get('/cart', function () {
         return view('frontend.pages.cart');
     })->name('cart');

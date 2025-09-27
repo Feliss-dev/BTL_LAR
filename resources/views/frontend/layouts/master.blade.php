@@ -2,6 +2,8 @@
 <html lang="zxx">
 <head>
 	@include('frontend.layouts.head')
+
+    @livewireStyles
 </head>
 <body class="js">
 
@@ -24,6 +26,6 @@
 	@yield('main-content')
 
 	@include('frontend.layouts.footer')
-
+    @livewireScripts
 </body>
 </html>

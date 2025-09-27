@@ -28,7 +28,7 @@ class CreateProductsTable extends Migration
             $table->float('discount')->default(0);
             $table->boolean('is_featured')->default(false);
             $table->unsignedBigInteger('cat_id');
-            $table->unsignedBigInteger('child_cat_id');
+            $table->unsignedBigInteger('child_cat_id')->nullable();
             $table->unsignedBigInteger('brand_id')->nullable();
 
             $table->foreign('brand_id')->references('id')->on('brands')->onDelete('SET NULL');
