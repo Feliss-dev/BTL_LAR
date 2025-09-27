@@ -301,7 +301,10 @@ window.onload = () => {
 	/*====================================
 	18. Nice Select JS
 	======================================*/
-	$('select').niceSelect();
+	// $('select').select2({
+    //     minimumResultsForSearch: -1
+    // });
+    $('select').niceSelect();
 
 	/*=====================================
 	 Others JS

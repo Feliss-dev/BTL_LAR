@@ -26,6 +26,7 @@
     "dependencies": {
         "laravel-echo": "^2.2.3",
         "pusher-js": "^8.4.0",
-        "sass-migrator": "^2.4.2"
+        "sass-migrator": "^2.4.2",
+        "select2": "^4.1.0-rc.0"
     }
 }

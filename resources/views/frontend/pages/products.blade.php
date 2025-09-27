@@ -233,7 +233,7 @@
                     values: price,
                     slide: function (event, ui) {
                         $("#amount").val(currency + ui.values[0] + " -  "+currency+ ui.values[1]);
-                        $("#price_range").val(ui.values[0] + "-" + ui.values[1]);
+                        $("#price_range").val(ui.values[0] + "-" + ui.values[1]).trigger('change');
                     }
                 });
             }

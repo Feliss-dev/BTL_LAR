@@ -2046,9 +2046,9 @@ Version:1.0
    Start Shop Sidebar CSS
 ========================================*/
 .shop-sidebar .single-widget {
-	margin-top: 30px;
+	margin-top: 1rem;
 	background: #F6F7FB;
-	padding: 30px;
+	padding: 1rem;
 }
 .shop-sidebar .single-widget:first-child {
 	margin-top: 0;

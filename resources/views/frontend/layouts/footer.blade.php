@@ -129,8 +129,6 @@
 <script src="{{ asset('frontend/js/waypoints.min.js') }}"></script>
 <!-- Countdown JS -->
 <script src="{{ asset('frontend/js/finalcountdown.min.js') }}"></script>
-<!-- Nice Select JS -->
-<script src="{{ asset('frontend/js/nicesellect.js') }}"></script>
 <!-- Flex Slider JS -->
 <script src="{{ asset('frontend/js/flex-slider.js') }}"></script>
 <!-- ScrollUp JS -->
@@ -141,7 +139,10 @@
 <script src="{{ asset('frontend/js/isotope/isotope.pkgd.min.js') }}"></script>
 <!-- Easing JS -->
 <script src="{{ asset('frontend/js/easing.js') }}"></script>
-
+<!-- Select2 -->
+{{--<script src="{{ asset('frontend/js/select2.full.min.js') }}"></script>--}}
+<!-- Nice Select -->
+<script src="{{ asset('frontend/js/nicesellect.js') }}"></script>
 <!-- Active JS -->
 <script src="{{ asset('frontend/js/active.js') }}"></script>
 

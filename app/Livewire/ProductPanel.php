@@ -15,17 +15,22 @@ class ProductPanel extends Component
 
     public const PAGINATE_COUNT = 9;
 
-    public string $displayType = 'grid';
-    public ?array $categoriesFilter = null;
-    public ?array $brandsFilter = null;
-    public ?int $priceMin = null;
-    public ?int $priceMax = null;
+    public string $viewMode = 'grid';
+    public $categoriesFilter = [];
+    public $brandsFilter = [];
+    public $priceRange = null;
 
     public string $sortProperty = 'id';
     public string $direction = 'desc';
 
+    public function updating($property, $value) {
+        Log::debug("Updating property: " . $property . ": " . $value);
+    }
+
     public function updated($property) {
-        Log::debug("Changed property: " . $property);
+        if (str_starts_with($property, 'categoriesFilter')) {
+            Log::debug("Current categories: [" . implode(', ', $this->categoriesFilter) . "]");
+        }
     }
 
     public function render() {
@@ -44,12 +49,8 @@ class ProductPanel extends Component
 
         // TODO: Size and Condition filter
 
-        if ($this->priceMin && $this->priceMax) {
-            $query->whereBetween('price', [$this->priceMin, $this->priceMax]);
-        } else if ($this->priceMin) {
-            $query->where('price', '>=', $this->priceMin);
-        } else if ($this->priceMax) {
-            $query->where('price', '<=', $this->priceMax);
+        if ($this->priceRange) {
+            $query->whereBetween('price', array_slice(explode('-', $this->priceRange), 0, 2));
         }
 
         switch ($this->sortProperty) {
@@ -71,8 +72,11 @@ class ProductPanel extends Component
                 break;
         }
 
+        $maxPrice = Product::max('price');
+
         return view('livewire.product-panel', [
             'products' => $query->paginate(static::PAGINATE_COUNT),
+            'maxPrice' => $maxPrice,
         ]);
     }
 }

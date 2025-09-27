@@ -21,7 +21,7 @@
 <!-- Themify Icons -->
 <link rel="stylesheet" href="{{asset('frontend/css/themify-icons.css')}}">
 <!-- Nice Select CSS -->
-<link rel="stylesheet" href="{{asset('frontend/css/niceselect.css')}}">
+<link rel="stylesheet" href="{{asset('frontend/css/nice-select.css')}}">
 <!-- Animate CSS -->
 <link rel="stylesheet" href="{{asset('frontend/css/animate.css')}}">
 <!-- Flex Slider CSS -->

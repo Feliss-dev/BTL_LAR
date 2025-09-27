@@ -6,3 +6,21 @@
 
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// select2
+@import '~select2/src/scss/core';
+
+.view-mode-button {
+    padding: 0.5rem;
+    transition: background-color 0.25s linear, color 0.25s linear;
+}
+
+.view-mode-button:hover {
+    background-color: orange;
+    color: white;
+}
+
+.view-mode-button-active {
+    background-color: orange;
+    color: white;
+}

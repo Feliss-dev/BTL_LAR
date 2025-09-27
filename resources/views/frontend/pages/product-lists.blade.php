@@ -68,7 +68,6 @@
                         <div class="row">
                             @if(count($products))
                                 @foreach($products as $product)
-                                    {{-- {{$product}} --}}
                                     <!-- Start Single List -->
                                     <div class="col-12">
                                         <div class="row">
@@ -115,7 +114,7 @@
     </form>
     <!-- Modal -->
     @if($products)
-        @foreach($products as $key=>$product)
+        @foreach($products as $product)
             <div class="modal fade" id="{{$product->id}}" tabindex="-1" role="dialog">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
