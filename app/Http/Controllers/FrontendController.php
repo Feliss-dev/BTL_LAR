@@ -10,11 +10,11 @@ use App\Models\Post;
 use App\Models\Cart;
 use App\Models\Brand;
 use App\User;
-use Auth;
-use Session;
-use Newsletter;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use Spatie\Newsletter\Facades\Newsletter;
 use DB;
-use Hash;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 class FrontendController extends Controller
@@ -164,11 +164,11 @@ class FrontendController extends Controller
         $data= $request->all();
         if(Auth::attempt(['email' => $data['email'], 'password' => $data['password'],'status'=>'active'])){
             Session::put('user',$data['email']);
-            request()->session()->flash('success','Successfully login');
+            Session::flash('success','Successfully login');
             return redirect()->route('home');
         }
         else{
-            request()->session()->flash('error','Invalid email and password pleas try again!');
+            Session::flash('error','Invalid email and password pleas try again!');
             return redirect()->back();
         }
     }
@@ -176,7 +176,7 @@ class FrontendController extends Controller
     public function logout(){
         Session::forget('user');
         Auth::logout();
-        request()->session()->flash('success','Logout successfully');
+        Session::flash('success','Logout successfully');
         return back();
     }
 
@@ -195,11 +195,11 @@ class FrontendController extends Controller
         $check=$this->create($data);
         Session::put('user',$data['email']);
         if($check){
-            request()->session()->flash('success','Successfully registered');
+            Session::flash('success','Successfully registered');
             return redirect()->route('home');
         }
         else{
-            request()->session()->flash('error','Please try again!');
+            Session::flash('error','Please try again!');
             return back();
         }
     }
@@ -220,7 +220,7 @@ class FrontendController extends Controller
         if(! Newsletter::isSubscribed($request->email)){
                 Newsletter::subscribePending($request->email);
                 if(Newsletter::lastActionSucceeded()){
-                    request()->session()->flash('success','Subscribed! Please check your email');
+                    Session::flash('success','Subscribed! Please check your email');
                     return redirect()->route('home');
                 }
                 else{
@@ -229,7 +229,7 @@ class FrontendController extends Controller
                 }
             }
             else{
-                request()->session()->flash('error','Already Subscribed');
+                Session::flash('error','Already Subscribed');
                 return back();
             }
     }

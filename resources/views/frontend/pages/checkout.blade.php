@@ -389,6 +389,7 @@
                                         <div class="checkbox">
                                             <input name="payment_method"  type="radio" value="cod"> <label>Trả khi nhận</label><br>
                                             <input name="payment_method"  type="radio" value="paypal"> <label>Paypal</label>
+                                            <input name="payment_method"  type="radio" value="momo"> <label>Momo</label>
                                         </div>
                                     </div>
                                 </div>

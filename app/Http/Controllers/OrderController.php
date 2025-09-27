@@ -14,6 +14,8 @@ use App\Http\Helper;
 use Illuminate\Support\Str;
 use App\Notifications\StatusNotification;
 
+
+
 class OrderController extends Controller
 {
     public function index()
@@ -106,6 +108,10 @@ class OrderController extends Controller
             $order_data['payment_method']='paypal';
             $order_data['payment_status']='paid';
         }
+        elseif(request('payment_method')=='momo'){
+            $order_data['payment_method']='momo';
+            $order_data['payment_status']='unpaid';
+        }
         else{
             $order_data['payment_method']='cod';
             $order_data['payment_status']='Unpaid';
@@ -123,6 +129,9 @@ class OrderController extends Controller
         Notification::send($users, new StatusNotification($details));
         if(request('payment_method')=='paypal'){
             return redirect()->route('payment')->with(['id'=>$order->id]);
+        }
+        elseif(request('payment_method')=='momo'){
+            return redirect()->route('momo.payment')->with(['id'=>$order->id]);
         }
         else{
             session()->forget('cart');
