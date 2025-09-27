@@ -14,8 +14,6 @@
 
     <livewire:product-panel/>
 
-    <x-recent-products/>
-
 {{--    <!-- Modal -->--}}
 {{--    @if($products)--}}
 {{--        @foreach($products as $key=>$product)--}}
