@@ -24,3 +24,18 @@
     background-color: orange;
     color: white;
 }
+
+.no-number-input-arrows {
+    -webkit-appearance: none; /* Chrome, Safari */
+    -moz-appearance: textfield; /* Firefox */
+    appearance: textfield;
+}
+
+.cart-quantity-input {
+    border: 1px solid #eceded;
+    width: 100%;
+    text-align: center;
+    height: 3rem;
+    border-radius: 0;
+    overflow: hidden;
+}
