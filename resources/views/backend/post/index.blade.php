@@ -83,7 +83,7 @@
             @endforeach
           </tbody>
         </table>
-        <span style="float:right">{{$posts->links()}}</span>
+        <span style="float:right">{{$posts->links('vendor.pagination.bootstrap-5')}}</span>
         @else
           <h6 class="text-center">No posts found!!! Please create Post</h6>
         @endif

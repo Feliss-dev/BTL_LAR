@@ -156,7 +156,7 @@
           </tbody>
         </table>
 
-        {{$orders->links()}}
+        {{$orders->links('vendor.pagination.bootstrap-5')}}
       </div>
     </div>
 

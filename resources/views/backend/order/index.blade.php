@@ -79,7 +79,7 @@
             @endforeach
           </tbody>
         </table>
-        <span style="float:right">{{$orders->links()}}</span>
+        <span style="float:right">{{$orders->links('vendor.pagination.bootstrap-5')}}</span>
         @else
           <h6 class="text-center">Không có đơn hàng!</h6>
         @endif

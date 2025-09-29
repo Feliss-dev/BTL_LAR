@@ -26,7 +26,7 @@
             </ul>
         </div>
 
-        <div class="d-none flex-sm-fill d-sm-flex align-items-sm-center justify-content-sm-between">
+        <div class="d-none flex-sm-fill d-sm-flex align-items-sm-center justify-content-sm-between flex-column">
             <div>
                 <p class="small text-muted">
                     {!! __('Showing') !!}

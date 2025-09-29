@@ -123,7 +123,11 @@
             @endforeach
           </tbody>
         </table>
-        <span style="float:right">{{$products->links()}}</span>
+
+          <div class="d-flex flex-row justify-content-center">
+            {{$products->links('vendor.pagination.bootstrap-5')}}
+          </div>
+
         @else
           <h6 class="text-center">No Products found!!! Please create Product</h6>
         @endif

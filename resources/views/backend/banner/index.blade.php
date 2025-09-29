@@ -74,7 +74,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <span style="float:right">{{ $banners->links() }}</span>
+                    <span style="float:right">{{ $banners->links('vendor.pagination.bootstrap-5') }}</span>
                 @else
                     <h6 class="text-center">Không tìm thấy banner nào! Vui lòng tạo banner</h6>
                 @endif

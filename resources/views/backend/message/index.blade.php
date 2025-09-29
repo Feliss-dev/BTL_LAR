@@ -38,7 +38,7 @@
       </tbody>
     </table>
     <nav class="blog-pagination justify-content-center d-flex">
-      {{$messages->links()}}
+      {{$messages->links('vendor.pagination.bootstrap-5')}}
     </nav>
     @else
       <h2>Messages Empty!</h2>

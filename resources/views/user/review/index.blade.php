@@ -74,7 +74,7 @@
             @endforeach
           </tbody>
         </table>
-        <span style="float:right">{{$reviews->links()}}</span>
+        <span style="float:right">{{$reviews->links('vendor.pagination.bootstrap-5')}}</span>
         @else
           <h6 class="text-center">No reviews found!!!</h6>
         @endif
