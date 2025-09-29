@@ -145,7 +145,7 @@
                                     <div class="row">
                                         <div class="col-lg-4 col-md-6 col-sm-6">
                                             <div class="single-product">
-                                                <x-product-image :product="$product"/>
+                                                <livewire:product-image :product="$product"/>
                                             </div>
                                         </div>
                                         <div class="col-lg-8 col-md-6 col-12">

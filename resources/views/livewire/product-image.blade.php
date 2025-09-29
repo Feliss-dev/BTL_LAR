@@ -1,11 +1,10 @@
 <div class="product-img" style="aspect-ratio: 1/1">
-    <a href="{{route('product-detail', $product->slug)}}" class="w-100 h-100">
+    <a href="{{ route('product-detail', $product->slug) }}" class="w-100 h-100" class="w-100 h-100">
         @php
             $photo = explode(',', $product->photo);
         @endphp
 
         <img class="default-img w-100 h-100" src="{{asset($photo[0])}}" alt="{{$photo[0]}}" style="object-fit: cover">
-{{--        <img class="hover-img w-100 h-100" src="{{asset($photo[0])}}" alt="{{$photo[0]}}" style="object-fit: cover">--}}
 
         @if ($product->stock <= 0)
             <span class="out-of-stock">Sale out</span>
@@ -20,11 +19,13 @@
 
     <div class="button-head">
         <div class="product-action">
-            <a data-toggle="modal" data-target="#{{$product->id}}" title="Quick View" href="#"><i class=" ti-eye"></i><span>Shop nhanh</span></a>
-            <a title="Wishlist" href="{{route('add-to-wishlist',$product->slug)}}" ><i class=" ti-heart "></i><span>Thêm vào yêu thích</span></a>
+            <button data-toggle="modal" data-target="#{{$product->id}}" title="Quick View" href="#"><i class=" ti-eye"></i><span>Shop nhanh</span></button>
+            <button type="button" wire:click="addToWishlist"><i class="ti-heart"></i><span>Thêm vào yêu thích</span></button>
         </div>
+
         <div class="product-action-2">
-            <a title="Add to cart" href="{{route('add-to-cart',$product->slug)}}">Thêm vào giỏ hàng</a>
+            <button type="button" wire:click="addToCart" class="border-0">Thêm vào giỏ hàng</button>
+{{--            <a title="Add to cart" href="{{ route('add-to-cart', $product->slug) }}" wire:navigate>Thêm vào giỏ hàng</a>--}}
         </div>
     </div>
 </div>

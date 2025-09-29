@@ -161,7 +161,7 @@
                         @if ($product->condition=='hot')
                             <!-- Start Single Product -->
                             <div class="single-product">
-                                <x-product-image :product="$product"/>
+                                <livewire:product-image :product="$product"/>
 
                                 <div class="product-content">
                                     <h3><a href="{{route('product-detail',$product->slug)}}">{{$product->title}}</a></h3>

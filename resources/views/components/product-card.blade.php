@@ -1,6 +1,6 @@
 <div {{ $attributes }}>
     <div class="single-product">
-        <x-product-image :product="$product"/>
+        <livewire:product-image :product="$product"/>
 
         <div class="product-content">
             <h3><a href="{{route('product-detail', $product->slug)}}">{{$product->title}}</a></h3>

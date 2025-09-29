@@ -216,7 +216,7 @@
                                                 <option value="MM">Myanmar [Burma]</option>
                                                 <option value="NA">Namibia</option>
                                                 <option value="NR">Nauru</option>
-                                                <option value="NP" selected="selected">Nepal</option>
+                                                <option value="NP">Nepal</option>
                                                 <option value="NL">Netherlands</option>
                                                 <option value="AN">Netherlands Antilles</option>
                                                 <option value="NC">New Caledonia</option>
@@ -304,7 +304,7 @@
                                                 <option value="VU">Vanuatu</option>
                                                 <option value="VA">Vatican City</option>
                                                 <option value="VE">Venezuela</option>
-                                                <option value="VN">Vietnam</option>
+                                                <option value="VN" selected>Vietnam</option>
                                                 <option value="WF">Wallis and Futuna</option>
                                                 <option value="EH">Western Sahara</option>
                                                 <option value="YE">Yemen</option>
