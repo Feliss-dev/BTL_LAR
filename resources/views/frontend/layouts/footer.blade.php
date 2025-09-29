@@ -149,14 +149,6 @@
 
 @stack('scripts')
 <script>
-    setTimeout(function() {
-        $('.alert').css('top', '-100%');
-
-        setTimeout(function() {
-            $('.alert').hide()
-        }, 750);
-    }, 5000);
-
     $(function() {
         // ------------------------------------------------------- //
         // Multi Level dropdowns

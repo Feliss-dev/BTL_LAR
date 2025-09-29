@@ -57,13 +57,3 @@
   <script src="{{asset('backend/js/demo/chart-pie-demo.js')}}"></script>
 
   @stack('scripts')
-
-  <script>
-      setTimeout(function() {
-          $('.alert').css('top', '-100%');
-
-          setTimeout(function() {
-              $('.alert').hide()
-          }, 750);
-      }, 5000);
-  </script>
