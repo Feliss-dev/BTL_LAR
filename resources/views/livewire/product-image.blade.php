@@ -25,7 +25,6 @@
 
         <div class="product-action-2">
             <button type="button" wire:click="addToCart" class="border-0">Thêm vào giỏ hàng</button>
-{{--            <a title="Add to cart" href="{{ route('add-to-cart', $product->slug) }}" wire:navigate>Thêm vào giỏ hàng</a>--}}
         </div>
     </div>
 </div>
