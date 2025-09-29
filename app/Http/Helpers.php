@@ -92,7 +92,7 @@ class Helper
 
         if (Auth::check()) {
             if ($user_id == "") $user_id = auth()->user()->id;
-            return Wishlist::where('user_id', $user_id)->where('cart_id', null)->sum('quantity');
+            return Wishlist::where('user_id', $user_id)->sum('quantity');
         } else {
             return 0;
         }
@@ -101,7 +101,7 @@ class Helper
     {
         if (Auth::check()) {
             if ($user_id == "") $user_id = auth()->user()->id;
-            return Wishlist::with('product')->where('user_id', $user_id)->where('cart_id', null)->get();
+            return Wishlist::with('product')->where('user_id', $user_id)->get();
         } else {
             return 0;
         }
@@ -110,7 +110,7 @@ class Helper
     {
         if (Auth::check()) {
             if ($user_id == "") $user_id = auth()->user()->id;
-            return Wishlist::where('user_id', $user_id)->where('cart_id', null)->sum('amount');
+            return Wishlist::where('user_id', $user_id)->sum('amount');
         } else {
             return 0;
         }
