@@ -32,14 +32,26 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'first_name'=>'string|required',
-            'last_name'=>'string|required',
-            'address1'=>'string|required',
-            'address2'=>'string|nullable',
-            'coupon'=>'nullable|numeric',
-            'phone'=>'numeric|required',
-            'post_code'=>'string|nullable',
-            'email'=>'string|required'
+            'first_name'=>'required|string',
+            'last_name'=>'required|string',
+            'address1'=>'required|string',
+            'address2'=>'nullable|string',
+            'coupon'=>'nullable|string',
+            'phone'=>'required|numeric',
+            'post_code'=>'nullable|string',
+            'email'=>'required|email',
+            'shipping' => 'required|exists:shippings,id'
+        ], [
+            'first_name.required' => 'Yêu cầu nhập tên.',
+            'last_name.required' => 'Yêu cầu nhập tên.',
+            'address1.required' => 'Yêu cầu nhập địa chỉ.',
+            'coupon.numeric' => 'Mã giảm giá phải là chữ số.',
+            'phone.required' => 'Yêu cầu nhập số điện thoại.',
+            'phone.numeric' => 'Số điện thoại chỉ được chứa chữ số.',
+            'email.required' => 'Yêu cầu nhập Email.',
+            'email.email' => 'Yêu cầu nhập đúng định dạng Email.',
+            'shipping.required' => 'Yêu cầu chọn phương thức giao hàng.',
+            'shipping.exists' => 'Phương thức giao hàng không hợp lệ.',
         ]);
 
         if (empty(Cart::where('user_id',auth()->user()->id)->where('order_id',null)->first())){

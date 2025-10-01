@@ -30,16 +30,16 @@
                                         <label>First Name<span>*</span></label>
                                         <input type="text" name="first_name" placeholder="" value="{{old('first_name')}}" value="{{old('first_name')}}">
                                         @error('first_name')
-                                            <span class='text-danger'>{{$message}}</span>
+                                            <p class='text-danger'>{{$message}}</p>
                                         @enderror
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
                                         <label>Last Name<span>*</span></label>
-                                        <input type="text" name="last_name" placeholder="" value="{{old('lat_name')}}">
+                                        <input type="text" name="last_name" placeholder="" value="{{old('last_name')}}">
                                         @error('last_name')
-                                            <span class='text-danger'>{{$message}}</span>
+                                            <p class='text-danger'>{{$message}}</p>
                                         @enderror
                                     </div>
                                 </div>
@@ -48,16 +48,16 @@
                                         <label>Email Address<span>*</span></label>
                                         <input type="email" name="email" placeholder="" value="{{old('email')}}">
                                         @error('email')
-                                            <span class='text-danger'>{{$message}}</span>
+                                            <p class='text-danger'>{{$message}}</p>
                                         @enderror
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
                                         <label>Phone Number <span>*</span></label>
-                                        <input type="number" name="phone" placeholder="" required value="{{old('phone')}}">
+                                        <input type="text" name="phone" placeholder="" value="{{old('phone')}}">
                                         @error('phone')
-                                            <span class='text-danger'>{{$message}}</span>
+                                            <p class='text-danger'>{{$message}}</p>
                                         @enderror
                                     </div>
                                 </div>
@@ -318,7 +318,7 @@
                                         <label>Address Line 1<span>*</span></label>
                                         <input type="text" name="address1" placeholder="" value="{{old('address1')}}">
                                         @error('address1')
-                                            <span class='text-danger'>{{$message}}</span>
+                                            <p class='text-danger'>{{$message}}</p>
                                         @enderror
                                     </div>
                                 </div>
@@ -327,7 +327,7 @@
                                         <label>Address Line 2</label>
                                         <input type="text" name="address2" placeholder="" value="{{old('address2')}}">
                                         @error('address2')
-                                            <span class='text-danger'>{{$message}}</span>
+                                            <p class='text-danger'>{{$message}}</p>
                                         @enderror
                                     </div>
                                 </div>
@@ -336,7 +336,7 @@
                                         <label>Postal Code</label>
                                         <input type="text" name="post_code" placeholder="" value="{{old('post_code')}}">
                                         @error('post_code')
-                                            <span class='text-danger'>{{$message}}</span>
+                                            <p class='text-danger'>{{$message}}</p>
                                         @enderror
                                     </div>
                                 </div>
@@ -355,16 +355,20 @@
                                         <li class="order_subtotal" data-price="{{App\Http\Helper::totalCartPrice()}}">Thành tiền<span>{{number_format(\App\Http\Helper::totalCartPrice(), 0, ',', '.')}} đ</span></li>
                                         <li class="shipping">
                                             Giao hàng
-                                            @if(count(App\Http\Helper::shipping())>0 && App\Http\Helper::cartCount()>0)
-                                                <select name="shipping" class="nice-select">
-                                                    <option value="">Chọn loại giao hàng</option>
-                                                    @foreach(App\Http\Helper::shipping() as $shipping)
-                                                        <option value="{{$shipping->id}}" class="shippingOption" data-price="{{$shipping->price}}">{{$shipping->type}}: {{number_format($shipping->price, 0, ',', '.')}} đ</option>
-                                                    @endforeach
-                                                </select>
-                                            @else
-                                                <span>Miễn phí</span>
-                                            @endif
+
+                                            <select name="shipping" class="nice-select">
+                                                <option disabled selected>Chọn phương thức giao hàng</option>
+
+                                                @foreach(App\Http\Helper::shipping() as $shipping)
+                                                    <option value="{{$shipping->id}}" class="shippingOption" data-price="{{$shipping->price}}" @if (old('shipping') == $shipping->id) selected @endif>{{$shipping->type}}: {{number_format($shipping->price, 0, ',', '.')}} đ</option>
+                                                @endforeach
+                                            </select>
+
+                                            @error('shipping')
+                                                <span class="text-danger" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                         </li>
 
                                         @if(session('coupon'))
@@ -388,17 +392,17 @@
                                 <div class="content">
                                     <div class="checkbox d-flex flex-column">
                                         <label>
-                                            <input name="payment_method" type="radio" value="cod">
+                                            <input name="payment_method" type="radio" value="cod" @if (old('payment_method') == 'cod') checked @endif>
                                             Trả khi nhận
                                         </label>
 
                                         <label>
-                                            <input name="payment_method" type="radio" value="momo">
+                                            <input name="payment_method" type="radio" value="momo" @if (old('payment_method') == 'momo') checked @endif>
                                             Momo
                                         </label>
 
                                         <label>
-                                            <input name="payment_method" type="radio" value="vnpay">
+                                            <input name="payment_method" type="radio" value="vnpay" @if (old('payment_method') == 'vnpay') checked @endif>
                                             VNPay
                                         </label>
                                     </div>
