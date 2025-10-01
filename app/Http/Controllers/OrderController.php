@@ -40,7 +40,8 @@ class OrderController extends Controller
             'phone'=>'required|numeric',
             'post_code'=>'nullable|string',
             'email'=>'required|email',
-            'shipping' => 'required|exists:shippings,id'
+            'shipping' => 'required|exists:shippings,id',
+            'payment_method' => 'required|in:cod,momo,vnpay',
         ], [
             'first_name.required' => 'Yêu cầu nhập tên.',
             'last_name.required' => 'Yêu cầu nhập tên.',
@@ -52,6 +53,8 @@ class OrderController extends Controller
             'email.email' => 'Yêu cầu nhập đúng định dạng Email.',
             'shipping.required' => 'Yêu cầu chọn phương thức giao hàng.',
             'shipping.exists' => 'Phương thức giao hàng không hợp lệ.',
+            'payment_method.required' => 'Yêu cầu chọn phương thức thanh toán',
+            'payment_method.in' => 'Phương thức thanh toán không hợp lệ.',
         ]);
 
         if (empty(Cart::where('user_id',auth()->user()->id)->where('order_id',null)->first())){

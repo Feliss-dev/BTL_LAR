@@ -365,9 +365,7 @@
                                             </select>
 
                                             @error('shipping')
-                                                <span class="text-danger" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
+                                                <p class="text-danger">{{  $message }}</p>
                                             @enderror
                                         </li>
 
@@ -406,6 +404,10 @@
                                             VNPay
                                         </label>
                                     </div>
+
+                                    @error('payment_method')
+                                        <p class="text-danger">{{  $message }}</p>
+                                    @enderror
                                 </div>
                             </div>
                             <!--/ End Order Widget -->
