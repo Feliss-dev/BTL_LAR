@@ -156,17 +156,17 @@
                                                             <del class="ml-1">{{number_format($product->price, 0, ',', '.')}} đ</del>
 
                                                             @php
-                                                                $after_discount = ($product->price-($product->price*$product->discount)/100);
+                                                                $after_discount = ($product->price - ($product->price * $product->discount) / 100);
                                                             @endphp
 
-                                                            <p class="ml-1">{{number_format($product->price, 0, ',', '.')}} đ</p>
+                                                            <p class="ml-1">{{number_format($after_discount, 0, ',', '.')}} đ</p>
                                                         @else
                                                             <p>{{number_format($product->price, 0, ',', '.')}} đ</p>
                                                         @endif
                                                     </div>
                                                 </div>
+
                                                 <p class="des pt-2">{!! html_entity_decode($product->summary) !!}</p>
-                                                <a href="javascript:void(0)" class="btn cart mt-2" data-id="{{$product->id}}">MUA NGAY!</a>
                                             </div>
                                         </div>
                                     </div>
