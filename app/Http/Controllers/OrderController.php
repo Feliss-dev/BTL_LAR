@@ -43,36 +43,9 @@ class OrderController extends Controller
         ]);
 
         if (empty(Cart::where('user_id',auth()->user()->id)->where('order_id',null)->first())){
-            request()->session()->flash('error','Cart is Empty !');
+            request()->session()->flash('error', 'Giỏ hàng trống!');
             return back();
         }
-        // $cart=Cart::get();
-        // // return $cart;
-        // $cart_index='ORD-'.strtoupper(uniqid());
-        // $sub_total=0;
-        // foreach($cart as $cart_item){
-        //     $sub_total+=$cart_item['amount'];
-        //     $data=array(
-        //         'cart_id'=>$cart_index,
-        //         'user_id'=>$request->user()->id,
-        //         'product_id'=>$cart_item['id'],
-        //         'quantity'=>$cart_item['quantity'],
-        //         'amount'=>$cart_item['amount'],
-        //         'status'=>'new',
-        //         'price'=>$cart_item['price'],
-        //     );
-
-        //     $cart=new Cart();
-        //     $cart->fill($data);
-        //     $cart->save();
-        // }
-
-        // $total_prod=0;
-        // if(session('cart')){
-        //         foreach(session('cart') as $cart_items){
-        //             $total_prod+=$cart_items['quantity'];
-        //         }
-        // }
 
         $order = new Order();
         $order_data = $request->all();
@@ -104,18 +77,19 @@ class OrderController extends Controller
         }
         // return $order_data['total_amount'];
         $order_data['status']="new";
-        if(request('payment_method')=='paypal'){
-            $order_data['payment_method']='paypal';
-            $order_data['payment_status']='paid';
+
+        switch ($request->payment_method) {
+            case 'momo' or 'vnpay':
+                $order_data['payment_method'] = $request->payment_method;
+                $order_data['payment_status'] = 'unpaid';
+                break;
+
+            default:
+                $order_data['payment_method'] = 'cod';
+                $order_data['payment_status'] = 'unpaid';
+                break;
         }
-        elseif(request('payment_method')=='momo'){
-            $order_data['payment_method']='momo';
-            $order_data['payment_status']='unpaid';
-        }
-        else{
-            $order_data['payment_method']='cod';
-            $order_data['payment_status']='Unpaid';
-        }
+
         $order->fill($order_data);
         $status=$order->save();
         if($order)
@@ -126,22 +100,26 @@ class OrderController extends Controller
             'actionURL'=>route('order.show',$order->id),
             'fas'=>'fa-file-alt'
         ];
-        Notification::send($users, new StatusNotification($details));
-        if(request('payment_method')=='paypal'){
-            return redirect()->route('payment')->with(['id'=>$order->id]);
-        }
-        elseif(request('payment_method')=='momo'){
-            return redirect()->route('momo.payment')->with(['id'=>$order->id]);
-        }
-        else{
-            session()->forget('cart');
-            session()->forget('coupon');
-        }
-        Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => $order->id]);
 
-        // dd($users);
-        request()->session()->flash('success','Your product successfully placed in order');
-        return redirect()->route('home');
+        \Illuminate\Support\Facades\Notification::send($users, new StatusNotification($details));
+
+        switch ($request->payment_method) {
+            case 'momo':
+                return redirect()->route('momo.payment')->with([ 'id' => $order->id ]);
+
+            case 'vnpay':
+                return redirect()->route('vnpay.payment')->with([ 'id' => $order->id ]);
+
+            default:
+                session()->forget('cart');
+                session()->forget('coupon');
+
+                Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => $order->id]);
+
+                // dd($users);
+                request()->session()->flash('success','Your product successfully placed in order');
+                return redirect()->route('home');
+        }
     }
 
     /**

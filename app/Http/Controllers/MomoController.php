@@ -71,11 +71,11 @@ class MomoController extends Controller
                 // Thanh toán thành công
                 $this->updateOrderStatus($data['orderId'], 'paid');
 
-                // Xóa session cart và coupon như PayPal
+                // Xóa session cart và coupon
                 session()->forget('cart');
                 session()->forget('coupon');
 
-                request()->session()->flash('success', 'You successfully pay from MoMo! Thank You');
+                request()->session()->flash('success', 'Thanh toán thành công!');
                 return redirect()->route('home');
             } else {
                 // Thanh toán thất bại - xóa order và reset cart

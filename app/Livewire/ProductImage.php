@@ -38,7 +38,7 @@ class ProductImage extends Component
     }
 
     public function render(WishlistService $wishlistService) {
-        $wishlisted = $wishlistService->isWishlisted(auth()->user(), $this->product);
+        $wishlisted = auth()->check() && $wishlistService->isWishlisted(auth()->user(), $this->product);
 
         return view('livewire.product-image', [
             'isWishlisted' => $wishlisted,
