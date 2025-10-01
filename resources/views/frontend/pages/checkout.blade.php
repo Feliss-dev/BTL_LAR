@@ -23,29 +23,20 @@
                         <div class="checkout-form">
                             <h2>Thanh toán tại đây</h2>
                             <p>Hãy đăng ký để có thể cùng mua hàng nhanh chóng</p>
-                            <!-- Form -->
+
                             <div class="row">
-                                <div class="col-lg-6 col-md-6 col-12">
+                                <div class="col-12">
                                     <div class="form-group">
-                                        <label>First Name<span>*</span></label>
-                                        <input type="text" name="first_name" placeholder="" value="{{old('first_name')}}" value="{{old('first_name')}}">
-                                        @error('first_name')
+                                        <label>Tên<span>*</span></label>
+                                        <input type="text" name="name" placeholder="" value="{{old('fame')}}">
+                                        @error('name')
                                             <p class='text-danger'>{{$message}}</p>
                                         @enderror
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
-                                        <label>Last Name<span>*</span></label>
-                                        <input type="text" name="last_name" placeholder="" value="{{old('last_name')}}">
-                                        @error('last_name')
-                                            <p class='text-danger'>{{$message}}</p>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label>Email Address<span>*</span></label>
+                                        <label>Email<span>*</span></label>
                                         <input type="email" name="email" placeholder="" value="{{old('email')}}">
                                         @error('email')
                                             <p class='text-danger'>{{$message}}</p>
@@ -54,7 +45,7 @@
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
-                                        <label>Phone Number <span>*</span></label>
+                                        <label>Số điện thoại<span>*</span></label>
                                         <input type="text" name="phone" placeholder="" value="{{old('phone')}}">
                                         @error('phone')
                                             <p class='text-danger'>{{$message}}</p>
@@ -63,7 +54,7 @@
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
-                                        <label>Country<span>*</span></label>
+                                        <label>Quốc gia<span>*</span></label>
                                         <select name="country" id="country">
                                             <option value="AF">Afghanistan</option>
                                             <option value="AX">Åland Islands</option>
@@ -315,7 +306,7 @@
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
-                                        <label>Address Line 1<span>*</span></label>
+                                        <label>Địa chỉ 1<span>*</span></label>
                                         <input type="text" name="address1" placeholder="" value="{{old('address1')}}">
                                         @error('address1')
                                             <p class='text-danger'>{{$message}}</p>
@@ -324,7 +315,7 @@
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
-                                        <label>Address Line 2</label>
+                                        <label>Địa chỉ 2</label>
                                         <input type="text" name="address2" placeholder="" value="{{old('address2')}}">
                                         @error('address2')
                                             <p class='text-danger'>{{$message}}</p>
@@ -333,7 +324,7 @@
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
-                                        <label>Postal Code</label>
+                                        <label>Mã bưu chính</label>
                                         <input type="text" name="post_code" placeholder="" value="{{old('post_code')}}">
                                         @error('post_code')
                                             <p class='text-danger'>{{$message}}</p>

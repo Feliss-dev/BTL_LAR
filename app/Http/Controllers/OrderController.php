@@ -32,8 +32,7 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'first_name'=>'required|string',
-            'last_name'=>'required|string',
+            'name'=>'required|string',
             'address1'=>'required|string',
             'address2'=>'nullable|string',
             'coupon'=>'nullable|string',
@@ -43,8 +42,7 @@ class OrderController extends Controller
             'shipping' => 'required|exists:shippings,id',
             'payment_method' => 'required|in:cod,momo,vnpay',
         ], [
-            'first_name.required' => 'Yêu cầu nhập tên.',
-            'last_name.required' => 'Yêu cầu nhập tên.',
+            'name.required' => 'Yêu cầu nhập tên.',
             'address1.required' => 'Yêu cầu nhập địa chỉ.',
             'coupon.numeric' => 'Mã giảm giá phải là chữ số.',
             'phone.required' => 'Yêu cầu nhập số điện thoại.',
@@ -259,7 +257,7 @@ class OrderController extends Controller
     public function pdf(Request $request){
         $order=Order::getAllOrder($request->id);
         // return $order;
-        $file_name=$order->order_number.'-'.$order->first_name.'.pdf';
+        $file_name=$order->order_number.'-'.$order->name.'.pdf';
         // return $file_name;
         $pdf=PDF::loadview('backend.order.pdf',compact('order'));
         return $pdf->download($file_name);
