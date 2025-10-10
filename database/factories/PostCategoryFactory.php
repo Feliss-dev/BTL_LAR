@@ -17,7 +17,7 @@ class PostCategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'status' => 'active'
         ];
     }
 }
