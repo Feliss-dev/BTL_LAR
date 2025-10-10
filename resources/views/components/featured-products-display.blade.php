@@ -29,7 +29,7 @@
                     <div class="tab-content">
                         <div x-show="selectedCategoryId == -1" x-transition:enter.duration.500ms x-transition:leave.duration.500ms class="row row-cols-sm-6 row-cols-md-4 row-cols-lg-3">
                             @foreach ($featured_products_all_category as $product)
-                                <x-product-card :product="$product" class="col-sm-6 col-md-4 col-lg-3 p-b-35"/>
+                                <x-product-card :product="$product" class="col-sm-6 col-md-4 col-lg-3 p-b-35" :key="$product->id"/>
                             @endforeach
                         </div>
 
@@ -37,7 +37,7 @@
                             @foreach ($categories as $category)
                                 <div x-show="selectedCategoryId == {{ $category->id }}" x-transition:enter.duration.500ms x-transition:leave.duration.500ms class="row row-cols-sm-6 row-cols-md-4 row-cols-lg-3">
                                     @foreach ($featured_products[$category->id] as $product)
-                                        <x-product-card :product="$product" class="col-sm-6 col-md-4 col-lg-3 p-b-35"/>
+                                        <x-product-card :product="$product" class="col-sm-6 col-md-4 col-lg-3 p-b-35" :key="$product->id"/>
                                     @endforeach
                                 </div>
                             @endforeach

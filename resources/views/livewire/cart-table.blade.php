@@ -17,7 +17,7 @@
 
         @if ($carts && $carts->count() > 0)
             @foreach ($carts as $cart)
-                <livewire:cart-item-row :cart="$cart"/>
+                <livewire:cart-item-row :cart="$cart" :key="$cart->id"/>
             @endforeach
         @else
             <tr>

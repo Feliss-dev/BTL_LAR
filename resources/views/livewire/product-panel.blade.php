@@ -19,24 +19,26 @@
 
                             @if ($parentCategories)
                                 <li>
-                                    @foreach($parentCategories as $parentCategory)
-                                        <label class="d-flex flex-row align-items-center gap-1">
-                                            <input type="checkbox" style="flex: none" value="{{ $parentCategory->slug }}" wire:model.live="categoriesFilter">
+                                    @foreach ($parentCategories as $parentCategory)
+                                        <div wire:key="parent_category.{{  $parentCategory->id }}">
+                                            <label class="d-flex flex-row align-items-center gap-1">
+                                                <input type="checkbox" style="flex: none" value="{{ $parentCategory->slug }}" wire:model.live="categoriesFilter">
 
-                                            {{$parentCategory->title}}
-                                        </label>
+                                                {{$parentCategory->title}}
+                                            </label>
 
-                                        @if ($parentCategory->child_cat->count() > 0)
-                                            <ul>
-                                                @foreach ($parentCategory->child_cat as $childCategory)
-                                                    <label class="d-flex flex-row align-items-center gap-3">
-                                                        <input type="checkbox" style="flex: none" value="{{ $childCategory->slug }}" wire:model.live="categoriesFilter">
+                                            @if ($parentCategory->child_cat->count() > 0)
+                                                <ul class="ml-3">
+                                                    @foreach ($parentCategory->child_cat as $childCategory)
+                                                        <label class="d-flex flex-row align-items-center gap-1" wire:key="child_category.{{ $childCategory->id }}">
+                                                            <input type="checkbox" style="flex: none" value="{{ $childCategory->slug }}" wire:model.live="categoriesFilter">
 
-                                                        {{$childCategory->title}}
-                                                    </label>
-                                                @endforeach
-                                            </ul>
-                                        @endif
+                                                            {{$childCategory->title}}
+                                                        </label>
+                                                    @endforeach
+                                                </ul>
+                                            @endif
+                                        </div>
                                     @endforeach
                                 </li>
                             @endif
@@ -65,7 +67,7 @@
 
                         <ul class="category-list">
                             @foreach(\App\Models\Brand::get() as $brand)
-                                <label class="d-flex flex-row align-items-center gap-1">
+                                <label class="d-flex flex-row align-items-center gap-1" wire:key="brand.{{ $brand->id }}}">
                                     <input type="checkbox" style="flex: none" value="{{ $brand->slug }}" wire:model.live="brandsFilter">
 
                                     {{$brand->title}}
@@ -138,10 +140,10 @@
                 </div>
 
                 <div class="row">
-                    @if(count($products)>0)
-                        @foreach($products as $product)
-                            @if ($viewMode == 'list')
-                                <div class="col-12">
+                    @if (count($products) > 0)
+                        @if ($viewMode == 'list')
+                            @foreach ($products as $product)
+                                <div class="col-12" wire:key="product.list.{{ $product->id }}">
                                     <div class="row">
                                         <div class="col-lg-4 col-md-6 col-sm-6">
                                             <div class="single-product">
@@ -171,10 +173,12 @@
                                         </div>
                                     </div>
                                 </div>
-                            @else
-                                <x-product-card :key="$product->id" :product="$product" class="col-lg-4 col-md-6 col-12"/>
-                            @endif
-                        @endforeach
+                            @endforeach
+                        @else
+                            @foreach ($products as $product)
+                                <x-product-card wire:key="product.grid.{{ $product->id }}" :product="$product" class="col-lg-4 col-md-6 col-12"/>
+                            @endforeach
+                        @endif
                     @else
                         <h4 class="text-warning" style="margin:100px auto;">There are no products.</h4>
                     @endif
