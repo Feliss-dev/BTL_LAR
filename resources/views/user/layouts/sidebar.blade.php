@@ -23,13 +23,13 @@
 
         <!-- Heading -->
         <div class="sidebar-heading">
-            Shop
+            Cửa hàng
         </div>
     <!--Orders -->
     <li class="nav-item">
         <a class="nav-link" href="{{route('user.order.index')}}">
             <i class="fas fa-hammer fa-chart-area"></i>
-            <span>Orders</span>
+            <span>Đơn hàng</span>
         </a>
     </li>
 
@@ -37,22 +37,21 @@
     <li class="nav-item">
         <a class="nav-link" href="{{route('user.productreview.index')}}">
             <i class="fas fa-comments"></i>
-            <span>Reviews</span></a>
+            <span>Đánh giá</span></a>
     </li>
-    
+
 
     <!-- Divider -->
     <hr class="sidebar-divider">
 
     <!-- Heading -->
-    <div class="sidebar-heading">
-      Posts
-    </div>
+    <div class="sidebar-heading">Bài viết</div>
+
     <!-- Comments -->
     <li class="nav-item">
       <a class="nav-link" href="{{route('user.post-comment.index')}}">
           <i class="fas fa-comments fa-chart-area"></i>
-          <span>Comments</span>
+          <span>Đánh giá</span>
       </a>
     </li>
     <!-- Sidebar Toggler (Sidebar) -->

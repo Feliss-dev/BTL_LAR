@@ -73,7 +73,7 @@ Route::get('/home', [FrontendController::class, 'index']);
 Route::get('/about-us', [FrontendController::class, 'aboutUs'])->name('about-us');
 Route::get('/contact', [FrontendController::class, 'contact'])->name('contact');
 Route::post('/contact/message', [MessageController::class, 'store'])->name('contact.store');
-Route::get('product-detail/{slug}', [FrontendController::class, 'productDetail'])->name('product-detail');
+Route::get('/product-detail/{slug}', [FrontendController::class, 'productDetail'])->name('product-detail');
 
 // Cart section
 Route::get('/add-to-cart/{slug}', [CartController::class, 'addToCart'])->name('add-to-cart')->middleware('user');
@@ -193,10 +193,10 @@ Route::group(['prefix' => '/user', 'middleware' => ['user']], function () {
     Route::get('/order/show/{id}', "HomeController@orderShow")->name('user.order.show');
     Route::delete('/order/delete/{id}', [HomeController::class, 'userOrderDelete'])->name('user.order.delete');
     // Product Review
-    Route::get('/user-review', [HomeController::class, 'productReviewIndex'])->name('user.productreview.index');
-    Route::delete('/user-review/delete/{id}', [HomeController::class, 'productReviewDelete'])->name('user.productreview.delete');
-    Route::get('/user-review/edit/{id}', [HomeController::class, 'productReviewEdit'])->name('user.productreview.edit');
-    Route::patch('/user-review/update/{id}', [HomeController::class, 'productReviewUpdate'])->name('user.productreview.update');
+    Route::get('/reviews', [HomeController::class, 'productReviewIndex'])->name('user.productreview.index');
+    Route::delete('/reviews/delete/{id}', [HomeController::class, 'productReviewDelete'])->name('user.productreview.delete');
+    Route::get('/reviews/edit/{id}', [HomeController::class, 'productReviewEdit'])->name('user.productreview.edit');
+    Route::patch('/reviews/update/{id}', [HomeController::class, 'productReviewUpdate'])->name('user.productreview.update');
 
     // Post comment
     Route::get('user-post/comment', [HomeController::class, 'userComment'])->name('user.post-comment.index');
