@@ -67,51 +67,53 @@
 <!-- End Small Banner -->
 
 <!-- Start Product Area -->
-<div class="product-area section">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="section-title">
-                    <h2>Sản phẩm nổi bật</h2>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <div class="product-info">
-                    <div class="nav-main">
-                        <!-- Tab Nav -->
-                        <ul class="nav nav-tabs filter-tope-group" id="myTab" role="tablist">
-                            @php
-                                $categories = DB::table('categories')->where('status','active')->where('is_parent',1)->get();
-                            @endphp
+<x-featured-products-display/>
 
-                            @if($categories)
-                                <button class="btn" style="background:black" data-filter="*">
-                                    Tất cả
-                                </button>
+{{--<div class="product-area section">--}}
+{{--    <div class="container">--}}
+{{--        <div class="row">--}}
+{{--            <div class="col-12">--}}
+{{--                <div class="section-title">--}}
+{{--                    <h2>Sản phẩm nổi bật</h2>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--        <div class="row">--}}
+{{--            <div class="col-12">--}}
+{{--                <div class="product-info">--}}
+{{--                    <div class="nav-main">--}}
+{{--                        <!-- Tab Nav -->--}}
+{{--                        <ul class="nav nav-tabs" id="myTab" role="tablist">--}}
+{{--                            @php--}}
+{{--                                $categories = DB::table('categories')->where('status','active')->where('is_parent',1)->get();--}}
+{{--                            @endphp--}}
 
-                                @foreach($categories as $key => $cat)
-                                    <button class="btn" style="background:none;color:black;" data-filter=".{{$cat->id}}">
-                                        {{$cat->title}}
-                                    </button>
-                                @endforeach
-                            @endif
-                        </ul>
-                    </div>
+{{--                            @if ($categories)--}}
+{{--                                <button class="btn" style="background:black" data-filter="*">--}}
+{{--                                    Tất cả--}}
+{{--                                </button>--}}
 
-                    <div class="tab-content isotope-grid" id="myTabContent">
-                        @if($product_lists)
-                            @foreach($product_lists as $key => $product)
-                                <x-product-card :product="$product" class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item"/>
-                            @endforeach
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+{{--                                @foreach ($categories as $key => $cat)--}}
+{{--                                    <button class="btn" style="background:none;color:black;" data-filter=".{{$cat->id}}">--}}
+{{--                                        {{$cat->title}}--}}
+{{--                                    </button>--}}
+{{--                                @endforeach--}}
+{{--                            @endif--}}
+{{--                        </ul>--}}
+{{--                    </div>--}}
+
+{{--                    <div class="tab-content isotope-grid" id="myTabContent">--}}
+{{--                        @if($product_lists)--}}
+{{--                            @foreach($product_lists as $key => $product)--}}
+{{--                                <x-product-card :product="$product" class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item"/>--}}
+{{--                            @endforeach--}}
+{{--                        @endif--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
+{{--</div>--}}
 <!-- End Product Area -->
 {{-- @php
     $featured = DB::table('products')->where('is_featured',1)->where('status','active')->orderBy('id','DESC')->limit(1)->get();
@@ -192,7 +194,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="shop-section-title">
-                            <h1>Latest Items</h1>
+                            <h1>Vật phẩm mới nhất</h1>
                         </div>
                     </div>
                 </div>
@@ -219,7 +221,7 @@
                                     <div class="col-lg-6 col-md-6 col-12 no-padding">
                                         <div class="content">
                                             <h4 class="title"><a href="#">{{$product->title}}</a></h4>
-                                            <p class="price with-discount">-{{number_format($product->discount,2)}}%</p>
+                                            <p class="price with-discount">-{{number_format($product->discount, 0)}}%</p>
                                         </div>
                                     </div>
                                 </div>
@@ -458,13 +460,13 @@
         var $filter = $('.filter-tope-group');
 
         // filter items on button click
-        $filter.each(function () {
-            $filter.on('click', 'button', function () {
-                var filterValue = $(this).attr('data-filter');
-                $topeContainer.isotope({filter: filterValue});
-            });
-
-        });
+        // $filter.each(function () {
+        //     $filter.on('click', 'button', function () {
+        //         var filterValue = $(this).attr('data-filter');
+        //         $topeContainer.isotope({filter: filterValue});
+        //     });
+        //
+        // });
 
         // init Isotope
         $(window).on('load', function () {

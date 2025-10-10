@@ -26,7 +26,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <label>Your Name<span>*</span></label>
+                                        <label>Tên<span>*</span></label>
                                         <input type="text" name="name" placeholder="" required="required"
                                             value="{{ old('name') }}">
                                         @error('name')
@@ -64,17 +64,24 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-12">
-                                    <div class="form-group login-btn">
+
+                                <div class="col-12 mt-2">
+                                    <div class="form-group login-btn d-flex justify-content-center flex-column">
                                         <button class="btn" type="submit">Đăng ký</button>
-                                        <a href="{{ route('login.form') }}" class="btn">Đăng nhập</a>
-                                        Hoặc
-                                        <a href="{{ route('login.redirect', 'facebook') }}" class="btn btn-facebook"><i
-                                                class="ti-facebook"></i></a>
-                                        <a href="{{ route('login.redirect', 'github') }}" class="btn btn-github"><i
-                                                class="ti-github"></i></a>
-                                        <a href="{{ route('login.redirect', 'google') }}" class="btn btn-google"><i
-                                                class="ti-google"></i></a>
+
+                                        <p class="mt-2">
+                                            Đã có tài khoản? <a href="{{ route('login.form') }}">Nhấn vào đây để đăng nhập</a>
+                                        </p>
+
+{{--                                        <p class="mt-2 d-flex flex-row">--}}
+{{--                                            Đã có tài khoản? <a href="{{ route('login.form') }}">Nhấn vào đây để đăng nhập.</a>--}}
+{{--                                        </p>--}}
+{{--                                        <a href="{{ route('login.form') }}" class="btn">Đăng nhập</a>--}}
+{{--                                        Hoặc--}}
+{{--                                        <a href="{{ route('login.redirect', 'facebook') }}" class="btn btn-facebook"><i--}}
+{{--                                                class="ti-facebook"></i></a>--}}
+{{--                                        <a href="{{ route('login.redirect', 'google') }}" class="btn btn-google"><i--}}
+{{--                                                class="ti-google"></i></a>--}}
                                     </div>
                                 </div>
                             </div>
