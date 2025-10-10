@@ -23,6 +23,11 @@ class DatabaseSeeder extends Seeder
             ShippingSeeder::class,
             ProductSeeder::class,
             ProductReviewSeeder::class,
+
+            PostCategorySeeder::class,
+            PostTagSeeder::class,
+            PostSeeder::class,
+            PostCommentSeeder::class,
         ]);
     }
 }
