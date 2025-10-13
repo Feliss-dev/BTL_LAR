@@ -9,64 +9,7 @@
       <h6 class="m-0 font-weight-bold text-primary float-left">Đơn hàng</h6>
     </div>
     <div class="card-body">
-      <div class="table-responsive">
-        @if(count($orders)>0)
-        <table class="table table-bordered" id="order-dataTable" width="100%" cellspacing="0">
-          <thead>
-            <tr>
-              <th>Mã đơn hàng</th>
-              <th>Tên</th>
-              <th>Email</th>
-              <th>Thành tiền</th>
-              <th>Trạng thái</th>
-              <th>Hành động</th>
-            </tr>
-          </thead>
-          <tfoot>
-            <tr>
-              <th>Mã đơn hàng</th>
-              <th>Tên</th>
-              <th>Email</th>
-              <th>Thành tiền</th>
-              <th>Trạng thái</th>
-              <th>Hành động</th>
-            </tr>
-          </tfoot>
-          <tbody>
-            @foreach($orders as $order)
-                <tr>
-                    <td>{{$order->order_number}}</td>
-                    <td>{{$order->name}}</td>
-                    <td>{{$order->email}}</td>
-                    <td>{{number_format($order->total_amount, 0, ',', '.')}} đ</td>
-                    <td>
-                        @if($order->status=='new')
-                          <span class="badge badge-primary">{{$order->status}}</span>
-                        @elseif($order->status=='process')
-                          <span class="badge badge-warning">{{$order->status}}</span>
-                        @elseif($order->status=='delivered')
-                          <span class="badge badge-success">{{$order->status}}</span>
-                        @else
-                          <span class="badge badge-danger">{{$order->status}}</span>
-                        @endif
-                    </td>
-                    <td>
-                        <a href="{{route('user.order.show',$order->id)}}" class="btn btn-warning btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>
-                        <form method="POST" action="{{route('user.order.delete',[$order->id])}}">
-                          @csrf
-                          @method('delete')
-                              <button class="btn btn-danger btn-sm dltBtn" data-id={{$order->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-          </tbody>
-        </table>
-        <span style="float:right">{{$orders->links('vendor.pagination.bootstrap-5')}}</span>
-        @else
-          <h6 class="text-center">Không có đơn hàng!</h6>
-        @endif
-      </div>
+      <livewire:user.order-table/>
     </div>
 </div>
 @endsection

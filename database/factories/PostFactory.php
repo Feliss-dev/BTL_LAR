@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\PostCategory;
+use App\Models\PostTag;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -27,6 +29,8 @@ class PostFactory extends Factory
             'quote' => $this->faker->sentence(16),
             'status' => 'active',
             'added_by' => User::where('role', 'admin')->inRandomOrder()->first()->id,
+            'post_cat_id' => PostCategory::inRandomOrder()->first()->id,
+            'post_tag_id' => PostTag::inRandomOrder()->first()->id,
             'created_at' => $time,
             'updated_at' => $time,
         ];

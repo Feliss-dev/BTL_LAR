@@ -22,13 +22,13 @@ class CreatePostsTable extends Migration
             $table->text('quote')->nullable();
             $table->string('photo')->nullable();
             $table->string('tags')->nullable();
-            $table->unsignedBigInteger('post_cat_id')->nullable();
+            $table->unsignedBigInteger('post_cat_id');
             $table->unsignedBigInteger('post_tag_id')->nullable();
             $table->unsignedBigInteger('added_by')->nullable();
             $table->enum('status',['active','inactive'])->default('active');
-            $table->foreign('post_cat_id')->references('id')->on('post_categories')->onDelete('SET NULL');
-            $table->foreign('post_tag_id')->references('id')->on('post_tags')->onDelete('SET NULL');
-            $table->foreign('added_by')->references('id')->on('users')->onDelete('SET NULL');
+            $table->foreign('post_cat_id')->references('id')->on('post_categories')->cascadeOnDelete();
+            $table->foreign('post_tag_id')->references('id')->on('post_tags')->cascadeOnDelete();
+            $table->foreign('added_by')->references('id')->on('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }
