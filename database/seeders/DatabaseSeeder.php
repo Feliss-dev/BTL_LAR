@@ -28,6 +28,9 @@ class DatabaseSeeder extends Seeder
             PostTagSeeder::class,
             PostSeeder::class,
             PostCommentSeeder::class,
+
+            CartSeeder::class,
+            OrderSeeder::class,
         ]);
     }
 }
