@@ -10,77 +10,7 @@
       <a href="{{route('shipping.create')}}" class="btn btn-primary btn-sm float-right" data-toggle="tooltip" data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Add Shipping</a>
     </div>
     <div class="card-body">
-      <div class="table-responsive">
-        @if(count($shippings)>0)
-        <table class="table table-bordered" id="banner-dataTable" width="100%" cellspacing="0">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Tiêu đề</th>
-              <th>Giá cả</th>
-              <th>Trạng thái</th>
-              <th>Hành động</th>
-            </tr>
-          </thead>
-          <tfoot>
-          <tr>
-              <th>ID</th>
-              <th>Tiêu đề</th>
-              <th>Giá cả</th>
-              <th>Trạng thái</th>
-              <th>Hành động</th>
-          </tr>
-          </tfoot>
-          <tbody>
-            @foreach($shippings as $shipping)
-                <tr>
-                    <td>{{$shipping->id}}</td>
-                    <td>{{$shipping->type}}</td>
-                    <td>{{number_format($shipping->price, 0, ',', '.')}} đ</td>
-                    <td>
-                        @if($shipping->status=='active')
-                            <span class="badge badge-success">{{$shipping->status}}</span>
-                        @else
-                            <span class="badge badge-warning">{{$shipping->status}}</span>
-                        @endif
-                    </td>
-                    <td>
-                        <a href="{{route('shipping.edit',$shipping->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
-                        <form method="POST" action="{{route('shipping.destroy',[$shipping->id])}}">
-                          @csrf
-                          @method('delete')
-                              <button class="btn btn-danger btn-sm dltBtn" data-id={{$shipping->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
-                        </form>
-                    </td>
-                    {{-- Delete Modal --}}
-                    {{-- <div class="modal fade" id="delModal{{$user->id}}" tabindex="-1" role="dialog" aria-labelledby="#delModal{{$user->id}}Label" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="#delModal{{$user->id}}Label">Delete user</h5>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                              <form method="post" action="{{ route('banners.destroy',$user->id) }}">
-                                @csrf
-                                @method('delete')
-                                <button type="submit" class="btn btn-danger" style="margin:auto; text-align:center">Parmanent delete user</button>
-                              </form>
-                            </div>
-                          </div>
-                        </div>
-                    </div> --}}
-                </tr>
-            @endforeach
-          </tbody>
-        </table>
-        <span style="float:right">{{$shippings->links('vendor.pagination.bootstrap-5')}}</span>
-        @else
-          <h6 class="text-center">No shippings found!!! Please create shipping</h6>
-        @endif
-      </div>
+      <livewire:admin.shipping-table/>
     </div>
 </div>
 @endsection
