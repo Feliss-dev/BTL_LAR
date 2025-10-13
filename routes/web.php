@@ -18,6 +18,7 @@
     use App\Http\Controllers\HomeController;
     use \UniSharp\LaravelFilemanager\Lfm;
     use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\MomoController;
 use App\Http\Controllers\PaymentController;
 
@@ -229,3 +230,12 @@ Route::get('payment/retry/{orderId}', [PaymentController::class, 'retry'])->name
 Route::post('payment/retry', [PaymentController::class, 'processRetry'])->name('payment.process-retry');
 
 Route::post('/buy-now', [CartController::class, 'buyNow'])->name('buy-now')->middleware('user');
+
+// Chatbot routes
+Route::prefix('chatbot')->middleware('web')->group(function () {
+    Route::post('/chat', [ChatbotController::class, 'chat'])->name('chatbot.chat');
+    Route::post('/stream', [ChatbotController::class, 'streamChat'])->name('chatbot.stream');
+    Route::get('/history', [ChatbotController::class, 'getHistory'])->name('chatbot.history');
+    Route::delete('/clear-history', [ChatbotController::class, 'clearHistory'])->name('chatbot.clear');
+    Route::post('/new-session', [ChatbotController::class, 'newSession'])->name('chatbot.new-session');
+});

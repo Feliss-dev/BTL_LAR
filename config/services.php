@@ -44,5 +44,9 @@ return [
         'client_secret' => 'YOUR_FACEBOK_SECRET', //Facebook Secret
         'redirect' => 'http://localhost:8000/login/facebook/callback',
      ],
+     'gemini' => [
+        'api_key' => env('GEMINI_API_KEY'),
+        'model' => env('GEMINI_MODEL', 'gemini-live-2.5-flash-preview'),
+     ],
 
 ];
