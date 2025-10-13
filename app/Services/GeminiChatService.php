@@ -16,102 +16,67 @@ class GeminiChatService
     public function __construct()
     {
         $this->apiKey = config('services.gemini.api_key');
-        $this->model = config('services.gemini.model', 'gemini-2.5-flash');
+        $this->model = config('services.gemini.model', 'gemini-2.0-flash-exp');
     }
 
-    public function generateResponse(string $message, string $sessionId, ?int $userId = null): array
-    {
-        try {
-            if (empty($this->apiKey)) {
-                throw new \Exception('Gemini API key is not configured');
-            }
-
-            $productContext = $this->getProductContext();
-            $chatHistory = ChatHistory::getSessionHistory($sessionId, 10);
-
-            // Build conversation context với format role-based
-            $conversationContents = $this->buildConversationContents($chatHistory, $message, $productContext);
-
-            $rawResponse = $this->callGeminiAPIWithContext($conversationContents);
-
-            // Parse response into clean text + product ids
-            [$cleanText, $productIds] = $this->parseResponseAndProducts($rawResponse, $message);
-
-            // get full product details snapshot (image, url, price, brand, summary)
-            $productDetails = $this->getProductDetails($productIds);
-
-            // Save chat (store snapshot of suggested products)
-            ChatHistory::create([
-                'session_id' => $sessionId,
-                'user_id' => $userId,
-                'user_message' => $message,
-                'bot_response' => $cleanText,
-                'suggested_products' => $productDetails
-            ]);
-
-            return [
-                'success' => true,
-                'response' => $cleanText,
-                'suggested_products' => $productDetails,
-                'session_id' => $sessionId
-            ];
-        } catch (\Exception $e) {
-            Log::error('Gemini Chat Error: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString(),
-                'session_id' => $sessionId,
-                'message' => $message
-            ]);
-
-            return [
-                'success' => false,
-                'message' => 'Xin lỗi, tôi đang gặp sự cố. Vui lòng thử lại sau.',
-                'error' => $e->getMessage(),
-                'session_id' => $sessionId
-            ];
-        }
-    }
-
+    // Add missing streamResponse method
     public function streamResponse(string $message, string $sessionId, ?int $userId = null)
     {
         try {
-            if (empty($this->apiKey)) {
-                throw new \Exception('Gemini API key is not configured');
-            }
-
             $productContext = $this->getProductContext();
             $chatHistory = ChatHistory::getSessionHistory($sessionId, 10);
-
             $conversationContents = $this->buildConversationContents($chatHistory, $message, $productContext);
 
             return $this->callGeminiStreamAPI($conversationContents);
         } catch (\Exception $e) {
-            Log::error('Gemini Stream Error: ' . $e->getMessage());
-            throw $e;
+            Log::error('Stream response error: ' . $e->getMessage());
+            return false;
         }
     }
 
-    // trước đây: private function buildConversationContents(array $chatHistory, string $newMessage, string $productContext): array
+    // Add missing streamChat method
+    public function streamChat(string $message, string $sessionId, ?int $userId = null)
+    {
+        return $this->streamResponse($message, $sessionId, $userId);
+    }
+
     private function buildConversationContents(iterable $chatHistory, string $newMessage, string $productContext): array
     {
         $contents = [];
 
-        // System instruction as first user message
+        // System instruction with keyword mapping
         $systemPrompt = "
-Bạn là một tư vấn viên bán hàng chuyên nghiệp cho cửa hàng đồng hồ. Mục tiêu: luôn đưa ra tư vấn ngắn (1-3 câu) và kèm theo danh sách gợi ý sản phẩm phù hợp (tối đa 4 sản phẩm).
+Bạn là tư vấn viên bán hàng đồng hồ chuyên nghiệp. LUÔN trả lời theo format JSON chính xác.
 
 QUY TẮC BẮT BUỘC:
-- Trả lời bằng tiếng Việt, thân thiện, chuyên nghiệp, ngắn gọn (<= 120 từ).
-- NGAY SAU ĐOẠN TƯ VẤN hãy ĐÍNH KÈM 1 KHỐI JSON duy nhất (trên 1 block, KHÔNG có text xen giữa) với dạng:
-  {\"suggested_product_ids\": [ID_OR_SKU_OR_SLUG_1, ID_OR_SKU_OR_SLUG_2, ...]}
-  - IDs có thể là số (id DB) hoặc chuỗi (sku/slug). Không gửi quá 4 items.
-- Nếu không tìm thấy sản phẩm phù hợp, trả lời 1 câu hỏi ngắn để làm rõ. Không suy đoán sản phẩm khi thiếu dữ kiện.
+1. Trả lời ngắn gọn (1-3 câu), thân thiện, chuyên nghiệp
+2. LUÔN kết thúc bằng JSON duy nhất với cấu trúc:
+{
+  \"response_text\": \"Câu trả lời tư vấn\",
+  \"suggested_products\": [
+    {\"id\": product_id, \"reason\": \"lý do gợi ý\"}
+  ],
+  \"fallback_category\": \"category_slug hoặc null\",
+  \"fallback_message\": \"thông báo hết hàng hoặc null\"
+}
 
-Ví dụ (bắt buộc theo cấu trúc):
-Ví dụ trả lời:
-\"Bạn hợp với phong cách cổ điển, gợi ý 2 mẫu mạ vàng, dây da.\"
-{\"suggested_product_ids\": [123, \"classic-gold-01\"]}
+3. MAPPING TỪ KHÓA QUAN TRỌNG:
+- 'báo thức' = dong_ho_bao_thuc
+- 'treo tường' = dong_ho_treo_tuong
+- 'cổ điển' = dong_ho_co_dien
+- 'cổ' = dong_ho_co
+- 'sợi dây' = dong_ho_day
+- 'cơ học' = dong_ho_co_hoc
+- 'số' = dong_ho_so
+- 'kim' = dong_ho_kim
 
-Dưới đây là dữ liệu cửa hàng (dùng chính xác id/slug/sku khi tham chiếu):
+4. LOGIC GỢI Ý:
+- Tìm sản phẩm theo từ khóa và tên slug
+- Ưu tiên sản phẩm có stock > 0
+- Nếu có >= 2 sản phẩm: chỉ điền suggested_products
+- Nếu < 2 sản phẩm: thêm fallback_category + fallback_message
+
+DANH SÁCH SẢN PHẨM:
 {$productContext}
         ";
 
@@ -124,7 +89,9 @@ Dưới đây là dữ liệu cửa hàng (dùng chính xác id/slug/sku khi tha
         // Friendly confirmation
         $contents[] = [
             'role' => 'model',
-            'parts' => [['text' => 'Tôi hiểu. Tôi sẽ tư vấn ngắn gọn và kèm gợi ý sản phẩm khi phù hợp.']]
+            'parts' => [['text' => 'Tôi hiểu. Tôi sẽ trả lời theo format JSON chuẩn với gợi ý sản phẩm phù hợp.
+
+{"response_text": "Tôi hiểu yêu cầu. Tôi sẽ tư vấn và gợi ý sản phẩm phù hợp.", "suggested_products": [], "fallback_category": null, "fallback_message": null}']]
         ];
 
         // Add previous conversations (if any)
@@ -158,7 +125,6 @@ Dưới đây là dữ liệu cửa hàng (dùng chính xác id/slug/sku khi tha
             $payload = [
                 'contents' => $contents,
                 'generationConfig' => [
-                    // lower temperature for deterministic outputs (less hỏi/đoán)
                     'temperature' => 0.0,
                     'maxOutputTokens' => 2000,
                     'topK' => 40,
@@ -230,10 +196,8 @@ Dưới đây là dữ liệu cửa hàng (dùng chính xác id/slug/sku khi tha
             ]
         ]);
 
-        // suppress warnings with @fopen (so PHP won't convert warning to ErrorException)
         $stream = @fopen($url . '?alt=sse', 'r', false, $context);
 
-        // If cannot open stream (e.g. 503), return false to let controller fallback gracefully
         if ($stream === false) {
             Log::warning('Gemini SSE stream open failed, falling back to sync generateContent', [
                 'url' => $url,
@@ -244,210 +208,261 @@ Dưới đây là dữ liệu cửa hàng (dùng chính xác id/slug/sku khi tha
         return $stream;
     }
 
+    // Add missing parseCandidateText method
+    private function parseCandidateText($candidate): ?string
+    {
+        try {
+            if (isset($candidate['content']['parts']) && is_array($candidate['content']['parts'])) {
+                $parts = $candidate['content']['parts'];
+                $text = '';
+                foreach ($parts as $part) {
+                    if (isset($part['text'])) {
+                        $text .= $part['text'];
+                    }
+                }
+                return $text;
+            }
+            return null;
+        } catch (\Exception $e) {
+            Log::error('Error parsing candidate text: ' . $e->getMessage());
+            return null;
+        }
+    }
+
+    // Add missing mapIdentifierToProductId method
+    private function mapIdentifierToProductId($identifier): ?int
+    {
+        try {
+            // If it's already a number, return as int
+            if (is_numeric($identifier)) {
+                return intval($identifier);
+            }
+
+            // Try to find by slug
+            $product = Product::where('slug', $identifier)
+                ->where('status', 'active')
+                ->first();
+
+            return $product ? $product->id : null;
+        } catch (\Exception $e) {
+            Log::error('Error mapping identifier to product ID: ' . $e->getMessage());
+            return null;
+        }
+    }
+
+    // Add missing getSuggestedProductIdsByKeywords method
+    private function getSuggestedProductIdsByKeywords(string $message): array
+{
+    try {
+        $messageLower = mb_strtolower($message, 'UTF-8');
+
+        // Enhanced keyword mapping
+        $keywordMappings = [
+            'báo thức' => ['dong_ho_bao_thuc', 'bao_thuc', 'alarm'],
+            'treo tường' => ['dong_ho_treo_tuong', 'treo_tuong', 'wall'],
+            'cổ điển' => ['dong_ho_co_dien', 'co_dien', 'classic'],
+            'cổ' => ['dong_ho_co', '_co_'],
+            'số' => ['dong_ho_so', '_so'],
+            'cơ' => ['dong_ho_co', 'co_hoc', 'mechanical'],
+            'dây' => ['dong_ho_day', '_day'],
+            'con lắc' => ['dong_ho_con_lac', 'con_lac', 'pendulum']
+        ];
+
+        $searchTerms = [$messageLower];
+
+        // Add mapped terms
+        foreach ($keywordMappings as $keyword => $mappings) {
+            if (strpos($messageLower, $keyword) !== false) {
+                $searchTerms = array_merge($searchTerms, $mappings);
+            }
+        }
+
+        $products = Product::where('status', 'active')
+
+            ->where(function ($query) use ($searchTerms) {
+                foreach ($searchTerms as $term) {
+                    $query->orWhereRaw('LOWER(title) LIKE ?', ['%' . $term . '%'])
+                          ->orWhereRaw('LOWER(slug) LIKE ?', ['%' . $term . '%'])
+                          ->orWhereRaw('LOWER(summary) LIKE ?', ['%' . $term . '%'])
+                          ->orWhereRaw('LOWER(description) LIKE ?', ['%' . $term . '%']);
+                }
+            })
+            ->orderByDesc('is_featured')
+
+            ->limit(4)
+            ->pluck('id')
+            ->toArray();
+
+        return $products;
+    } catch (\Exception $e) {
+        Log::error('Error getting suggested products by keywords: ' . $e->getMessage());
+        return [];
+    }
+}
+
     private function parseResponseAndProducts(string $rawResponse, string $message): array
     {
         $productIds = [];
         $cleanText = $rawResponse;
+        $fallbackCategory = null;
+        $fallbackMessage = null;
 
-        // 1) Try extract JSON block {"suggested_product_ids": [...]}
-        if (preg_match('/\{[^}]*"suggested_product_ids"\s*:\s*\[.*?\][^}]*\}/s', $rawResponse, $jsonMatch)) {
+        // Parse JSON response
+        if (preg_match('/\{[\s\S]*"response_text"[\s\S]*\}/s', $rawResponse, $jsonMatch)) {
             $jsonStr = $jsonMatch[0];
             $decoded = json_decode($jsonStr, true);
-            if (json_last_error() === JSON_ERROR_NONE && isset($decoded['suggested_product_ids']) && is_array($decoded['suggested_product_ids'])) {
-                foreach ($decoded['suggested_product_ids'] as $ident) {
-                    $mapped = $this->mapIdentifierToProductId($ident);
-                    if ($mapped !== null) {
-                        $productIds[] = $mapped;
+
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $cleanText = $decoded['response_text'] ?? $rawResponse;
+                $fallbackCategory = $decoded['fallback_category'] ?? null;
+                $fallbackMessage = $decoded['fallback_message'] ?? null;
+
+                if (isset($decoded['suggested_products']) && is_array($decoded['suggested_products'])) {
+                    foreach ($decoded['suggested_products'] as $item) {
+                        if (isset($item['id'])) {
+                            $mapped = $this->mapIdentifierToProductId($item['id']);
+                            if ($mapped !== null) {
+                                $productIds[] = $mapped;
+                            }
+                        }
                     }
                 }
             }
-            // remove JSON block from text for clean bot text
-            $cleanText = trim(str_replace($jsonStr, '', $rawResponse));
         }
 
-        // 2) If none found, try to parse numeric IDs from text
-        if (empty($productIds)) {
-            preg_match_all('/\bID[:#]?\s*(\d+)\b/i', $rawResponse, $matches);
-            if (!empty($matches[1])) {
-                foreach ($matches[1] as $mid) {
-                    $productIds[] = intval($mid);
-                }
-            }
-        }
-
-        // 3) As last resort, try to infer from message keywords
-        if (empty($productIds)) {
+        // Fallback to old parsing if JSON failed
+        if (empty($productIds) && empty($fallbackCategory)) {
             $productIds = $this->getSuggestedProductIdsByKeywords($message);
         }
 
-        // Deduplicate and limit to 4
-        $productIds = array_values(array_slice(array_values(array_unique($productIds)), 0, 4));
+        // Validate products have stock
+        $validProductIds = $this->filterProductsWithStock($productIds);
 
-        return [$cleanText, $productIds ?: []];
+        // If insufficient products, get fallback category
+        if (count($validProductIds) < 2 && empty($fallbackCategory)) {
+            $fallbackCategory = $this->suggestFallbackCategory($message);
+            if ($fallbackCategory && empty($fallbackMessage)) {
+                $fallbackMessage = "Hiện tại sản phẩm này đang hết hàng. Bạn có thể xem thêm các sản phẩm tương tự trong danh mục này.";
+            }
+        }
+
+        return [$cleanText, $validProductIds, $fallbackCategory, $fallbackMessage];
     }
 
-    /**
-     * Accept identifier which can be numeric id, sku, slug or free string.
-     * Returns product id (int) or null.
-     */
-    private function mapIdentifierToProductId($ident): ?int
+    private function filterProductsWithStock(array $productIds): array
     {
-        if ($ident === null) {
-            return null;
+        if (empty($productIds)) {
+            return [];
         }
 
-        // if numeric string or int -> return as int (verify exists)
-        if (is_numeric($ident)) {
-            $id = intval($ident);
-            $exists = Product::where('id', $id)->where('status', 'active')->exists();
-            return $exists ? $id : null;
+        try {
+            $validIds = Product::whereIn('id', $productIds)
+                ->where('status', 'active')
+                ->pluck('id')
+                ->toArray();
+
+            return array_values(array_unique($validIds));
+        } catch (\Exception $e) {
+            Log::error('Error filtering products with stock: ' . $e->getMessage());
+            return $productIds;
         }
-
-        // string identifiers: try exact sku, exact slug, exact code, then title LIKE
-        $identStr = trim((string)$ident);
-        if ($identStr === '') {
-            return null;
-        }
-
-        $prod = Product::where('status', 'active')
-            ->where(function ($q) use ($identStr) {
-                $q->where('sku', $identStr)
-                    ->orWhere('slug', $identStr)
-                    ->orWhere('code', $identStr);
-            })
-            ->first();
-
-        if ($prod) {
-            return intval($prod->id);
-        }
-
-        // fallback: try fuzzy title/summary/brand/cat match
-        $prod = Product::where('status', 'active')
-            ->where(function ($q) use ($identStr) {
-                $q->where('title', 'LIKE', "%{$identStr}%")
-                    ->orWhere('summary', 'LIKE', "%{$identStr}%");
-            })
-            ->with(['brand', 'cat_info'])
-            ->first();
-
-        if ($prod) {
-            return intval($prod->id);
-        }
-
-        return null;
     }
 
-    private function getSuggestedProductIdsByKeywords(string $message): array
+    private function suggestFallbackCategory(string $message): ?string
     {
         try {
             $messageLower = mb_strtolower($message, 'UTF-8');
-            $tokens = preg_split('/[^\p{L}\p{N}]+/u', $messageLower);
-            $tokens = array_filter(array_map('trim', $tokens), fn($t) => mb_strlen($t, 'UTF-8') > 2);
 
-            if (empty($tokens)) {
-                return [];
+            $categoryMappings = [
+                'nam' => 'dong-ho-nam',
+                'nữ' => 'dong-ho-nu',
+                'thể thao' => 'dong-ho-the-thao',
+                'cao cấp' => 'dong-ho-cao-cap',
+                'giá rẻ' => 'dong-ho-gia-re',
+                'thông minh' => 'dong-ho-thong-minh'
+            ];
+
+            foreach ($categoryMappings as $keyword => $slug) {
+                if (strpos($messageLower, $keyword) !== false) {
+                    $exists = Category::where('slug', $slug)->where('status', 'active')->exists();
+                    if ($exists) {
+                        return $slug;
+                    }
+                }
             }
 
-            $prodQuery = Product::where('status', 'active')
-                ->where(function ($q) use ($tokens) {
-                    foreach ($tokens as $t) {
-                        $q->orWhere('title', 'LIKE', "%{$t}%")
-                            ->orWhere('summary', 'LIKE', "%{$t}%")
-                            ->orWhereHas('brand', function ($b) use ($t) {
-                                $b->where('title', 'LIKE', "%{$t}%");
-                            })
-                            ->orWhereHas('cat_info', function ($c) use ($t) {
-                                $c->where('title', 'LIKE', "%{$t}%");
-                            });
-                    }
-                })
-                ->limit(8);
+            $mainCategory = Category::where('status', 'active')
+                ->where('is_parent', true)
+                ->first();
 
-            $ids = $prodQuery->pluck('id')->toArray();
-
-            return array_slice(array_map('intval', array_values(array_unique($ids))), 0, 4);
+            return $mainCategory ? $mainCategory->slug : null;
         } catch (\Exception $e) {
-            Log::error('Keyword suggestion error: ' . $e->getMessage());
-            return [];
+            Log::error('Error suggesting fallback category: ' . $e->getMessage());
+            return null;
         }
     }
 
-    /**
-     * Robust extractor that traverses common response shapes and returns the first text found.
-     */
-    private function parseCandidateText($candidate): ?string
+    public function generateResponse(string $message, string $sessionId, ?int $userId = null): array
     {
-        // candidate could be string
-        if (is_string($candidate)) {
-            return $candidate;
-        }
+        try {
+            if (empty($this->apiKey)) {
+                throw new \Exception('Gemini API key is not configured');
+            }
 
-        // If candidate has 'content' and it's a string
-        if (isset($candidate['content']) && is_string($candidate['content'])) {
-            return $candidate['content'];
-        }
+            $productContext = $this->getProductContext();
+            $chatHistory = ChatHistory::getSessionHistory($sessionId, 10);
 
-        // If content is an array with 'parts'
-        if (isset($candidate['content']) && is_array($candidate['content'])) {
-            $content = $candidate['content'];
+            $conversationContents = $this->buildConversationContents($chatHistory, $message, $productContext);
+            $rawResponse = $this->callGeminiAPIWithContext($conversationContents);
 
-            // shape: content => ['parts' => [ ['text' => '...'], ... ] ]
-            if (isset($content['parts']) && is_array($content['parts'])) {
-                $texts = [];
-                foreach ($content['parts'] as $part) {
-                    if (is_array($part) && isset($part['text'])) {
-                        $texts[] = $part['text'];
-                    } elseif (is_string($part)) {
-                        $texts[] = $part;
+            [$cleanText, $productIds, $fallbackCategory, $fallbackMessage] = $this->parseResponseAndProducts($rawResponse, $message);
+
+            $productDetails = $this->getProductDetails($productIds);
+
+            $finalResponse = $cleanText;
+            $responseData = [
+                'success' => true,
+                'response' => $finalResponse,
+                'suggested_products' => $productDetails,
+                'session_id' => $sessionId
+            ];
+
+            if (!empty($fallbackCategory) || !empty($fallbackMessage)) {
+                $responseData['fallback'] = [
+                    'category_slug' => $fallbackCategory,
+                    'message' => $fallbackMessage,
+                    'category_url' => $fallbackCategory ? route('product-cat', $fallbackCategory) : null
+                ];
+
+                if ($fallbackMessage) {
+                    $finalResponse .= "\n\n" . $fallbackMessage;
+                    if ($fallbackCategory) {
+                        $finalResponse .= " [Xem danh mục](" . route('product-cat', $fallbackCategory) . ")";
                     }
                 }
-                if (!empty($texts)) {
-                    return implode("\n", $texts);
-                }
             }
 
-            // shape: content is list of parts directly
-            $texts = [];
-            foreach ($content as $item) {
-                if (is_array($item) && isset($item['text'])) {
-                    $texts[] = $item['text'];
-                } elseif (is_string($item)) {
-                    $texts[] = $item;
-                }
-            }
-            if (!empty($texts)) {
-                return implode("\n", $texts);
-            }
+            ChatHistory::create([
+                'session_id' => $sessionId,
+                'user_id' => $userId,
+                'user_message' => $message,
+                'bot_response' => $finalResponse,
+                'suggested_products' => $productDetails
+            ]);
+
+            return $responseData;
+        } catch (\Exception $e) {
+            Log::error('Gemini Chat Error: ' . $e->getMessage());
+
+            return [
+                'success' => false,
+                'message' => 'Xin lỗi, tôi đang gặp sự cố. Vui lòng thử lại sau.',
+                'error' => $e->getMessage(),
+                'session_id' => $sessionId
+            ];
         }
-
-        // Candidate may have other nested fields. Try to find any 'text' recursively.
-        $found = $this->findFirstTextRecursive($candidate);
-        return $found;
     }
 
-    private function findFirstTextRecursive($node)
-    {
-        if (is_string($node)) {
-            return $node;
-        }
-        if (is_array($node)) {
-            if (isset($node['text']) && is_string($node['text'])) {
-                return $node['text'];
-            }
-            foreach ($node as $child) {
-                $res = $this->findFirstTextRecursive($child);
-                if ($res !== null) {
-                    return $res;
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Return product context used inside model prompt.
-     * Now includes compact inventory rows with more fields so LLM can reference exact products.
-     */
     private function getProductContext(): string
     {
         try {
@@ -456,9 +471,9 @@ Dưới đây là dữ liệu cửa hàng (dùng chính xác id/slug/sku khi tha
                 ->where('is_parent', true)
                 ->get();
 
-            // include a larger set so model can reference exact ids/slugs
             $featuredProducts = Product::where('status', 'active')
                 ->orderByDesc('is_featured')
+        
                 ->orderByDesc('updated_at')
                 ->with('cat_info', 'brand')
                 ->limit(80)
@@ -475,25 +490,21 @@ Dưới đây là dữ liệu cửa hàng (dùng chính xác id/slug/sku khi tha
                 }
             }
 
-            $context .= "\nGHI CHÚ CHO BỘ AI:\n";
-            $context .= "- Khi gợi ý sản phẩm, NHẤT ĐỊNH đính kèm 1 khối JSON duy nhất ở cuối response:\n";
-            $context .= "  {\"suggested_product_ids\": [ID_OR_SLUG_OR_SKU, ...]}\n";
-            $context .= "- Không quá 4 items. Sử dụng chính xác id hoặc slug nếu có.\n";
-            $context .= "- Nếu không tìm đủ dữ liệu, hỏi 1 câu ngắn để làm rõ.\n\n";
+            $context .= "\nQUY TẮC QUAN TRỌNG:\n";
+            $context .= "- Ưu tiên sản phẩm có stock > 0 (còn hàng)\n";
+            $context .= "- Nếu < 2 sản phẩm còn hàng: thêm fallback_category và fallback_message\n";
+            $context .= "- Luôn trả về JSON với cấu trúc chuẩn\n\n";
 
-            $context .= "MỘT SỐ SẢN PHẨM (id | slug | title | price | discount | stock | category_id | category_title | brand | url | photo):\n";
+            $context .= "SẢN PHẨM (id | slug | title | price | discount | stock | category_slug | brand):\n";
             foreach ($featuredProducts as $product) {
-                $photo = explode(',', $product->photo ?? '')[0] ?? '/storage/photos/default.jpg';
-                $url = route('product-detail', $product->slug);
-                $catId = $product->cat_info->id ?? 0;
-                $catTitle = $product->cat_info->title ?? 'Không phân loại';
+                $catSlug = $product->cat_info->slug ?? 'khac';
                 $brand = $product->brand->title ?? '';
                 $price = intval($product->price);
                 $discount = floatval($product->discount ?? 0);
                 $stock = intval($product->qty ?? 0);
+                $stockStatus = $stock > 0 ? "CÒN_HÀNG" : "HẾT_HÀNG";
 
-                // single-line record for reliable parsing
-                $context .= "{$product->id} | {$product->slug} | {$product->title} | {$price} | {$discount} | {$stock} | {$catId} | {$catTitle} | {$brand} | {$url} | {$photo}\n";
+                $context .= "{$product->id} | {$product->slug} | {$product->title} | {$price} | {$discount} | {$stock} | {$catSlug} | {$brand} | {$stockStatus}\n";
             }
 
             return $context;
@@ -514,16 +525,6 @@ Dưới đây là dữ liệu cửa hàng (dùng chính xác id/slug/sku khi tha
             return [];
         }
         return $this->getProductDetails(array_slice($ids, 0, $limit));
-    }
-
-    private function formatChatHistory($chatHistory): string
-    {
-        $formatted = "";
-        foreach ($chatHistory as $chat) {
-            $formatted .= "Khách hàng: {$chat->user_message}\n";
-            $formatted .= "Tư vấn viên: {$chat->bot_response}\n\n";
-        }
-        return $formatted;
     }
 
     private function getProductDetails(array $productIds): array

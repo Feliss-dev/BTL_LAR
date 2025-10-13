@@ -39,14 +39,14 @@
             <div class="quick-prompts-label"><i class="fas fa-lightbulb"></i> Gợi ý</div>
             <div class="quick-prompts-buttons">
                 <!-- quick prompts trigger server-side search (force_search=1) to ensure suggestions returned -->
-                <button class="quick-prompt" data-prompt="Đồng hồ nam" data-force-search="1"><i
-                        class="fa fa-mars"></i><span> Nam</span></button>
-                <button class="quick-prompt" data-prompt="Đồng hồ nữ" data-force-search="1"><i
-                        class="fa fa-venus"></i><span> Nữ</span></button>
-                <button class="quick-prompt" data-prompt="Đồng hồ giá dưới 2 triệu" data-force-search="1"><i
-                        class="fa fa-tag"></i><span>&lt; 2 triệu</span></button>
-                <button class="quick-prompt" data-prompt="Đồng hồ thương hiệu nổi tiếng" data-force-search="1"><i
-                        class="fa fa-star"></i><span> Thương hiệu</span></button>
+                <button class="quick-prompt" data-prompt="Đồng hồ treo tường" data-force-search="1"><i
+                        class="fa fa-mars"></i><span> Treo tường</span></button>
+                <button class="quick-prompt" data-prompt="Đồng hồ báo thức" data-force-search="1"><i
+                        class="fa fa-venus"></i><span> Báo thức</span></button>
+                <button class="quick-prompt" data-prompt="Đồng hồ giá dưới 200 triệu" data-force-search="1"><i
+                        class="fa fa-tag"></i><span>&lt; 200 triệu</span></button>
+                <button class="quick-prompt" data-prompt="Đồng hồ cổ" data-force-search="1"><i
+                        class="fa fa-star"></i><span> Cổ</span></button>
             </div>
         </div>
 
@@ -419,6 +419,50 @@
         color: #fff;
     }
 
+    .fallback-message {
+        margin-top: 10px;
+        padding: 12px;
+        background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+        border: 1px solid #ffeaa7;
+        border-radius: 10px;
+        font-size: 13px;
+    }
+
+    .fallback-content {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .fallback-content i.fa-info-circle {
+        color: #856404;
+        font-size: 14px;
+    }
+
+    .fallback-link {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin-left: auto;
+        padding: 4px 8px;
+        border-radius: 6px;
+        background: rgba(13, 110, 253, 0.1);
+        transition: background .12s ease;
+    }
+
+    .fallback-link:hover {
+        background: rgba(13, 110, 253, 0.2);
+        text-decoration: none;
+    }
+
+    .fallback-link i {
+        font-size: 11px;
+    }
+
     /* small devices adjustments */
     @media (max-width: 420px) {
         .chatbot-window {
@@ -609,6 +653,7 @@
                             if (payloadStr === '[DONE]') continue;
                             try {
                                 const payload = JSON.parse(payloadStr);
+
                                 // update session id if provided
                                 if (payload.session_id) {
                                     this.sessionId = payload.session_id;
@@ -617,17 +662,17 @@
 
                                 if (payload.type === 'content' && payload.text) {
                                     // remove any embedded suggested_product_ids JSON block before showing text
-                                    let filtered = payload.text.replace(/\{[\s\S]*?"suggested_product_ids"\s*:\s*\[[\s\S]*?\][\s\S]*?\}/g, '');
+                                    let filtered = payload.text.replace(
+                                        /\{[\s\S]*?"suggested_product_ids|response_text"[\s\S]*?\}/g, '');
                                     filtered = filtered.trim();
                                     if (filtered !== '') {
-                                        // ensure HTML escaping of plain text; replace \n with <br>
                                         const safeText = filtered.replace(/&/g, '&amp;').replace(/</g, '&lt;')
                                             .replace(/>/g, '&gt;').replace(/\n/g, '<br>');
                                         botContent.innerHTML += safeText;
                                         this.scrollToBottom();
                                     }
-                                } else if (payload.type === 'products' && Array.isArray(payload.products) && payload
-                                    .products.length > 0 && !productsAppended) {
+                                } else if (payload.type === 'products' && Array.isArray(payload.products) &&
+                                    payload.products.length > 0 && !productsAppended) {
                                     // append suggested products block under the current bot message
                                     const productsDiv = document.createElement('div');
                                     productsDiv.className = 'suggested-products';
@@ -641,20 +686,37 @@
                                             product.price;
 
                                         productDiv.innerHTML = `
-                                            <img src="${product.photo}" alt="${product.title}" onerror="this.src='/storage/photos/default.jpg'">
-                                            <div class="product-info">
-                                                <h6>${product.title}</h6>
-                                                <div class="product-price">
-                                                    ${product.discount > 0 ? `<del>${this.formatPrice(product.price)}đ</del> ` : ''}
-                                                    ${this.formatPrice(discountPrice)}đ
-                                                </div>
-                                                <small>${product.category} · ${product.brand || ''}</small>
+                                        <img src="${product.photo}" alt="${product.title}" onerror="this.src='/storage/photos/default.jpg'">
+                                        <div class="product-info">
+                                            <h6>${product.title}</h6>
+                                            <div class="product-price">
+                                                ${product.discount > 0 ? `<del>${this.formatPrice(product.price)}đ</del> ` : ''}
+                                                ${this.formatPrice(discountPrice)}đ
                                             </div>
-                                        `;
+                                            <small>${product.category} · ${product.brand || ''}</small>
+                                        </div>
+                                    `;
                                         productsDiv.appendChild(productDiv);
                                     });
                                     botMessageDiv.appendChild(productsDiv);
                                     productsAppended = true;
+                                    this.scrollToBottom();
+                                } else if (payload.type === 'fallback' && payload.fallback) {
+                                    // Handle fallback information (out of stock products)
+                                    const fallbackDiv = document.createElement('div');
+                                    fallbackDiv.className = 'fallback-message';
+                                    fallbackDiv.innerHTML = `
+                                    <div class="fallback-content">
+                                        <i class="fa fa-info-circle"></i>
+                                        <span>${payload.fallback.message}</span>
+                                        ${payload.fallback.category_url ?
+                                            `<a href="${payload.fallback.category_url}" target="_blank" class="fallback-link">
+                                                <i class="fa fa-external-link"></i> Xem danh mục
+                                            </a>` : ''
+                                        }
+                                    </div>
+                                `;
+                                    botMessageDiv.appendChild(fallbackDiv);
                                     this.scrollToBottom();
                                 } else if (payload.type === 'done') {
                                     // finished
@@ -662,7 +724,7 @@
                                 }
                             } catch (e) {
                                 // Not JSON - ignore non-json SSE lines
-                                console.warn('SSE parse warning:', e);
+                                console.warn('SSE parse warning:', e.message || e);
                             }
                         }
                     }
@@ -680,7 +742,8 @@
                                 localStorage.setItem('chatbot_session_id', this.sessionId);
                             }
                             if (payload.type === 'content' && payload.text) {
-                                let filtered = payload.text.replace(/\{[\s\S]*?"suggested_product_ids"\s*:\s*\[[\s\S]*?\][\s\S]*?\}/g, '');
+                                let filtered = payload.text.replace(
+                                    /\{[\s\S]*?"suggested_product_ids"\s*:\s*\[[\s\S]*?\][\s\S]*?\}/g, '');
                                 filtered = filtered.trim();
                                 if (filtered !== '') {
                                     const safeText = filtered.replace(/&/g, '&amp;').replace(/</g, '&lt;')
@@ -722,7 +785,8 @@
                                 this.scrollToBottom();
                             }
                         } catch (e) {
-                            // ignore
+                            // ignore parse errors in buffer cleanup
+                            console.warn('Buffer parse warning:', e.message || e);
                         }
                     }
                 }
@@ -748,7 +812,8 @@
             // when showing bot saved responses, strip any embedded suggested_product_ids JSON
             let display = content;
             if (type === 'bot' && typeof display === 'string') {
-                display = display.replace(/\{[\s\S]*?"suggested_product_ids"\s*:\s*\[[\s\S]*?\][\s\S]*?\}/g, '').trim();
+                display = display.replace(/\{[\s\S]*?"suggested_product_ids"\s*:\s*\[[\s\S]*?\][\s\S]*?\}/g, '')
+                    .trim();
             }
             messageContent.innerHTML = this.formatMessage(display);
 
