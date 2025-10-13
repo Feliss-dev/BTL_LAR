@@ -84,7 +84,7 @@
   <div class="invoice-description">
     <div class="invoice-left-top float-left">
       <h6>Invoice to</h6>
-       <h3>{{$order->first_name}} {{$order->last_name}}</h3>
+       <h3>{{$order->name}}</h3>
        <div class="address">
         <p>
           <strong>Country: </strong>

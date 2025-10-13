@@ -5,8 +5,7 @@ namespace App\Services;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class MomoService
-{
+class MomoService {
     protected $endpoint;
     protected $partnerCode;
     protected $accessKey;

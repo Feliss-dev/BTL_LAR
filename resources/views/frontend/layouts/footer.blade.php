@@ -1,6 +1,4 @@
-<!-- Start Footer Area -->
 <footer class="footer">
-    <!-- Footer Top -->
     <div class="footer-top section">
         <div class="container">
             <div class="row">
@@ -24,7 +22,6 @@
                                     @endforeach
                                 </a></span></p>
                     </div>
-                    <!-- End Single Widget -->
                 </div>
                 <div class="col-lg-2 col-md-6 col-12">
                     <!-- Single Widget -->
@@ -38,7 +35,6 @@
                             <li><a href="#">Trợ giúp</a></li>
                         </ul>
                     </div>
-                    <!-- End Single Widget -->
                 </div>
                 <div class="col-lg-2 col-md-6 col-12">
                     <!-- Single Widget -->
@@ -52,13 +48,10 @@
                             <li><a href="#">Chính sách bảo mật</a></li>
                         </ul>
                     </div>
-                    <!-- End Single Widget -->
                 </div>
                 <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Single Widget -->
                     <div class="single-footer social">
                         <h4>Liên hệ</h4>
-                        <!-- Single Widget -->
                         <div class="contact">
                             <ul>
                                 <li>
@@ -78,36 +71,13 @@
                                 </li>
                             </ul>
                         </div>
-                        <!-- End Single Widget -->
                         <div class="sharethis-inline-follow-buttons"></div>
-                    </div>
-                    <!-- End Single Widget -->
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Footer Top -->
-    <div class="copyright">
-        <div class="container">
-            <div class="inner">
-                <div class="row">
-                    <div class="col-lg-6 col-12">
-                        <div class="left">
-                            <p>Bản quyền © {{ date('Y') }} <a href="https://github.com/Prajwal100"
-                                    target="_blank">Prajwal Rai</a> - Bảo lưu mọi quyền.</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-12">
-                        <div class="right">
-                            <img src="{{ asset('backend/img/payments.png') }}" alt="#">
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </footer>
-<!-- /End Footer Area -->
 
 <!-- Jquery -->
 <script src="{{ asset('frontend/js/jquery.min.js') }}"></script>
@@ -149,14 +119,6 @@
 
 @stack('scripts')
 <script>
-    setTimeout(function() {
-        $('.alert').css('top', '-100%');
-
-        setTimeout(function() {
-            $('.alert').hide()
-        }, 750);
-    }, 5000);
-
     $(function() {
         // ------------------------------------------------------- //
         // Multi Level dropdowns

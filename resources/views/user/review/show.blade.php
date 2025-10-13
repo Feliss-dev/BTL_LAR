@@ -26,7 +26,7 @@
         <tr>
             <td>{{$order->id}}</td>
             <td>{{$order->cart_id}}</td>
-            <td>{{$order->first_name}} {{$order->last_name}}</td>
+            <td>{{$order->name}}</td>
             <td>{{$order->email}}</td>
             <td>{{$order->quantity}}</td>
             <td>{{number_format($order->delivery_charge, 0, ',', '.')}} đ</td>
@@ -104,7 +104,7 @@
               <table class="table">
                     <tr class="">
                         <td>Full Name</td>
-                        <td> : {{$order->first_name}} {{$order->last_name}}</td>
+                        <td> : {{$order->name}}</td>
                     </tr>
                     <tr>
                         <td>Email</td>

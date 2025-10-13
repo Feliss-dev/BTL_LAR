@@ -11,25 +11,19 @@
     <table class="table table-striped table-hover">
       <thead>
         <tr>
-            <th>S.N.</th>
-            <th>Order No.</th>
-            <th>Name</th>
+            <th>Mã đơn hàng</th>
+            <th>Tên</th>
             <th>Email</th>
-            <th>Quantity</th>
-            <th>Charge</th>
-            <th>Total Amount</th>
-            <th>Status</th>
-            <th>Action</th>
+            <th>Thành tiền</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-            <td>{{$order->id}}</td>
             <td>{{$order->order_number}}</td>
-            <td>{{$order->first_name}} {{$order->last_name}}</td>
+            <td>{{$order->name}}</td>
             <td>{{$order->email}}</td>
-            <td>{{$order->quantity}}</td>
-            <td>{{number_format($order->shipping->price, 0, ',', '.')}} đ</td>
             <td>{{number_format($order->total_amount, 0, ',', '.')}} đ</td>
             <td>
                 @if($order->status=='new')
@@ -46,7 +40,7 @@
                 <form method="POST" action="{{route('order.destroy',[$order->id])}}">
                   @csrf
                   @method('delete')
-                      <button class="btn btn-danger btn-sm dltBtn" data-id={{$order->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                      <button class="btn btn-danger btn-sm dltBtn" data-id="{{$order->id}}" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
                 </form>
             </td>
 
@@ -116,7 +110,7 @@
               <table class="table">
                     <tr class="">
                         <td>Full Name</td>
-                        <td> : {{$order->first_name}} {{$order->last_name}}</td>
+                        <td> : {{$order->name}}</td>
                     </tr>
                     <tr>
                         <td>Email</td>

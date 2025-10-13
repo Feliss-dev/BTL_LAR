@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ProductReview extends Model
 {
+    use HasFactory;
+
     protected $fillable=['user_id','product_id','rate','review','status'];
 
     public function user_info(){
@@ -19,7 +22,7 @@ class ProductReview extends Model
         return ProductReview::where('user_id',auth()->user()->id)->with('user_info')->paginate(10);
     }
 
-    public function product(){
+    public function product() {
         return $this->hasOne(Product::class,'id','product_id');
     }
 

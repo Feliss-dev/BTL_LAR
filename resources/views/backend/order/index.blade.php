@@ -46,7 +46,7 @@
                 <tr>
                     <td>{{$order->id}}</td>
                     <td>{{$order->order_number}}</td>
-                    <td>{{$order->first_name}} {{$order->last_name}}</td>
+                    <td>{{$order->name}}</td>
                     <td>{{$order->email}}</td>
                     <td>{{$order->quantity}}</td>
                     <td>
@@ -79,7 +79,7 @@
             @endforeach
           </tbody>
         </table>
-        <span style="float:right">{{$orders->links()}}</span>
+        <span style="float:right">{{$orders->links('vendor.pagination.bootstrap-5')}}</span>
         @else
           <h6 class="text-center">Không có đơn hàng!</h6>
         @endif

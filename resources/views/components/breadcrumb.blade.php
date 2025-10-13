@@ -21,9 +21,9 @@
                                 @endphp
 
                                 @if (!empty($last->url))
-                                    <a href="{{$last->url}}">{{$element->name}}</a>
+                                    <a href="{{$last->url}}">{{$last->name}}</a>
                                 @else
-                                    {{$element->name}}
+                                    {{$last->name}}
                                 @endif
                             </li>
                         @endif

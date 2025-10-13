@@ -24,8 +24,9 @@ class ProductFactory extends Factory
             'size' => $this->faker->randomElement(['XS', 'S', 'M', 'L', 'XL', 'XXL']),
             'condition' => $this->faker->randomElement(['default', 'new', 'hot']),
             'status' => 'active',
-            'price' => $this->faker->randomNumber(4) * 100_000,
+            'price' => $this->faker->randomNumber(3) * 1_000,
             'discount' => rand(0, 16) * 5,
+            'is_featured' => rand(0, 1) === 1,
         ];
     }
 }

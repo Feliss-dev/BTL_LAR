@@ -6,7 +6,7 @@
      <x-alert-container/>
 
     <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary float-left">Review Lists</h6>
+      <h6 class="m-0 font-weight-bold text-primary float-left">Đánh giá</h6>
     </div>
     <div class="card-body">
       <div class="table-responsive">
@@ -14,8 +14,6 @@
         <table class="table table-bordered" id="order-dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-              <th>S.N.</th>
-              <th>Review By</th>
               <th>Product Title</th>
               <th>Review</th>
               <th>Rate</th>
@@ -26,9 +24,7 @@
           </thead>
           <tfoot>
             <tr>
-              <th>S.N.</th>
-              <th>Review By</th>
-              <th>Product Title</th>
+              <th>Sản phẩm</th>
               <th>Review</th>
               <th>Rate</th>
               <th>Date</th>
@@ -39,22 +35,23 @@
           <tbody>
             @foreach($reviews as $review)
                 <tr>
-                    <td>{{$review->id}}</td>
-                    <td>{{$review->user_info['name']}}</td>
-                    <td>{{$review->product->title}}</td>
+                    <td>
+                        <a href="{{ route('product-detail', $review->product->slug) }}">{{$review->product->title}}</a>
+                    </td>
                     <td>{{$review->review}}</td>
                     <td>
                      <ul style="list-style:none" class="d-flex">
-                          @for($i = 1; $i<=5;$i++)
-                          @if($review->rate >=$i)
-                            <li style="float:left;color:#F7941D;"><i class="fa fa-star"></i></li>
-                          @else
-                            <li style="float:left;color:#F7941D;"><i class="far fa-star"></i></li>
-                          @endif
+                        @for($i = 1; $i<=5;$i++)
+                              @if($review->rate >=$i)
+                                <li style="float:left;color:#F7941D;"><i class="fa fa-star"></i></li>
+                              @else
+                                <li style="float:left;color:#F7941D;"><i class="far fa-star"></i></li>
+                              @endif
                         @endfor
                      </ul>
                     </td>
-                    <td>{{$review->created_at->format('M d D, Y g: i a')}}</td>
+{{--                    <td>{{$review->created_at->format('M d D, Y g: i a')}}</td>--}}
+                    <td>{{$review->created_at->format('d/m/Y, g:i a')}}</td>
                     <td>
                         @if($review->status=='active')
                           <span class="badge badge-success">{{$review->status}}</span>
@@ -74,7 +71,7 @@
             @endforeach
           </tbody>
         </table>
-        <span style="float:right">{{$reviews->links()}}</span>
+        <span style="float:right">{{$reviews->links('vendor.pagination.bootstrap-5')}}</span>
         @else
           <h6 class="text-center">No reviews found!!!</h6>
         @endif

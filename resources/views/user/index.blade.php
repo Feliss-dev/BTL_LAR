@@ -90,44 +90,38 @@
 
     <div class="row">
       @php
-          $orders = DB::table('orders')->where('user_id',auth()->user()->id)->paginate(10);
+          $orders = DB::table('orders')->where('user_id', auth()->user()->id)->paginate(10);
       @endphp
       <!-- Order -->
       <div class="col-xl-12 col-lg-12">
         <table class="table table-bordered" id="order-dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-              <th>S.N.</th>
-              <th>Order No.</th>
-              <th>Name</th>
+              <th>Mã đơn hàng</th>
+              <th>Tên</th>
               <th>Email</th>
-              <th>Quantity</th>
-              <th>Total Amount</th>
-              <th>Status</th>
-              <th>Action</th>
+              <th>Thành tiền</th>
+              <th>Trạng thái</th>
+              <th>Hành động</th>
             </tr>
           </thead>
           <tfoot>
             <tr>
-              <th>S.N.</th>
-              <th>Order No.</th>
-              <th>Name</th>
+              <th>Mã đơn hàng</th>
+              <th>Tên</th>
               <th>Email</th>
-              <th>Quantity</th>
-              <th>Total Amount</th>
-              <th>Status</th>
-              <th>Action</th>
+              <th>Thành tiền</th>
+              <th>Trạng thái</th>
+              <th>Hành động</th>
               </tr>
           </tfoot>
           <tbody>
             @if(count($orders)>0)
               @foreach($orders as $order)
                 <tr>
-                    <td>{{$order->id}}</td>
                     <td>{{$order->order_number}}</td>
-                    <td>{{$order->first_name}} {{$order->last_name}}</td>
+                    <td>{{$order->name}}</td>
                     <td>{{$order->email}}</td>
-                    <td>{{$order->quantity}}</td>
                     <td>{{number_format($order->total_amount, 0, ',', '.')}} đ</td>
                     <td>
                         @if($order->status=='new')
@@ -145,18 +139,21 @@
                         <form method="POST" action="{{route('user.order.delete',[$order->id])}}">
                           @csrf
                           @method('delete')
-                              <button class="btn btn-danger btn-sm dltBtn" data-id={{$order->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
+
+                          <button class="btn btn-danger btn-sm dltBtn" data-id="{{$order->id}}" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                            <i class="fas fa-trash-alt"></i>
+                          </button>
                         </form>
                     </td>
                 </tr>
               @endforeach
               @else
-                <td colspan="8" class="text-center"><h4 class="my-4">You have no order yet!! Please order some products</h4></td>
+                <td colspan="8" class="text-center"><h4 class="my-4">Không có đơn hàng!</h4></td>
               @endif
           </tbody>
         </table>
 
-        {{$orders->links()}}
+        {{$orders->links('vendor.pagination.bootstrap-5')}}
       </div>
     </div>
 

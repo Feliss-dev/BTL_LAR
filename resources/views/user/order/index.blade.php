@@ -6,7 +6,7 @@
      <x-alert-container/>
 
     <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary float-left">Order Lists</h6>
+      <h6 class="m-0 font-weight-bold text-primary float-left">Đơn hàng</h6>
     </div>
     <div class="card-body">
       <div class="table-responsive">
@@ -14,39 +14,30 @@
         <table class="table table-bordered" id="order-dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-              <th>S.N.</th>
-              <th>Order No.</th>
-              <th>Name</th>
+              <th>Mã đơn hàng</th>
+              <th>Tên</th>
               <th>Email</th>
-              <th>Quantity</th>
-              <th>Charge</th>
-              <th>Total Amount</th>
-              <th>Status</th>
-              <th>Action</th>
+              <th>Thành tiền</th>
+              <th>Trạng thái</th>
+              <th>Hành động</th>
             </tr>
           </thead>
           <tfoot>
             <tr>
-              <th>S.N.</th>
-              <th>Order No.</th>
-              <th>Name</th>
+              <th>Mã đơn hàng</th>
+              <th>Tên</th>
               <th>Email</th>
-              <th>Quantity</th>
-              <th>Charge</th>
-              <th>Total Amount</th>
-              <th>Status</th>
-              <th>Action</th>
-              </tr>
+              <th>Thành tiền</th>
+              <th>Trạng thái</th>
+              <th>Hành động</th>
+            </tr>
           </tfoot>
           <tbody>
             @foreach($orders as $order)
                 <tr>
-                    <td>{{$order->id}}</td>
                     <td>{{$order->order_number}}</td>
-                    <td>{{$order->first_name}} {{$order->last_name}}</td>
+                    <td>{{$order->name}}</td>
                     <td>{{$order->email}}</td>
-                    <td>{{$order->quantity}}</td>
-                    <td>{{number_format($order->shipping->price, 0, ',', '.')}}</td>
                     <td>{{number_format($order->total_amount, 0, ',', '.')}} đ</td>
                     <td>
                         @if($order->status=='new')
@@ -71,9 +62,9 @@
             @endforeach
           </tbody>
         </table>
-        <span style="float:right">{{$orders->links()}}</span>
+        <span style="float:right">{{$orders->links('vendor.pagination.bootstrap-5')}}</span>
         @else
-          <h6 class="text-center">No orders found!!! Please order some products</h6>
+          <h6 class="text-center">Không có đơn hàng!</h6>
         @endif
       </div>
     </div>

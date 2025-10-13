@@ -42,7 +42,7 @@ class Product extends Model
     }
 
     public function wishlists(){
-        return $this->hasMany(Wishlist::class)->whereNotNull('cart_id');
+        return $this->hasMany(Wishlist::class);
     }
 
     public function brand(){

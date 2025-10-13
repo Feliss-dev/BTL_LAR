@@ -1,13 +1,4 @@
 
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Copyright &copy; <a href="https://github.com/Prajwal100" target="_blank">Prajwal R.</a> {{date('Y')}}</span>
-          </div>
-        </div>
-      </footer>
-      <!-- End of Footer -->
 
     </div>
     <!-- End of Content Wrapper -->
@@ -57,13 +48,3 @@
   {{-- <script src="{{asset('backend/js/demo/chart-pie-demo.js')}}"></script> --}}
 
   @stack('scripts')
-
-  <script>
-      setTimeout(function() {
-          $('.alert').css('top', '-100%');
-
-          setTimeout(function() {
-              $('.alert').hide()
-          }, 750);
-      }, 5000);
-  </script>

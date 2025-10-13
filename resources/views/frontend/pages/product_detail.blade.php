@@ -313,7 +313,7 @@
                             @if($data->id !==$product_detail->id)
                                 <!-- Start Single Product -->
                                 <div class="single-product">
-                                    <x-product-image :product="$data"/>
+                                    <livewire:product-image :product="$data"/>
 {{--                                    <div class="product-img">--}}
 {{--										<a href="{{route('product-detail',$data->slug)}}">--}}
 {{--											@php--}}

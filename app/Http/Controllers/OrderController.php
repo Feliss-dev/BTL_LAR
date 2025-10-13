@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Shipping;
 use App\User;
-use PDF;
 use Notification;
 use App\Http\Helper;
 use Illuminate\Support\Str;
@@ -32,47 +32,33 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'first_name'=>'string|required',
-            'last_name'=>'string|required',
-            'address1'=>'string|required',
-            'address2'=>'string|nullable',
-            'coupon'=>'nullable|numeric',
-            'phone'=>'numeric|required',
-            'post_code'=>'string|nullable',
-            'email'=>'string|required'
+            'name'=>'required|string',
+            'address1'=>'required|string',
+            'address2'=>'nullable|string',
+            'coupon'=>'nullable|string',
+            'phone'=>'required|numeric',
+            'post_code'=>'nullable|string',
+            'email'=>'required|email',
+            'shipping' => 'required|exists:shippings,id',
+            'payment_method' => 'required|in:cod,momo,vnpay',
+        ], [
+            'name.required' => 'Yêu cầu nhập tên.',
+            'address1.required' => 'Yêu cầu nhập địa chỉ.',
+            'coupon.numeric' => 'Mã giảm giá phải là chữ số.',
+            'phone.required' => 'Yêu cầu nhập số điện thoại.',
+            'phone.numeric' => 'Số điện thoại chỉ được chứa chữ số.',
+            'email.required' => 'Yêu cầu nhập Email.',
+            'email.email' => 'Yêu cầu nhập đúng định dạng Email.',
+            'shipping.required' => 'Yêu cầu chọn phương thức giao hàng.',
+            'shipping.exists' => 'Phương thức giao hàng không hợp lệ.',
+            'payment_method.required' => 'Yêu cầu chọn phương thức thanh toán',
+            'payment_method.in' => 'Phương thức thanh toán không hợp lệ.',
         ]);
 
         if (empty(Cart::where('user_id',auth()->user()->id)->where('order_id',null)->first())){
-            request()->session()->flash('error','Cart is Empty !');
+            request()->session()->flash('error', 'Giỏ hàng trống!');
             return back();
         }
-        // $cart=Cart::get();
-        // // return $cart;
-        // $cart_index='ORD-'.strtoupper(uniqid());
-        // $sub_total=0;
-        // foreach($cart as $cart_item){
-        //     $sub_total+=$cart_item['amount'];
-        //     $data=array(
-        //         'cart_id'=>$cart_index,
-        //         'user_id'=>$request->user()->id,
-        //         'product_id'=>$cart_item['id'],
-        //         'quantity'=>$cart_item['quantity'],
-        //         'amount'=>$cart_item['amount'],
-        //         'status'=>'new',
-        //         'price'=>$cart_item['price'],
-        //     );
-
-        //     $cart=new Cart();
-        //     $cart->fill($data);
-        //     $cart->save();
-        // }
-
-        // $total_prod=0;
-        // if(session('cart')){
-        //         foreach(session('cart') as $cart_items){
-        //             $total_prod+=$cart_items['quantity'];
-        //         }
-        // }
 
         $order = new Order();
         $order_data = $request->all();
@@ -104,18 +90,19 @@ class OrderController extends Controller
         }
         // return $order_data['total_amount'];
         $order_data['status']="new";
-        if(request('payment_method')=='paypal'){
-            $order_data['payment_method']='paypal';
-            $order_data['payment_status']='paid';
+
+        switch ($request->payment_method) {
+            case 'momo' or 'vnpay':
+                $order_data['payment_method'] = $request->payment_method;
+                $order_data['payment_status'] = 'unpaid';
+                break;
+
+            default:
+                $order_data['payment_method'] = 'cod';
+                $order_data['payment_status'] = 'unpaid';
+                break;
         }
-        elseif(request('payment_method')=='momo'){
-            $order_data['payment_method']='momo';
-            $order_data['payment_status']='unpaid';
-        }
-        else{
-            $order_data['payment_method']='cod';
-            $order_data['payment_status']='Unpaid';
-        }
+
         $order->fill($order_data);
         $status=$order->save();
         if($order)
@@ -126,22 +113,26 @@ class OrderController extends Controller
             'actionURL'=>route('order.show',$order->id),
             'fas'=>'fa-file-alt'
         ];
-        Notification::send($users, new StatusNotification($details));
-        if(request('payment_method')=='paypal'){
-            return redirect()->route('payment')->with(['id'=>$order->id]);
-        }
-        elseif(request('payment_method')=='momo'){
-            return redirect()->route('momo.payment')->with(['id'=>$order->id]);
-        }
-        else{
-            session()->forget('cart');
-            session()->forget('coupon');
-        }
-        Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => $order->id]);
 
-        // dd($users);
-        request()->session()->flash('success','Your product successfully placed in order');
-        return redirect()->route('home');
+        \Illuminate\Support\Facades\Notification::send($users, new StatusNotification($details));
+
+        switch ($request->payment_method) {
+            case 'momo':
+                return redirect()->route('momo.payment')->with([ 'id' => $order->id ]);
+
+            case 'vnpay':
+                return redirect()->route('vnpay.payment')->with([ 'id' => $order->id ]);
+
+            default:
+                session()->forget('cart');
+                session()->forget('coupon');
+
+                Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => $order->id]);
+
+                // dd($users);
+                request()->session()->flash('success','Your product successfully placed in order');
+                return redirect()->route('home');
+        }
     }
 
     /**
@@ -266,34 +257,36 @@ class OrderController extends Controller
     public function pdf(Request $request){
         $order=Order::getAllOrder($request->id);
         // return $order;
-        $file_name=$order->order_number.'-'.$order->first_name.'.pdf';
+        $file_name=$order->order_number.'-'.$order->name.'.pdf';
         // return $file_name;
-        $pdf=PDF::loadview('backend.order.pdf',compact('order'));
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadview('backend.order.pdf',compact('order'));
         return $pdf->download($file_name);
     }
     // Income chart
     public function incomeChart(Request $request){
-        $year=\Carbon\Carbon::now()->year;
+        $year = \Carbon\Carbon::now()->year;
         // dd($year);
-        $items=Order::with(['cart_info'])->whereYear('created_at',$year)->where('status','delivered')->get()
+        $items = Order::with(['cart_info'])->whereYear('created_at',$year)->where('status','delivered')->get()
             ->groupBy(function($d){
                 return \Carbon\Carbon::parse($d->created_at)->format('m');
             });
-            // dd($items);
+
         $result=[];
-        foreach($items as $month=>$item_collections){
-            foreach($item_collections as $item){
-                $amount=$item->cart_info->sum('amount');
-                // dd($amount);
-                $m=intval($month);
-                // return $m;
+
+        foreach ($items as $month => $item_collections) {
+            foreach ($item_collections as $item){
+                $amount = $item->cart_info->sum('amount');
+                $m = intval($month);
+
                 isset($result[$m]) ? $result[$m] += $amount :$result[$m]=$amount;
             }
         }
-        $data=[];
-        for($i=1; $i <=12; $i++){
-            $monthName=date('F', mktime(0,0,0,$i,1));
-            $data[$monthName] = (!empty($result[$i]))? number_format((float)($result[$i]), 2, '.', '') : 0.0;
+
+        $data = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $monthName = date('F', mktime(0,0,0,$i,1));
+
+            $data[$monthName] = empty($result[$i]) ? 0 : number_format((float)($result[$i]), 0, ',', '.');
         }
         return $data;
     }

@@ -31,7 +31,7 @@
                     <div class="form-group">
                       <input type="email" class="form-control form-control-user @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..."  required autocomplete="email" autofocus>
                         @error('email')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="text-danger" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
@@ -39,11 +39,11 @@
                     <div class="form-group">
                       <input type="password" class="form-control form-control-user @error('password') is-invalid @enderror" id="exampleInputPassword" placeholder="Password"  name="password" required autocomplete="current-password">
                          @error('password')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="text-danger" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-                    
+
                     </div>
                     <div class="form-group">
                         <div class="form-check">
@@ -59,7 +59,7 @@
                     </button>
                   </form>
                   <hr>
-                   
+
                   <div class="text-center">
                     @if (Route::has('password.request'))
                         <a class="btn btn-link small" href="{{ route('password.request') }}">
