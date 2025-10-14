@@ -126,13 +126,26 @@ Route::resource('/comment', 'PostCommentController');
 // Coupon
 Route::post('/coupon-store', [CouponController::class, 'couponStore'])->name('coupon-store');
 // Payment
-Route::get('payment', [PayPalController::class, 'payment'])->name('payment');
-Route::get('cancel', [PayPalController::class, 'cancel'])->name('payment.cancel');
-Route::get('payment/success', [PayPalController::class, 'success'])->name('payment.success');
+//Route::get('payment', [PayPalController::class, 'payment'])->name('payment');
+//Route::get('cancel', [PayPalController::class, 'cancel'])->name('payment.cancel');
+//Route::get('payment/success', [PayPalController::class, 'success'])->name('payment.success');
 
+// Verification
+Route::get('/auth/verify', [FrontendController::class, 'showVerificationForm'])->name('verification.notice');
+
+Route::get('/auth/verify/{id}/{hash}', function (\Illuminate\Foundation\Auth\EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    return redirect()->route('home');
+})->name('verification.verify')->middleware(['signed']);
+
+Route::post('/auth/verification-notification', function (\Illuminate\Http\Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('message', 'Đã gửi email xác thực!');
+})->name('verification.send')->middleware(['auth', 'throttle:6,1']);
 
 // Backend section start
-
 Route::group(['prefix' => '/admin', 'middleware' => ['auth', 'admin']], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin');
     Route::get('/file-manager', function () {

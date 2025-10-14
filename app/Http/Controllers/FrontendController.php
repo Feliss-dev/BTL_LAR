@@ -10,6 +10,7 @@ use App\Models\Post;
 use App\Models\Cart;
 use App\Models\Brand;
 use App\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Spatie\Newsletter\Facades\Newsletter;
@@ -193,11 +194,17 @@ class FrontendController extends Controller
         ]);
         $data=$request->all();
         // dd($data);
-        $check=$this->create($data);
+        $check = $this->create($data);
+
         Session::put('user',$data['email']);
         if($check){
             Session::flash('success','Successfully registered');
-            return redirect()->route('home');
+
+            event(new Registered($check));
+
+            Auth::login($check);
+
+            return redirect()->route('verification.notice')->with('success', 'Đăng ký thành công! Vui lòng xác thực Email.');
         }
         else{
             Session::flash('error','Please try again!');
@@ -219,20 +226,23 @@ class FrontendController extends Controller
 
     public function subscribe(Request $request){
         if(! Newsletter::isSubscribed($request->email)){
-                Newsletter::subscribePending($request->email);
-                if(Newsletter::lastActionSucceeded()){
-                    Session::flash('success','Subscribed! Please check your email');
-                    return redirect()->route('home');
-                }
-                else{
-                    Newsletter::getLastError();
-                    return back()->with('error','Something went wrong! please try again');
-                }
+            Newsletter::subscribePending($request->email);
+            if(Newsletter::lastActionSucceeded()){
+                Session::flash('success','Subscribed! Please check your email');
+                return redirect()->route('home');
             }
             else{
-                Session::flash('error','Already Subscribed');
-                return back();
+                Newsletter::getLastError();
+                return back()->with('error','Something went wrong! please try again');
             }
+        }
+        else{
+            Session::flash('error','Already Subscribed');
+            return back();
+        }
     }
 
+    public function showVerificationForm() {
+        return view('livewire.auth.verification');
+    }
 }
