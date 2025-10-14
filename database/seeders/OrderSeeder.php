@@ -19,7 +19,7 @@ class OrderSeeder extends Seeder
         foreach (Cart::all()->groupBy('user_id') as $carts) {
             $shipping = Shipping::inRandomOrder()->first();
 
-            Order::factory()->create([
+            $order = Order::factory()->create([
                 'order_number' => 'ORD-' . strtoupper(Str::random(10)),
                 'user_id' => $carts->first()->user_id,
                 'sub_total' => $carts->sum('amount'),
@@ -35,6 +35,10 @@ class OrderSeeder extends Seeder
                 'country' => 'VN',
                 'address1' => 'ABC'
             ]);
+
+            foreach ($carts as $cart) {
+                $cart->update(['order_id' => $order->id]);
+            }
         }
     }
 }

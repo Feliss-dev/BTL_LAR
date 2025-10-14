@@ -130,7 +130,7 @@ class OrderController extends Controller
                 Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => $order->id]);
 
                 // dd($users);
-                request()->session()->flash('success','Your product successfully placed in order');
+                request()->session()->flash('success', 'Hàng đã được đặt thành công!');
                 return redirect()->route('home');
         }
     }
@@ -255,13 +255,13 @@ class OrderController extends Controller
 
     // PDF generate
     public function pdf(Request $request){
-        $order=Order::getAllOrder($request->id);
-        // return $order;
-        $file_name=$order->order_number.'-'.$order->name.'.pdf';
-        // return $file_name;
+        $order = Order::getAllOrder($request->id);
+        $file_name = $order->order_number . '-' . $order->name . '.pdf';
+
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadview('backend.order.pdf',compact('order'));
         return $pdf->download($file_name);
     }
+
     // Income chart
     public function incomeChart(Request $request){
         $year = \Carbon\Carbon::now()->year;
