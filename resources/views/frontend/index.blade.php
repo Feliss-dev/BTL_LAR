@@ -158,26 +158,26 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <div class="owl-carousel popular-slider">
-                    @foreach($product_lists as $product)
-                        @if ($product->condition=='hot')
-                            <!-- Start Single Product -->
-                            <div class="single-product">
-                                <livewire:product-image :product="$product"/>
+                @php
+                    $hotProducts = \App\Models\Product::where('condition', 'hot')->where('status', 'active')->orderBy('id', 'DESC')->limit(4)->get();
+                @endphp
 
-                                <div class="product-content">
-                                    <h3><a href="{{route('product-detail',$product->slug)}}">{{$product->title}}</a></h3>
-                                    <div class="product-price">
-                                        <span class="old">{{number_format($product->price, 0, ',', '.')}} đ</span>
-                                        @php
+                <div class="owl-carousel popular-slider">
+                    @foreach($hotProducts as $product)
+                        <div class="single-product">
+                            <livewire:product-image :product="$product"/>
+
+                            <div class="product-content">
+                                <h3><a href="{{route('product-detail',$product->slug)}}">{{$product->title}}</a></h3>
+                                <div class="product-price">
+                                    <span class="old">{{number_format($product->price, 0, ',', '.')}} đ</span>
+                                    @php
                                         $after_discount = ($product->price-($product->price*$product->discount)/100)
-                                        @endphp
-                                        <span>{{number_format($after_discount, 0, ',', '.')}} đ</span>
-                                    </div>
+                                    @endphp
+                                    <span>{{number_format($after_discount, 0, ',', '.')}} đ</span>
                                 </div>
                             </div>
-                            <!-- End Single Product -->
-                        @endif
+                        </div>
                     @endforeach
                 </div>
             </div>
