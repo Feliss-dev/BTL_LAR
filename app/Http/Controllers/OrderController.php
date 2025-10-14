@@ -9,6 +9,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Shipping;
 use App\User;
+use Illuminate\Support\Facades\Log;
 use Notification;
 use App\Http\Helper;
 use Illuminate\Support\Str;
@@ -265,7 +266,6 @@ class OrderController extends Controller
     // Income chart
     public function incomeChart(Request $request){
         $year = \Carbon\Carbon::now()->year;
-        // dd($year);
         $items = Order::with(['cart_info'])->whereYear('created_at',$year)->where('status','delivered')->get()
             ->groupBy(function($d){
                 return \Carbon\Carbon::parse($d->created_at)->format('m');
@@ -278,16 +278,17 @@ class OrderController extends Controller
                 $amount = $item->cart_info->sum('amount');
                 $m = intval($month);
 
-                isset($result[$m]) ? $result[$m] += $amount :$result[$m]=$amount;
+                isset($result[$m]) ? $result[$m] += $amount : $result[$m] = $amount;
             }
         }
 
         $data = [];
         for ($i = 1; $i <= 12; $i++) {
-            $monthName = date('F', mktime(0,0,0,$i,1));
+            $monthName = date('F', mktime(0,0,0, $i,1));
 
-            $data[$monthName] = empty($result[$i]) ? 0 : number_format((float)($result[$i]), 0, ',', '.');
+            $data[$monthName] = empty($result[$i]) ? 0 : (int)$result[$i];
         }
+
         return $data;
     }
 }

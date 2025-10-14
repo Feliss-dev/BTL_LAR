@@ -166,11 +166,11 @@ class FrontendController extends Controller
         $data= $request->all();
         if(Auth::attempt(['email' => $data['email'], 'password' => $data['password'],'status'=>'active'])){
             Session::put('user',$data['email']);
-            Session::flash('success','Successfully login');
+            Session::flash('success', 'Đăng nhập thành công!');
             return redirect()->route('home');
         }
         else{
-            Session::flash('error','Invalid email and password pleas try again!');
+            Session::flash('error', 'Sai thông tin tài khoản!');
             return redirect()->back();
         }
     }
@@ -178,7 +178,7 @@ class FrontendController extends Controller
     public function logout(){
         Session::forget('user');
         Auth::logout();
-        Session::flash('success','Logout successfully');
+        Session::flash('success', 'Đăng xuất thành công!');
         return back();
     }
 
@@ -186,7 +186,6 @@ class FrontendController extends Controller
         return view('frontend.pages.register');
     }
     public function registerSubmit(Request $request){
-        // return $request->all();
         $this->validate($request,[
             'name'=>'string|required|min:2',
             'email'=>'string|required|unique:users,email',
