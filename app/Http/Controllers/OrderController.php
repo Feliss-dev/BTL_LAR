@@ -107,7 +107,7 @@ class OrderController extends Controller
         $status=$order->save();
         if($order)
         // dd($order->id);
-        $users=User::where('role','admin')->first();
+        $users=User::where('role','admin')->get();
         $details=[
             'title'=>'New order created',
             'actionURL'=>route('order.show',$order->id),
@@ -255,6 +255,7 @@ class OrderController extends Controller
 
     // PDF generate
     public function pdf(Request $request){
+        
         $order=Order::getAllOrder($request->id);
         // return $order;
         $file_name=$order->order_number.'-'.$order->name.'.pdf';
